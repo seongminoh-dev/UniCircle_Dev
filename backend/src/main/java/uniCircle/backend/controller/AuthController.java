@@ -4,19 +4,24 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.annotation.*;
 import uniCircle.backend.dto.UserDTO;
 import uniCircle.backend.dto.request.UserRequest;
 import uniCircle.backend.dto.response.ErrorResponse;
 import uniCircle.backend.dto.response.SuccessResponse;
 import uniCircle.backend.entity.Role;
 import uniCircle.backend.service.UserService;
+import uniCircle.backend.util.JwtUtil;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,6 +29,9 @@ import uniCircle.backend.service.UserService;
 public class AuthController {
 
     private final UserService userService;
+
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/register")
     @Operation(
@@ -66,5 +74,35 @@ public class AuthController {
                 .build();
         userService.registerUser(userDTO);
         return "redirect:/";
+    }
+
+
+    @Operation(summary = "User login", description = "Login을 실행한 뒤 JWT 토큰을 반환 함. 주의!!! username에는 email을 넣어야 제대로 동작함.")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Successfully logged in",
+                    content = @Content(
+                            schema = @Schema(implementation = String.class))),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Invalid username or password")
+    })
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
+        log.info("실행");
+        try {
+            // AuthenticationManager로 인증 시도
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, password));
+
+            log.info("인증성공");
+            // 인증 성공 시 JWT 생성
+            String token = jwtUtil.createJwt(username, authentication.getAuthorities().iterator().next().getAuthority(), 60 * 60 * 10L);
+            return new ResponseEntity<>("Bearer " + token, HttpStatus.OK);
+        } catch (AuthenticationException e) {
+            // 인증 실패 시 응답
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+        }
     }
 }
