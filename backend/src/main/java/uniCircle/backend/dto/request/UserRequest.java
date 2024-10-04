@@ -19,6 +19,14 @@ public class UserRequest {
     private String name;
 
     @Schema(
+            name = "nickname",
+            description = "nickname",
+            type = "String",
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            example = "juju")
+    private String nickname;
+
+    @Schema(
             name = "email",
             description = "email",
             type = "String",

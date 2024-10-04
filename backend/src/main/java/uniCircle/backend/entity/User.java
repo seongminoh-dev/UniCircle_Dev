@@ -21,6 +21,9 @@ public class User {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    private String nickname;
+
     @Column(nullable = false, unique = true)
     private String email;
 
@@ -41,9 +44,10 @@ public class User {
     private List<CircleUser> circleUsers;
 
     @Builder
-    public User(Long userId, String name, String email, Role roles, String password, LocalDateTime createdAt, LocalDateTime lastSeen) {
+    public User(Long userId, String name, String nickname, String email, Role roles, String password, LocalDateTime createdAt, LocalDateTime lastSeen) {
         this.userId = userId;
         this.name = name;
+        this.nickname = nickname;
         this.email = email;
         this.roles = roles;
         this.password = password;

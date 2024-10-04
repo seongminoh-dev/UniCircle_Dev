@@ -59,6 +59,7 @@ public class AuthController {
     public String register(@RequestBody UserRequest userRequest) {
         UserDTO userDTO = UserDTO.builder()
                 .name(userRequest.getName())
+                .nickname(userRequest.getNickname())
                 .email(userRequest.getEmail())
                 .roles(Role.WANT_JOIN)
                 .password(userRequest.getPassword())

@@ -3,11 +3,13 @@ package uniCircle.backend.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uniCircle.backend.dto.UserDTO;
 import uniCircle.backend.entity.User;
 import uniCircle.backend.repository.UserRepository;
+import uniCircle.backend.util.JwtUtil;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -17,8 +19,8 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder; // 비밀번호 암호화를 위한 인코더
-//    private final JwtUtil jwtUtil;
+    private final BCryptPasswordEncoder passwordEncoder; // 비밀번호 암호화를 위한 인코더
+    private final JwtUtil jwtUtil;
 
     // 회원 가입 메서드
     @Transactional
@@ -30,6 +32,7 @@ public class UserService {
         User user = User.builder()
                 .name(userDTO.getName())
                 .email(userDTO.getEmail())
+                .nickname(userDTO.getNickname())
                 .roles(userDTO.getRoles())
                 .password(passwordEncoder.encode(userDTO.getPassword())) // 비밀번호 암호화
                 .createdAt(LocalDateTime.now())

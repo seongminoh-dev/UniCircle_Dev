@@ -14,6 +14,7 @@ public class UserDTO {
 
     private Long userId;
     private String name;
+    private String nickname;
     private String email;
     private Role roles;
     private String password; // 비밀번호는 보통 민감한 정보이므로, 필요에 따라 노출을 제어해야 합니다.
@@ -21,9 +22,10 @@ public class UserDTO {
     private LocalDateTime lastSeen;
 
     @Builder
-    public UserDTO(Long userId, String name, String email, Role roles, String password, LocalDateTime createdAt, LocalDateTime lastSeen) {
+    public UserDTO(Long userId, String name, String nickname, String email, Role roles, String password, LocalDateTime createdAt, LocalDateTime lastSeen) {
         this.userId = userId;
         this.name = name;
+        this.nickname = nickname;
         this.email = email;
         this.roles = roles;
         this.password = password;
@@ -35,9 +37,10 @@ public class UserDTO {
         return UserDTO.builder()
                 .userId(user.getUserId())
                 .name(user.getName())
+                .nickname(user.getNickname())
                 .email(user.getEmail())
                 .roles(user.getRoles())
-                .password(user.getPassword()) // 실제 애플리케이션에서는 비밀번호를 DTO에 포함시키는 것에 주의해야 합니다.
+                .password(user.getPassword()) // 주의할 것
                 .createdAt(user.getCreatedAt())
                 .lastSeen(user.getLastSeen())
                 .build();
