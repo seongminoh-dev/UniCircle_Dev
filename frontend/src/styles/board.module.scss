@@ -1,0 +1,152 @@
+/* src/Page.scss */
+
+.board {
+    max-width: 600px;
+    margin: 20px auto;
+    font-family: Arial, sans-serif;
+    border: 1px solid #e1e8ed;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
+    .boardHeader {
+      padding: 20px;
+      border-bottom: 1px solid #e1e8ed;
+      font-size: 1.5em;
+      font-weight: bold;
+      text-align: center;
+      background-color: #1da1f2;
+      color: #ffffff;
+    }
+  
+    .boardList {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+  
+    .boardItem {
+      display: flex;
+      padding: 15px;
+      border-bottom: 1px solid #e1e8ed;
+  
+      &:last-child {
+        border-bottom: none;
+      }
+  
+      .avatar {
+        margin-right: 15px;
+  
+        .avatarImage {
+          border-radius: 50%;
+          width: 50px;
+          height: 50px;
+          object-fit: cover;
+        }
+      }
+  
+      .boardContent {
+        flex: 1;
+  
+        .boardHeader {
+          display: flex;
+          align-items: center;
+          margin-bottom: 5px;
+  
+          .name {
+            font-weight: bold;
+            margin-right: 5px;
+          }
+  
+          .handle {
+            color: #657786;
+            margin-right: 10px;
+          }
+  
+          .timestamp {
+            color: #657786;
+            font-size: 0.9em;
+          }
+        }
+  
+        .content {
+          font-size: 1em;
+          margin-bottom: 10px;
+          line-height: 1.4;
+        }
+  
+        .actions {
+          display: flex;
+          justify-content: space-around;
+          max-width: 300px;
+  
+          .actionButton {
+            border: none;
+            background: none;
+            color: #657786;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-size: 0.9em;
+            padding: 5px 10px;
+            border-radius: 20px;
+            transition: background-color 0.2s, color 0.2s;
+  
+            &:hover {
+              background-color: rgba(29, 161, 242, 0.1);
+              color: #1da1f2;
+            }
+  
+            .actionIcon {
+              margin-right: 5px;
+              font-size: 1.1em;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 640px) {
+    .board {
+      margin: 10px;
+    }
+  
+    .boardHeader {
+      font-size: 1.2em;
+      padding: 15px;
+    }
+  
+    .boardItem {
+      padding: 10px;
+  
+      .avatar {
+        margin-right: 10px;
+  
+        .avatarImage {
+          width: 40px;
+          height: 40px;
+        }
+      }
+  
+      .boardContent {
+        .content {
+          font-size: 0.95em;
+        }
+  
+        .actions {
+          max-width: 250px;
+  
+          .actionButton {
+            font-size: 0.85em;
+  
+            .actionIcon {
+              font-size: 1em;
+            }
+          }
+        }
+      }
+    }
+  }

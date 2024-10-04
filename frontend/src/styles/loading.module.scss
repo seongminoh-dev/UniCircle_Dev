@@ -1,0 +1,102 @@
+
+.loadingBox {
+position: relative;
+margin-top: 3vh;
+padding: 0 5vw;
+display: flex;
+justify-content: center;
+align-items: center;
+&.small {
+    padding: 3vh 10vw;
+}
+}
+
+.cometSpinner {
+--radius: 1em;
+--tracksize: 150px;
+--degrees: 0deg;
+width: calc(var(--radius) * 2 + var(--tracksize));
+aspect-ratio: 1;
+border-radius: 50%;
+padding: var(--tracksize);
+&.small {
+    padding: calc(var(--tracksize) - 40px);
+}
+
+background: conic-gradient(
+    from var(--degrees),
+    #1f133a,
+    #000aff calc(var(--degrees) + 260deg),
+    transparent calc(var(--degrees) + 330deg)
+);
+position: relative;
+display: grid;
+place-items: center;
+animation: comet linear 1000ms infinite;
+
+.innerCircle {
+    --background: #fff;
+    width: calc(var(--radius) * 4 + var(--tracksize));
+    background-color: var(--background);
+    position: absolute;
+    aspect-ratio: 1;
+    border-radius: 50%;
+
+    &.small {
+    width: calc(var(--radius) + calc(var(--tracksize) - 20px));
+    }
+}
+
+.comet {
+    width: calc(
+    var(--tracksize) - calc(var(--radius) * 4 + var(--tracksize)) / 2
+    );
+    height: calc(
+    var(--tracksize) - calc(var(--radius) * 4 + var(--tracksize)) / 2
+    );
+    &.small {
+    width: calc(calc(var(--tracksize) - 30px + var(--radius)) / 4);
+    height: calc(calc(var(--tracksize) - 30px + var(--radius)) / 4);
+    // width: calc(var(--radius) + calc(var(--tracksize) - 20px));
+    }
+    // height: var(--tracksize);
+    // background-color: red;
+    background-color: #1f133a;
+
+    position: absolute;
+    border-radius: 50%;
+    z-index: 3;
+    left: calc((var(--tracksize)) - calc(var(--radius) * 2));
+    &.small {
+    left: calc((var(--tracksize)) - calc(var(--radius) * 2) - 34px);
+    }
+    top: 0;
+    // margin: -2px;
+    translate: calc(cos(var(--degrees)) * var(--radius))
+    calc(sin(var(--degrees)) * var(--radius));
+}
+}
+
+.loadingText {
+position: absolute;
+z-index: 5;
+color: #000;
+text-align: center;
+font-family: Roboto;
+font-size: 48px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+
+&.small {
+    font-size: 24px;
+}
+}
+@keyframes comet {
+from {
+    transform: rotate(0deg);
+}
+to {
+    transform: rotate(-360deg);
+}
+}

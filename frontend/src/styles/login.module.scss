@@ -1,0 +1,129 @@
+.bg {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: Roboto;
+    font-weight: 400;
+    word-wrap: break-word;
+  }
+  @media (max-width: 580px) {
+    .bg {
+      justify-content: center;
+    }
+  }
+  .logo {
+    max-width: 70%;
+  }
+  .frame {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 0 20px;
+  }
+  
+  .inputSection {
+    height: 78px;
+    margin-bottom: 30px;
+  }
+  .inputWrapper {
+    min-width: 270px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+  }
+  
+  .input {
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 288px;
+    height: 38px;
+    flex-shrink: 0;
+    border-radius: 19px;
+    background: #e9f0ee;
+  
+    color: #0f0f0f;
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.84px;
+    padding-left: 50px;
+    &.error {
+      border: 1px #ff2121 solid;
+    }
+  }
+  
+  .englishInput {
+    -webkit-ime-mode: disabled;
+    -moz-ime-mode: disabled;
+    -ms-ime-mode: disabled;
+    ime-mode: disabled;
+  }
+  .icon {
+    position: absolute;
+    margin-left: 18px;
+    left: 0;
+    z-index: 5;
+  }
+  
+  .welcome {
+    color: #0f0f0f;
+    font-size: 20px;
+  }
+  .smallText {
+    color: #7d7d7d;
+    font-size: 12px;
+    margin-bottom: 30px;
+  }
+  
+  .bottomText {
+    width: 137px;
+    text-align: center;
+    color: #151515;
+    font-size: 10px;
+  }
+  
+  .bottomWrapper {
+    max-width: 200px;
+    display: flex;
+    justify-content: space-between;
+    // justify-content: center;
+    margin-top: 30px;
+  }
+  
+  .bottomButton {
+    width: 58px;
+    text-align: center;
+    color: #0919aa;
+    font-size: 10px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  
+  .warning {
+    color: #cc1313;
+  
+    text-align: right;
+    font-family: Roboto;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.6px;
+  }
+  

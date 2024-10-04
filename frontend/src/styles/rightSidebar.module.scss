@@ -1,0 +1,31 @@
+$sidebar-width: 300px;
+$sidebar-bg-color: #ffffff;
+$sidebar-border-color: #e1e8ed;
+$sidebar-text-color: #14171a;
+$sidebar-hover-bg: #f5f8fa;
+$transition-duration: 0.3s;
+$font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+.sidebar {
+    width: $sidebar-width;
+    background-color: $sidebar-bg-color;
+    border-left: 1px solid $sidebar-border-color;
+    height: 100vh;
+    position: fixed;
+    top: $header-height + 10px;
+    right: 0;
+    padding: 20px;
+    box-sizing: border-box;
+    font-family: $font-family;
+    overflow-y: auto;
+    transition: transform $transition-duration ease-in-out;
+  
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      width: 100%;
+      height: auto;
+      position: relative;
+      border-left: none;
+      border-top: 1px solid $sidebar-border-color;
+    }
+}  
