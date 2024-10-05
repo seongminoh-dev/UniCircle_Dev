@@ -1,31 +1,18 @@
 'use client';
 
 import React from 'react';
-import styles from '@/styles/header.module.scss';
-import { useAuth } from '@/hooks/useAuth';
-import { useRouter } from 'next/navigation';
 
-const Header = () => {
-  const auth = useAuth();
-  const router = useRouter();
-  
-  const handleLogout = () => {
-    try{
-      auth.signOut();
-      router.push("/auth/login");
-    }
-    catch (e) {
-      console.log(e);
-      alert("Logout failed");
-    }
-  };
-
+export const Header = () => {
   return (
-    <header className={styles.header}>
-      <div className={styles.title}>uniCircle</div>
-      <button className={styles.logoutButton} onClick={handleLogout}>
-        Logout
-      </button>
+    <header className="bg-white py-4 shadow-md">
+      <div className="container mx-auto flex justify-between items-center px-4">
+        {/* Left side (optional, if you want to add something like 'LoginPage') */}
+        <div></div>
+        {/* Center text */}
+        <h1 className="text-lg font-semibold text-gray-800">유니버스</h1>
+        {/* Right side placeholder for balance */}
+        <div></div>
+      </div>
     </header>
   );
 };

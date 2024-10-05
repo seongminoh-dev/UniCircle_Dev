@@ -1,5 +1,5 @@
 import { Inter } from "next/font/google";
-// import "@/styles/globals.scss"; // 전역 스타일
+import "./global.css"; // 전역 스타일
 import { AuthProvider } from "@/contexts/authContext";
 import { AuthGuard } from "@/guards/authGuard";
 import RecoilRootProvider from "./recoilRootProvider";
