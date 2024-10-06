@@ -1,11 +1,11 @@
-import React from 'react';
-import styles from '@/styles/rightSidebar.module.scss';
+"use client";
 
-const RightSidebar = () => {
+import React from 'react';
+
+export const RightSidebar = () => {
   return (
-    <aside className={styles.sidebar}>
-      <h3>사용자 정보</h3>
-      <p>사용자 정보122333</p>
+    <aside className="w-80 h-screen py-8 pr-6">
+      오른쪽 내용물
     </aside>
   );
 };

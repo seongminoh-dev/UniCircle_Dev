@@ -9,7 +9,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        customBackground: '#FCFDFF',  // 원하는 배경색 정의
+        customBackground: '#FFFFFF',  // 원하는 배경색 정의
       },
     },
   },
