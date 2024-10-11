@@ -5,6 +5,7 @@ import {RightSidebar} from "./RightSidebar";
 import {LoginForm} from "./LoginForm";
 import {PostPreview} from "./PostPreview";
 import {SearchBar} from "./SearchBar";
+import {ApplyFormBuilder} from "./ApplyFormBuilder";
 
 export {
     Loading,
@@ -14,4 +15,5 @@ export {
     RightSidebar,
     PostPreview,
     SearchBar,
+    ApplyFormBuilder,
 };

@@ -9,7 +9,7 @@ export const Header = () => {
         {/* Left side (optional, if you want to add something like 'LoginPage') */}
         <div></div>
         {/* Center text */}
-        <h1 className="text-lg font-semibold text-gray-800">유니버스</h1>
+        <h1 className="text-lg font-semibold text-gray-800 tracking-tighter">유니서클</h1>
         {/* Right side placeholder for balance */}
         <div></div>
       </div>
