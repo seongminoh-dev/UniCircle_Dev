@@ -8,7 +8,7 @@ app:
   secret: ${APP_SECRET:dev-secret-key-should-be-changed}
   jwt:
     token:
-      expires-in: ${APP_JWT_TOKEN_EXPIRES_IN:3600000} # 60 minutes in milliseconds
+      expires-in: ${APP_JWT_TOKEN_EXPIRES_IN:600000} # 10 minutes in milliseconds
     refresh-token:
       expires-in: ${APP_JWT_REFRESH_TOKEN_EXPIRES_IN:86400000} # 24 hours in milliseconds
     remember-me:
