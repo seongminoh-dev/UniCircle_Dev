@@ -59,7 +59,7 @@ public class SecurityConfig {
 
         //경로별 인가 작업
         http.authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/login", "/", "/register","/swagger-ui/**", "/api-docs/**").permitAll()
+                .requestMatchers("/login", "/", "/register","/swagger-ui/**", "/api-docs/**", "/create", "search").permitAll()
                 //.requestMatchers("/admin").hasRole("ADMIN")
                 .anyRequest().authenticated());
 
