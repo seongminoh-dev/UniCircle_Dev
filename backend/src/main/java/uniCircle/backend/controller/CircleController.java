@@ -20,6 +20,7 @@ import uniCircle.backend.dto.response.SuccessResponse;
 import uniCircle.backend.entity.Circle;
 import uniCircle.backend.service.CircleService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,6 +65,7 @@ public class CircleController {
         CircleDTO circleDTO = CircleDTO.builder()
                 .name(circleRequest.getName())
                 .description(circleRequest.getDescription())
+                .createdAt(LocalDateTime.now())
                 .build();
         circleService.createCircle(circleDTO);  // circleAdminUser 받아와서 추가해야함
         return "redirect:/";
