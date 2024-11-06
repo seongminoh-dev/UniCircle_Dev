@@ -21,8 +21,8 @@ public class CircleDTO {
     private String description;
     private LocalDateTime createdAt;
     private User adminUser;
-    private List<CircleHashtag> circleHashtags;
-    private List<CircleUser> circleUsers;
+    private List<CircleHashtag> circleHashtags; // ToDo List<CircleHashtagDTO> 로 수정하는게 좋을 수도 있음. 상황보고 수정
+    private List<CircleUser> circleUsers; // ToDo 마찬가지
 
     @Builder
     public CircleDTO(long circleId, String name, String description, LocalDateTime createdAt, User adminUser, List<CircleHashtag> circleHashtags, List<CircleUser> circleUsers) {

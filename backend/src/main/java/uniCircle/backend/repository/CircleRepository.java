@@ -11,6 +11,7 @@ import java.util.Optional;
 @Repository
 public interface CircleRepository extends JpaRepository<Circle, Long> {
     Optional<Circle> findByName(String name);
+    Optional<Circle> findByCircleId(Long circleId);
 
     List<Circle> findByNameContaining(String name);
 }
