@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="15.1">
   <help_text/>
-  <zoom_level>7</zoom_level>
+  <zoom_level>11</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>336</x>
-      <y>469</y>
-      <w>168</w>
-      <h>133</h>
+      <x>495</x>
+      <y>660</y>
+      <w>264</w>
+      <h>209</h>
     </coordinates>
     <panel_attributes>User 
 --
@@ -27,10 +27,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>42</x>
-      <y>462</y>
-      <w>168</w>
-      <h>112</h>
+      <x>33</x>
+      <y>649</y>
+      <w>264</w>
+      <h>176</h>
     </coordinates>
     <panel_attributes>&lt;&lt;enumeration&gt;&gt;
 Role 
@@ -50,10 +50,10 @@ SYSTEM_ADMIN
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>581</x>
-      <y>497</y>
-      <w>245</w>
-      <h>70</h>
+      <x>880</x>
+      <y>704</y>
+      <w>385</w>
+      <h>110</h>
     </coordinates>
     <panel_attributes>CircleUser 
 --
@@ -67,10 +67,10 @@ SYSTEM_ADMIN
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>903</x>
-      <y>476</y>
-      <w>224</w>
-      <h>112</h>
+      <x>1386</x>
+      <y>671</y>
+      <w>352</w>
+      <h>176</h>
     </coordinates>
     <panel_attributes>Circle 
 --
@@ -87,12 +87,12 @@ SYSTEM_ADMIN
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>497</x>
-      <y>525</y>
-      <w>98</w>
-      <h>35</h>
+      <x>748</x>
+      <y>748</y>
+      <w>154</w>
+      <h>55</h>
     </coordinates>
-    <panel_attributes>lt=-&gt;
+    <panel_attributes>lt=&lt;-
 m1=1
 contains
 m2=0..*</panel_attributes>
@@ -101,12 +101,12 @@ m2=0..*</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>819</x>
-      <y>518</y>
-      <w>98</w>
-      <h>35</h>
+      <x>1254</x>
+      <y>737</y>
+      <w>154</w>
+      <h>55</h>
     </coordinates>
-    <panel_attributes>lt=-&gt;
+    <panel_attributes>lt=&lt;-
 m1=1
 contains
 m2=0..*</panel_attributes>
@@ -115,10 +115,10 @@ m2=0..*</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>203</x>
-      <y>511</y>
-      <w>147</w>
-      <h>35</h>
+      <x>286</x>
+      <y>726</y>
+      <w>231</w>
+      <h>55</h>
     </coordinates>
     <panel_attributes>lt=-&gt;
 m1=1
@@ -129,10 +129,10 @@ m2=1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>651</x>
-      <y>259</y>
-      <w>168</w>
-      <h>28</h>
+      <x>990</x>
+      <y>330</y>
+      <w>264</w>
+      <h>44</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 JpaRepository</panel_attributes>
@@ -141,10 +141,10 @@ JpaRepository</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>462</x>
-      <y>280</y>
-      <w>287</w>
-      <h>77</h>
+      <x>693</x>
+      <y>363</y>
+      <w>451</w>
+      <h>121</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>390.0;10.0;10.0;90.0</additional_attributes>
@@ -152,10 +152,10 @@ JpaRepository</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>364</x>
-      <y>343</y>
-      <w>217</w>
-      <h>42</h>
+      <x>539</x>
+      <y>462</y>
+      <w>341</w>
+      <h>66</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 UserRepository
@@ -166,10 +166,10 @@ UserRepository
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>623</x>
-      <y>343</y>
-      <w>217</w>
-      <h>42</h>
+      <x>946</x>
+      <y>462</y>
+      <w>341</w>
+      <h>66</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 CircleUserRepository
@@ -179,23 +179,24 @@ CircleUserRepository
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>889</x>
-      <y>350</y>
-      <w>217</w>
-      <h>42</h>
+      <x>1364</x>
+      <y>473</y>
+      <w>352</w>
+      <h>66</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 CircleRepository
---</panel_attributes>
+--
++ findByName(email: String): Optional&lt;User&gt;</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>21</x>
-      <y>133</y>
-      <w>224</w>
-      <h>77</h>
+      <x>0</x>
+      <y>132</y>
+      <w>352</w>
+      <h>121</h>
     </coordinates>
     <panel_attributes>RefreshToken 
 --
@@ -209,10 +210,10 @@ CircleRepository
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>728</x>
-      <y>280</y>
-      <w>21</w>
-      <h>77</h>
+      <x>1111</x>
+      <y>363</y>
+      <w>33</w>
+      <h>121</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
@@ -220,10 +221,10 @@ CircleRepository
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>728</x>
-      <y>280</y>
-      <w>287</w>
-      <h>84</h>
+      <x>1111</x>
+      <y>363</y>
+      <w>451</w>
+      <h>132</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;390.0;100.0</additional_attributes>
@@ -231,10 +232,10 @@ CircleRepository
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>420</x>
-      <y>378</y>
-      <w>56</w>
-      <h>105</h>
+      <x>627</x>
+      <y>517</y>
+      <w>88</w>
+      <h>165</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
     <additional_attributes>10.0;130.0;60.0;10.0</additional_attributes>
@@ -242,10 +243,10 @@ CircleRepository
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>700</x>
-      <y>378</y>
-      <w>49</w>
-      <h>133</h>
+      <x>1067</x>
+      <y>517</y>
+      <w>77</w>
+      <h>209</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
     <additional_attributes>10.0;170.0;50.0;10.0</additional_attributes>
@@ -253,10 +254,10 @@ CircleRepository
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1001</x>
-      <y>385</y>
-      <w>21</w>
-      <h>105</h>
+      <x>1540</x>
+      <y>528</y>
+      <w>33</w>
+      <h>165</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
     <additional_attributes>10.0;130.0;10.0;10.0</additional_attributes>
@@ -264,10 +265,10 @@ CircleRepository
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>315</x>
-      <y>182</y>
-      <w>294</w>
-      <h>56</h>
+      <x>462</x>
+      <y>209</y>
+      <w>462</w>
+      <h>88</h>
     </coordinates>
     <panel_attributes>UserService
 --
@@ -280,10 +281,10 @@ CircleRepository
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>448</x>
-      <y>231</y>
-      <w>63</w>
-      <h>126</h>
+      <x>671</x>
+      <y>286</y>
+      <w>99</w>
+      <h>198</h>
     </coordinates>
     <panel_attributes>lt=-&gt;
 m1=1
@@ -294,10 +295,10 @@ m2=1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>168</x>
-      <y>294</y>
-      <w>175</w>
-      <h>126</h>
+      <x>231</x>
+      <y>385</y>
+      <w>275</w>
+      <h>198</h>
     </coordinates>
     <panel_attributes>UserDTO
 --
@@ -316,10 +317,10 @@ __+ fromEntity(user: User): UserDTO__</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>245</x>
-      <y>413</y>
-      <w>161</w>
-      <h>70</h>
+      <x>352</x>
+      <y>572</y>
+      <w>253</w>
+      <h>110</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
     <additional_attributes>210.0;80.0;210.0;40.0;10.0;40.0;10.0;10.0</additional_attributes>
@@ -327,12 +328,85 @@ __+ fromEntity(user: User): UserDTO__</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>231</x>
-      <y>231</y>
-      <w>196</w>
-      <h>77</h>
+      <x>330</x>
+      <y>286</y>
+      <w>308</w>
+      <h>121</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
     <additional_attributes>10.0;90.0;10.0;60.0;260.0;60.0;260.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1419</x>
+      <y>209</y>
+      <w>462</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>CircleService
+--
+- circleRepository: CircleRepository {readonly}
+- passwordEncoder: BCryptPasswordEncoder {readonly}
+--
++ createCircle(circleDTO: CircleDTO): CircleDTO</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1573</x>
+      <y>286</y>
+      <w>99</w>
+      <h>209</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1738</x>
+      <y>374</y>
+      <w>297</w>
+      <h>176</h>
+    </coordinates>
+    <panel_attributes>CircleDTO
+--
+- circleId: String
+- name: String
+- description: String 
+- createdAt: LocalDateTime
+- adminUser: User
+- circleHashtags: List&lt;CircleHashtag&gt;
+- circleUsers: List&lt;CircleUser&gt; 
+--
+__+ fromEntity(circle: Circle): CircleDTO__</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1650</x>
+      <y>286</y>
+      <w>253</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>210.0;80.0;210.0;50.0;10.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1606</x>
+      <y>539</y>
+      <w>297</w>
+      <h>154</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;120.0;10.0;60.0;250.0;60.0;250.0;10.0</additional_attributes>
   </element>
 </diagram>
