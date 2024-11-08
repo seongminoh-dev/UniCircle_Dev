@@ -48,6 +48,39 @@ public class CircleService {
         return CircleDTO.fromEntity(savedCircle);
     }
 
+    @Transactional
+    public CircleDTO updateCircle(CircleDTO circleDTO) {
+        // circle
+        Circle originCircle = circleRepository.findByCircleId(circleDTO.getCircleId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 동아리입니다."));
+
+        // 유저 확인
+        User adminUser = userRepository.findByUserId(circleDTO.getAdminUser().getUserId())
+                .orElseThrow(()-> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+
+        // 동아리 정보 업데이트
+        Circle updatedCircle = Circle.builder()
+                .circleId(originCircle.getCircleId())
+                .name(circleDTO.getName())
+                .description(circleDTO.getDescription())
+                .createdAt(originCircle.getCreatedAt())
+                .adminUser(adminUser)
+                .circleHashtags(circleDTO.getCircleHashtags())
+                .build();
+
+        return CircleDTO.fromEntity(circleRepository.save(updatedCircle));
+    }
+
+    @Transactional
+    public void deleteCircle(Long id) {
+        // 동아리 확인
+        Circle circle = circleRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 동아리입니다."));
+
+        // 동아리 삭제
+        circleRepository.delete(circle);
+    }
+
     // 동아리 검색
     @Transactional
     public List<Circle> searchCircle(String keyword) {
