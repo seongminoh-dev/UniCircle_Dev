@@ -9,16 +9,20 @@ import org.springframework.transaction.annotation.Transactional;
 import uniCircle.backend.dto.CircleDTO;
 import uniCircle.backend.dto.UserDTO;
 import uniCircle.backend.entity.Circle;
+import uniCircle.backend.entity.User;
 import uniCircle.backend.repository.CircleRepository;
+import uniCircle.backend.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CircleService {
 
     private final CircleRepository circleRepository;
+    private final UserRepository userRepository;
 
     // 동아리 만들기
     @Transactional
@@ -28,11 +32,14 @@ public class CircleService {
                     throw new IllegalArgumentException("이미 존재하는 동아리입니다.");
                 });
 
+        User adminUser = userRepository.findByUserId(circleDTO.getAdminUser().getUserId())
+                .orElseThrow(()-> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+
         Circle circle = Circle.builder()
                 .name(circleDTO.getName())
                 .description(circleDTO.getDescription())
-                .createdAt(LocalDateTime.now())
-                .adminUser(circleDTO.getAdminUser())
+                .createdAt(circleDTO.getCreatedAt())
+                .adminUser(adminUser)
                 .circleHashtags(circleDTO.getCircleHashtags())
                 .build();
 

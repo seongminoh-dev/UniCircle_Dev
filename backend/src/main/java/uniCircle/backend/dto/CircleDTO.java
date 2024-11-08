@@ -20,12 +20,12 @@ public class CircleDTO {
     private String name;
     private String description;
     private LocalDateTime createdAt;
-    private User adminUser;
+    private UserDTO adminUser;
     private List<CircleHashtag> circleHashtags; // ToDo List<CircleHashtagDTO> 로 수정하는게 좋을 수도 있음. 상황보고 수정
     private List<CircleUser> circleUsers; // ToDo 마찬가지
 
     @Builder
-    public CircleDTO(long circleId, String name, String description, LocalDateTime createdAt, User adminUser, List<CircleHashtag> circleHashtags, List<CircleUser> circleUsers) {
+    public CircleDTO(long circleId, String name, String description, LocalDateTime createdAt, UserDTO adminUser, List<CircleHashtag> circleHashtags, List<CircleUser> circleUsers) {
         this.circleId = circleId;
         this.name = name;
         this.description = description;
@@ -41,7 +41,7 @@ public class CircleDTO {
                 .name(circle.getName())
                 .description(circle.getDescription())
                 .createdAt(circle.getCreatedAt())
-                .adminUser(circle.getAdminUser())
+                .adminUser(UserDTO.fromEntity(circle.getAdminUser()))
                 .circleHashtags(circle.getCircleHashtags())
                 .circleUsers(circle.getCircleUsers())
                 .build();

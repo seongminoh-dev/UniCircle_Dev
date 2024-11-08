@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -14,11 +13,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uniCircle.backend.dto.CircleDTO;
+import uniCircle.backend.dto.UserDTO;
 import uniCircle.backend.dto.request.CircleRequest;
 import uniCircle.backend.dto.response.ErrorResponse;
 import uniCircle.backend.dto.response.SuccessResponse;
 import uniCircle.backend.entity.Circle;
+import uniCircle.backend.repository.UserRepository;
 import uniCircle.backend.service.CircleService;
+import uniCircle.backend.service.UserService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,6 +32,8 @@ import java.util.stream.Collectors;
 public class CircleController {
 
     private final CircleService circleService;
+    private final UserService userService;
+    private final UserRepository userRepository;
 
     @PostMapping("create")
     @Operation(
@@ -62,10 +66,14 @@ public class CircleController {
             }
     )
     public String createCircle(@RequestBody CircleRequest circleRequest) {
+        String adminUserEmail = circleRequest.getEmail();
+        UserDTO adminUser = userService.findByEmail(adminUserEmail);
+
         CircleDTO circleDTO = CircleDTO.builder()
                 .name(circleRequest.getName())
                 .description(circleRequest.getDescription())
                 .createdAt(LocalDateTime.now())
+                .adminUser(adminUser)
                 .build();
         circleService.createCircle(circleDTO);  // circleAdminUser 받아와서 추가해야함
         return "redirect:/";
