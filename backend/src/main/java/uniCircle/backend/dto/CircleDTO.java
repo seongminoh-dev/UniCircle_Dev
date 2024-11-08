@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 public class CircleDTO {
 
-    private long circleId;
+    private Long circleId;
     private String name;
     private String description;
     private LocalDateTime createdAt;
@@ -25,7 +25,7 @@ public class CircleDTO {
     private List<CircleUser> circleUsers; // ToDo 마찬가지
 
     @Builder
-    public CircleDTO(long circleId, String name, String description, LocalDateTime createdAt, UserDTO adminUser, List<CircleHashtag> circleHashtags, List<CircleUser> circleUsers) {
+    public CircleDTO(Long circleId, String name, String description, LocalDateTime createdAt, UserDTO adminUser, List<CircleHashtag> circleHashtags, List<CircleUser> circleUsers) {
         this.circleId = circleId;
         this.name = name;
         this.description = description;

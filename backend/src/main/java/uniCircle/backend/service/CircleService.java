@@ -16,6 +16,7 @@ import uniCircle.backend.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -83,7 +84,10 @@ public class CircleService {
 
     // 동아리 검색
     @Transactional
-    public List<Circle> searchCircle(String keyword) {
-        return circleRepository.findByNameContaining(keyword);
+    public List<CircleDTO> searchCircle(String keyword) {
+        List<Circle> circles = circleRepository.findByNameContaining(keyword);
+        return circles.stream()
+                .map(CircleDTO::fromEntity)  // Circle을 CircleDTO로 변환
+                .collect(Collectors.toList());  // List<CircleDTO>로 반환
     }
 }
