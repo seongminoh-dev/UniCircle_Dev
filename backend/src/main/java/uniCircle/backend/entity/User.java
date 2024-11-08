@@ -41,7 +41,7 @@ public class User {
     private LocalDateTime lastSeen;
 
     @OneToMany(mappedBy = "user")
-    private List<CircleUser> circleUsers;
+    private List<CircleUser> circleUsers; // User는 아예 동아리에 속하지 않거나, 다수의 동이리에 속할 수 있음
 
     @Builder
     public User(Long userId, String name, String nickname, String email, Role roles, String password, LocalDateTime createdAt, LocalDateTime lastSeen) {

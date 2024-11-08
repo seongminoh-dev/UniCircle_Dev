@@ -20,6 +20,7 @@ public class UserDTO {
     private String password; // 비밀번호는 보통 민감한 정보이므로, 필요에 따라 노출을 제어해야 합니다.
     private LocalDateTime createdAt;
     private LocalDateTime lastSeen;
+    // private ArrayList<CircleUserDTO> circleUserDTOs;
 
     @Builder
     public UserDTO(Long userId, String name, String nickname, String email, Role roles, String password, LocalDateTime createdAt, LocalDateTime lastSeen) {
