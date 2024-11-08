@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="15.1">
   <help_text/>
-  <zoom_level>11</zoom_level>
+  <zoom_level>8</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>495</x>
-      <y>660</y>
-      <w>264</w>
-      <h>209</h>
+      <x>1216</x>
+      <y>680</y>
+      <w>192</w>
+      <h>152</h>
     </coordinates>
     <panel_attributes>User 
 --
@@ -27,10 +27,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>33</x>
-      <y>649</y>
-      <w>264</w>
-      <h>176</h>
+      <x>1208</x>
+      <y>928</y>
+      <w>192</w>
+      <h>128</h>
     </coordinates>
     <panel_attributes>&lt;&lt;enumeration&gt;&gt;
 Role 
@@ -50,10 +50,10 @@ SYSTEM_ADMIN
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>880</x>
-      <y>704</y>
-      <w>385</w>
-      <h>110</h>
+      <x>1496</x>
+      <y>712</y>
+      <w>280</w>
+      <h>80</h>
     </coordinates>
     <panel_attributes>CircleUser 
 --
@@ -67,10 +67,10 @@ SYSTEM_ADMIN
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1386</x>
-      <y>671</y>
-      <w>352</w>
-      <h>176</h>
+      <x>1864</x>
+      <y>688</y>
+      <w>256</w>
+      <h>128</h>
     </coordinates>
     <panel_attributes>Circle 
 --
@@ -87,10 +87,10 @@ SYSTEM_ADMIN
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>748</x>
-      <y>748</y>
-      <w>154</w>
-      <h>55</h>
+      <x>1400</x>
+      <y>744</y>
+      <w>112</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=1
@@ -101,10 +101,10 @@ m2=0..*</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1254</x>
-      <y>737</y>
-      <w>154</w>
-      <h>55</h>
+      <x>1768</x>
+      <y>736</y>
+      <w>112</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 m1=1
@@ -115,24 +115,24 @@ m2=0..*</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>286</x>
-      <y>726</y>
-      <w>231</w>
-      <h>55</h>
+      <x>1296</x>
+      <y>824</y>
+      <w>72</w>
+      <h>120</h>
     </coordinates>
     <panel_attributes>lt=-&gt;
 m1=1
 contains
 m2=1</panel_attributes>
-    <additional_attributes>190.0;20.0;10.0;20.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>990</x>
-      <y>330</y>
-      <w>264</w>
-      <h>44</h>
+      <x>1576</x>
+      <y>424</y>
+      <w>192</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 JpaRepository</panel_attributes>
@@ -141,21 +141,21 @@ JpaRepository</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>693</x>
-      <y>363</y>
-      <w>451</w>
-      <h>121</h>
+      <x>1360</x>
+      <y>448</y>
+      <w>328</w>
+      <h>104</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>390.0;10.0;10.0;90.0</additional_attributes>
+    <additional_attributes>390.0;10.0;390.0;40.0;10.0;40.0;10.0;110.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>539</x>
-      <y>462</y>
-      <w>341</w>
-      <h>66</h>
+      <x>1248</x>
+      <y>536</y>
+      <w>248</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 UserRepository
@@ -166,10 +166,10 @@ UserRepository
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>946</x>
-      <y>462</y>
-      <w>341</w>
-      <h>66</h>
+      <x>1544</x>
+      <y>536</y>
+      <w>248</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 CircleUserRepository
@@ -179,10 +179,10 @@ CircleUserRepository
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1364</x>
-      <y>473</y>
-      <w>352</w>
-      <h>66</h>
+      <x>1848</x>
+      <y>544</y>
+      <w>256</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 CircleRepository
@@ -193,10 +193,10 @@ CircleRepository
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>0</x>
-      <y>132</y>
-      <w>352</w>
-      <h>121</h>
+      <x>1536</x>
+      <y>944</y>
+      <w>256</w>
+      <h>88</h>
     </coordinates>
     <panel_attributes>RefreshToken 
 --
@@ -210,54 +210,54 @@ CircleRepository
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1111</x>
-      <y>363</y>
-      <w>33</w>
-      <h>121</h>
+      <x>1664</x>
+      <y>448</y>
+      <w>24</w>
+      <h>104</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1111</x>
-      <y>363</y>
-      <w>451</w>
-      <h>132</h>
+      <x>1664</x>
+      <y>448</y>
+      <w>328</w>
+      <h>112</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;390.0;100.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0;390.0;40.0;390.0;120.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>627</x>
-      <y>517</y>
-      <w>88</w>
-      <h>165</h>
+      <x>1312</x>
+      <y>576</y>
+      <w>64</w>
+      <h>120</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
-    <additional_attributes>10.0;130.0;60.0;10.0</additional_attributes>
+    <additional_attributes>10.0;130.0;10.0;70.0;60.0;70.0;60.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1067</x>
-      <y>517</y>
-      <w>77</w>
-      <h>209</h>
+      <x>1632</x>
+      <y>576</y>
+      <w>56</w>
+      <h>152</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
-    <additional_attributes>10.0;170.0;50.0;10.0</additional_attributes>
+    <additional_attributes>10.0;170.0;10.0;60.0;50.0;60.0;50.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1540</x>
-      <y>528</y>
-      <w>33</w>
-      <h>165</h>
+      <x>1976</x>
+      <y>584</y>
+      <w>24</w>
+      <h>120</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
     <additional_attributes>10.0;130.0;10.0;10.0</additional_attributes>
@@ -265,10 +265,10 @@ CircleRepository
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>462</x>
-      <y>209</y>
-      <w>462</w>
-      <h>88</h>
+      <x>1192</x>
+      <y>88</y>
+      <w>336</w>
+      <h>64</h>
     </coordinates>
     <panel_attributes>UserService
 --
@@ -281,24 +281,24 @@ CircleRepository
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>671</x>
-      <y>286</y>
-      <w>99</w>
-      <h>198</h>
+      <x>1344</x>
+      <y>144</y>
+      <w>72</w>
+      <h>408</h>
     </coordinates>
     <panel_attributes>lt=-&gt;
 m1=1
 contains
 m2=1</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;160.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;490.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>231</x>
-      <y>385</y>
-      <w>275</w>
-      <h>198</h>
+      <x>1088</x>
+      <y>264</y>
+      <w>200</w>
+      <h>144</h>
     </coordinates>
     <panel_attributes>UserDTO
 --
@@ -317,32 +317,32 @@ __+ fromEntity(user: User): UserDTO__</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>352</x>
-      <y>572</y>
-      <w>253</w>
-      <h>110</h>
+      <x>1176</x>
+      <y>400</y>
+      <w>120</w>
+      <h>296</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
-    <additional_attributes>210.0;80.0;210.0;40.0;10.0;40.0;10.0;10.0</additional_attributes>
+    <additional_attributes>130.0;350.0;130.0;290.0;10.0;290.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>330</x>
-      <y>286</y>
-      <w>308</w>
-      <h>121</h>
+      <x>1160</x>
+      <y>144</y>
+      <w>160</w>
+      <h>136</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
-    <additional_attributes>10.0;90.0;10.0;60.0;260.0;60.0;260.0;10.0</additional_attributes>
+    <additional_attributes>10.0;150.0;10.0;40.0;180.0;40.0;180.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1419</x>
-      <y>209</y>
-      <w>462</w>
-      <h>88</h>
+      <x>1888</x>
+      <y>88</y>
+      <w>336</w>
+      <h>64</h>
     </coordinates>
     <panel_attributes>CircleService
 --
@@ -355,24 +355,24 @@ __+ fromEntity(user: User): UserDTO__</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1573</x>
-      <y>286</y>
-      <w>99</w>
-      <h>209</h>
+      <x>2000</x>
+      <y>144</y>
+      <w>72</w>
+      <h>416</h>
     </coordinates>
     <panel_attributes>lt=-&gt;
 m1=1
 contains
 m2=1</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;170.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;500.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1738</x>
-      <y>374</y>
-      <w>297</w>
-      <h>176</h>
+      <x>2120</x>
+      <y>272</y>
+      <w>216</w>
+      <h>128</h>
     </coordinates>
     <panel_attributes>CircleDTO
 --
@@ -390,23 +390,463 @@ __+ fromEntity(circle: Circle): CircleDTO__</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1650</x>
-      <y>286</y>
-      <w>253</w>
-      <h>110</h>
+      <x>2056</x>
+      <y>144</y>
+      <w>184</w>
+      <h>144</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
-    <additional_attributes>210.0;80.0;210.0;50.0;10.0;50.0;10.0;10.0</additional_attributes>
+    <additional_attributes>210.0;160.0;210.0;80.0;10.0;80.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1606</x>
-      <y>539</y>
-      <w>297</w>
-      <h>154</h>
+      <x>2024</x>
+      <y>392</y>
+      <w>216</w>
+      <h>312</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
-    <additional_attributes>10.0;120.0;10.0;60.0;250.0;60.0;250.0;10.0</additional_attributes>
+    <additional_attributes>10.0;370.0;10.0;290.0;250.0;290.0;250.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>920</x>
+      <y>696</y>
+      <w>192</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>Board 
+--
+- boardId: Long
+- title: String
+- content: String
+- createdAt: LocalDateTime
+- updatedAt: LocalDateTime
+- user: User
+- comments: List&lt;Comment&gt;
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1104</x>
+      <y>752</y>
+      <w>128</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+contains
+m2=0..*</panel_attributes>
+    <additional_attributes>140.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>608</x>
+      <y>704</y>
+      <w>192</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>Comment 
+--
+- commentId: Long
+- content: String
+- createdAt: LocalDateTime
+- user: User
+- board: Board
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>792</x>
+      <y>744</y>
+      <w>144</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+contains
+m2=0..*</panel_attributes>
+    <additional_attributes>160.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>896</x>
+      <y>536</y>
+      <w>248</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+BoardRepository
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>584</x>
+      <y>536</y>
+      <w>248</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+CommentRepoisitory
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>776</x>
+      <y>264</y>
+      <w>200</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>BoardDTO
+--
+- boardId: Long
+- title: String
+- content: String
+- createdAt: LocalDateTime
+- updatedAt: LocalDateTime
+- userId: Long
+- commentDTOs: List&lt;CommentDTO&gt;
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>512</x>
+      <y>264</y>
+      <w>200</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>CommentDTO
+--
+- commentId: Long
+- content: String
+- createdAt: LocalDateTime
+- userId: Long
+- boardId: Long
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>856</x>
+      <y>384</y>
+      <w>144</w>
+      <h>328</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>160.0;390.0;160.0;320.0;10.0;320.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>536</x>
+      <y>360</y>
+      <w>144</w>
+      <h>360</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>160.0;430.0;160.0;370.0;10.0;370.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1008</x>
+      <y>576</y>
+      <w>24</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;150.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>696</x>
+      <y>576</y>
+      <w>24</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;160.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>424</x>
+      <y>88</y>
+      <w>336</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>CommentService
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>792</x>
+      <y>40</y>
+      <w>360</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>BoardService
+--
+- boardRepository: BoardRepository
+- userRepository: UserRepository
+- circleRepository: CircleRepository
+- hashtagRepository: HashtagRepository
+--
++ createBoard(boardDTO: BoardDTO): BoardDTO
++ getBoardById(postId: Long): BoardDTO
++ getAllPosts(): List&lt;BoardDTO&gt;
++ updateBoard(postId: Long, boardDTO: BoardDTO): BoardDTO
++ deleteBoard(postId: Long): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1008</x>
+      <y>448</y>
+      <w>680</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>830.0;10.0;830.0;40.0;10.0;40.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>696</x>
+      <y>448</y>
+      <w>992</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>1220.0;10.0;1220.0;40.0;10.0;40.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>688</x>
+      <y>800</y>
+      <w>608</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+contains
+m2=0..*</panel_attributes>
+    <additional_attributes>730.0;40.0;730.0;90.0;10.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>992</x>
+      <y>176</y>
+      <w>72</w>
+      <h>376</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;450.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>712</x>
+      <y>144</y>
+      <w>72</w>
+      <h>408</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;490.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>744</x>
+      <y>176</y>
+      <w>240</w>
+      <h>376</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>270.0;10.0;270.0;40.0;10.0;40.0;10.0;450.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1032</x>
+      <y>176</y>
+      <w>984</w>
+      <h>384</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0;1200.0;40.0;1200.0;460.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>912</x>
+      <y>176</y>
+      <w>24</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>608</x>
+      <y>144</y>
+      <w>24</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;150.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>40</x>
+      <y>232</y>
+      <w>2344</w>
+      <h>184</h>
+    </coordinates>
+    <panel_attributes>halign=left
+DTO
+bg=#F5A9A9
+transparency=80
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>40</x>
+      <y>424</y>
+      <w>2344</w>
+      <h>184</h>
+    </coordinates>
+    <panel_attributes>halign=left
+Repository
+bg=#BEF781
+transparency=80</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>40</x>
+      <y>656</y>
+      <w>2344</w>
+      <h>408</h>
+    </coordinates>
+    <panel_attributes>halign=left
+Entity
+bg=#A9D0F5
+transparency=80</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>352</x>
+      <y>704</y>
+      <w>192</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>Hashtag
+--
+- hashtagId: Long
+- content: String
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>288</x>
+      <y>536</y>
+      <w>248</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+HashtagRepoisitory
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>280</x>
+      <y>264</y>
+      <w>200</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>HashtagDTO
+--
+- HashtagId: Long
+- content: String
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>64</x>
+      <y>88</y>
+      <w>336</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>HashtagService
+--
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>48</x>
+      <y>0</y>
+      <w>2128</w>
+      <h>184</h>
+    </coordinates>
+    <panel_attributes>halign=left
+Service
+bg=#E6E6E6
+transparency=80
+</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>
