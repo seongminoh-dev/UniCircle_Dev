@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 public class CommentDTO {
-    private String commentId;       // 댓글 ID
+    private Long commentId;       // 댓글 ID
     private Long postId;            // 게시글 ID
     private Long userId;            // 작성자 ID
     private Visibility visibility;  // 공개 범위
@@ -19,7 +19,7 @@ public class CommentDTO {
     private LocalDateTime updatedAt; // 수정일
 
     @Builder
-    public CommentDTO(String commentId, Long postId, Long userId, Visibility visibility,
+    public CommentDTO(Long commentId, Long postId, Long userId, Visibility visibility,
                       LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.commentId = commentId;
         this.postId = postId;

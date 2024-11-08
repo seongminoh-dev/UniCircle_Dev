@@ -14,8 +14,9 @@ import java.time.LocalDateTime;
 public class Comment {
 
     @Id
-    @Column(name = "comment_id", nullable = false, length = 255)
-    private String commentId; // 댓글 ID (Primary Key)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "comment_id", nullable = false)
+    private Long commentId; // 댓글 ID (Primary Key)
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
@@ -36,7 +37,7 @@ public class Comment {
     private LocalDateTime updatedAt; // 수정일
 
     @Builder
-    public Comment(String commentId, Board post, User user, Visibility visibility,
+    public Comment(Long commentId, Board post, User user, Visibility visibility,
                    LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.commentId = commentId;
         this.post = post;

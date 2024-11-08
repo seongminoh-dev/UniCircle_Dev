@@ -29,7 +29,7 @@ public class Board {
     @Column(name = "title", nullable = false, length = 255)
     private String title; // 게시글 제목
 
-    @Column(name = "content", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "content", nullable = false)
     private String content; // 게시글 내용
 
     @Enumerated(EnumType.STRING)
