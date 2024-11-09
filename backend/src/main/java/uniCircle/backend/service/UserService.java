@@ -45,6 +45,13 @@ public class UserService {
         return UserDTO.fromEntity(savedUser);
     }
 
+    // 이메일로 유저 찾기
+    @Transactional
+    public UserDTO findByEmail(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+        return user.map(UserDTO::fromEntity).orElse(null);
+    }
+
 //    // 로그인 메서드
 //    public String loginUser(String email, String password) {
 //        Optional<User> userOptional = userRepository.findByEmail(email);

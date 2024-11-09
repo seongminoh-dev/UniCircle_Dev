@@ -26,4 +26,12 @@ public class CircleRequest {
             example = "오케스트라 동아리")
     private String description;
 
+    @Schema(
+            name = "email",
+            description = "admin user email",
+            type = "String",
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            example = "jaewon@email.com")
+    private String email;
+
 }
