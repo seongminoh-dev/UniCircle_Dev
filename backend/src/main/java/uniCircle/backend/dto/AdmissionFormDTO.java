@@ -27,4 +27,20 @@ public class AdmissionFormDTO {
         this.createdAt = createdAt;
         this.status = status;
     }
+
+    public static AdmissionFormDTO fromEntity(AdmissionForm admissionForm) {
+        
+        Long CircleId = admissionForm.getCircle().getCircleId();
+        Long UserId = admissionForm.getUser().getUserId();
+
+        return AdmissionFormDTO.builder()
+                .formId(admissionForm.getFormId())
+                .circleId(CircleId)
+                .userId(UserId)
+                .formContent(admissionForm.getFormContent())
+                .createdAt(admissionForm.getCreatedAt())
+                .status(admissionForm.getStatus())
+                .build();
+    
+    }
 }

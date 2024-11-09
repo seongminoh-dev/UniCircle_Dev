@@ -2,22 +2,15 @@ package uniCircle.backend.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
 
-/*
-    AdmissionForm.java
-
-    Using table: admission_form
-    enum Status is declared in Status.java
-
-    
-*/
-
 @Entity
 @Getter
 @Table(name = "admission_form")
+@NoArgsConstructor
 public class AdmissionForm {
 
     @Id
@@ -51,9 +44,5 @@ public class AdmissionForm {
         this.formContent = formContent;
         this.createdAt = createdAt;
         this.status = status;
-    }
-
-    public AdmissionForm() {
-
     }
 }
