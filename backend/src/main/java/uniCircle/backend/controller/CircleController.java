@@ -80,7 +80,7 @@ public class CircleController {
     @PostMapping("/search")
     public List<String> searchCircle(@RequestParam String keyword) {
         return circleService.searchCircle(keyword).stream()
-                .map(Circle::getName)
+                .map(CircleDTO::getName)
                 .collect(Collectors.toList());
     }
 
