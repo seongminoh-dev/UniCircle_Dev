@@ -13,5 +13,5 @@ import java.util.Optional;
 public interface CircleUserRepository extends JpaRepository<CircleUser, Long> {
     List<CircleUser> findByCircle(Circle circle);
     List<CircleUser> findByUser(User user);
-
+    Optional<CircleUser> findByCircleAndUser(Circle circle, User user);
 }

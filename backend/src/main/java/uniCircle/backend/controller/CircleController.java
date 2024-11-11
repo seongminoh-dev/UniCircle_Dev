@@ -16,6 +16,7 @@ import uniCircle.backend.dto.request.CircleRequest;
 import uniCircle.backend.dto.response.ErrorResponse;
 import uniCircle.backend.dto.response.SuccessResponse;
 import uniCircle.backend.entity.Circle;
+import uniCircle.backend.repository.CircleUserRepository;
 import uniCircle.backend.repository.UserRepository;
 import uniCircle.backend.service.CircleService;
 import uniCircle.backend.service.CircleUserService;
@@ -32,7 +33,6 @@ public class CircleController {
 
     private final CircleService circleService;
     private final UserService userService;
-    private final UserRepository userRepository;
     private final CircleUserService circleUserService;
 
     @PostMapping("create")
@@ -75,12 +75,15 @@ public class CircleController {
                 .createdAt(LocalDateTime.now())
                 .adminUser(adminUser)
                 .build();
-        circleService.createCircle(circleDTO);
+
+        // circle 만들기
+        CircleDTO createdCircle = circleService.createCircle(circleDTO);
+
         return "redirect:/";
     }
 
     @Operation(summary = "Search Circle")
-    @PostMapping("/search")
+    @GetMapping("/search")
     public List<String> searchCircle(@RequestParam String keyword) {
         return circleService.searchCircles(keyword).stream()
                 .map(CircleDTO::getName)
@@ -133,7 +136,7 @@ public class CircleController {
         return "redirect:/";
     }
 
-    @DeleteMapping("/{circleId}")
+    @DeleteMapping("/{circleId}/delete")
     public void deleteCircle(@PathVariable Long circleId) {
         circleService.deleteCircle(circleId);
     }
@@ -146,10 +149,37 @@ public class CircleController {
     }
 
     // 특정 User가 속해있는 Circle 리스트 반환
-    @GetMapping("/user/{userId}")
+    @GetMapping("/{userEmail}/circles")
     public ResponseEntity<List<CircleDTO>> getCirclesByUser(@PathVariable String userEmail) {
         UserDTO userDTO = userService.findByEmail(userEmail);
         List<CircleDTO> circles = circleUserService.getCirclesByUser(userDTO);
         return ResponseEntity.ok(circles);
+    }
+
+    // circleId로 circle 반환
+    @GetMapping("getcircle")
+    public ResponseEntity<CircleDTO> getCircle(@RequestParam Long circleId) {
+        CircleDTO circleDTO = circleService.getCircle(circleId);
+        return ResponseEntity.ok(circleDTO);
+    }
+
+    // circle에 user추가
+    @PostMapping("/{circleId}/add")
+    public String addUserToCircle(@PathVariable Long circleId, @RequestParam String userEmail) {
+        UserDTO userDTO = userService.findByEmail(userEmail);
+
+        circleUserService.addUserToCircle(circleId, userDTO);
+
+        return "redirect:/";
+    }
+
+    // circle에 속한 user 제거
+    @DeleteMapping("/{circleId}/remove")
+    public String removeUserFromCircle(@PathVariable Long circleId, @RequestParam String userEmail) {
+        UserDTO userDTO = userService.findByEmail(userEmail);
+
+        circleUserService.removeUserFromCircle(circleId, userDTO);
+
+        return "redirect:/";
     }
 }

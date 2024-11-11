@@ -38,10 +38,28 @@ public class CircleUserService {
                 .user(user)
                 .build();
 
+        circleUserRepository.save(circleUser);
+
         return CircleUserDTO.fromEntity(circleUser);
     }
 
+    // 유저를 동아리에서 제거
+    @Transactional
+    public void removeUserFromCircle(Long circleId, UserDTO userDTO) {
+        Circle circle = circleRepository.findByCircleId(circleId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 동아리입니다."));
+
+        User user = userRepository.findByUserId(userDTO.getUserId())
+                .orElseThrow(()-> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+
+        CircleUser circleUser = circleUserRepository.findByCircleAndUser(circle, user)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 동아리에 존재하지 않습니다."));
+
+        circleUserRepository.delete(circleUser);
+    }
+
     // 유저가 속한 동아리 목록
+    @Transactional
     public List<CircleDTO> getCirclesByUser(UserDTO userDTO) {
         User user = userRepository.findByUserId(userDTO.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
@@ -55,8 +73,9 @@ public class CircleUserService {
     }
 
     // 동아리에 속한 유저 목록
+    @Transactional
     public List<UserDTO> getUsersByCircle(Long circleId) {
-        Circle circle = circleRepository.findById(circleId)
+        Circle circle = circleRepository.findByCircleId(circleId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 동아리입니다."));
 
         List<CircleUser> circleUsers = circleUserRepository.findByCircle(circle);

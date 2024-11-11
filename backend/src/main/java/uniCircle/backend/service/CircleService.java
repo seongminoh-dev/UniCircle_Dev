@@ -26,6 +26,7 @@ public class CircleService {
 
     private final CircleRepository circleRepository;
     private final UserRepository userRepository;
+    private final CircleUserService circleUserService;
 
     // 동아리 만들기
     @Transactional
@@ -43,10 +44,12 @@ public class CircleService {
                 .description(circleDTO.getDescription())
                 .createdAt(circleDTO.getCreatedAt())
                 .adminUser(adminUser)
-                .circleHashtags(circleDTO.getCircleHashtags())
+                //.circleHashtags(circleDTO.getCircleHashtags())
                 .build();
 
         Circle savedCircle = circleRepository.save(circle);
+
+        circleUserService.addUserToCircle(savedCircle.getCircleId(), circleDTO.getAdminUser());
 
         return CircleDTO.fromEntity(savedCircle);
     }
@@ -68,7 +71,7 @@ public class CircleService {
                 .description(circleDTO.getDescription())
                 .createdAt(originCircle.getCreatedAt())
                 .adminUser(adminUser)
-                .circleHashtags(circleDTO.getCircleHashtags())
+                //.circleHashtags(circleDTO.getCircleHashtags())
                 .build();
 
         return CircleDTO.fromEntity(circleRepository.save(updatedCircle));
