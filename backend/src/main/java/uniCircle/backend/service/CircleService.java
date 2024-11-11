@@ -7,8 +7,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uniCircle.backend.dto.CircleDTO;
+import uniCircle.backend.dto.CircleUserDTO;
 import uniCircle.backend.dto.UserDTO;
 import uniCircle.backend.entity.Circle;
+import uniCircle.backend.entity.CircleUser;
 import uniCircle.backend.entity.User;
 import uniCircle.backend.repository.CircleRepository;
 import uniCircle.backend.repository.UserRepository;
@@ -84,10 +86,19 @@ public class CircleService {
 
     // 동아리 검색
     @Transactional
-    public List<CircleDTO> searchCircle(String keyword) {
+    public List<CircleDTO> searchCircles(String keyword) {
         List<Circle> circles = circleRepository.findByNameContaining(keyword);
         return circles.stream()
                 .map(CircleDTO::fromEntity)  // Circle을 CircleDTO로 변환
                 .collect(Collectors.toList());  // List<CircleDTO>로 반환
     }
+
+    // 해당 ID 동아리
+    @Transactional
+    public CircleDTO getCircle(Long id) {
+        Optional<Circle> circle = circleRepository.findById(id);
+
+        return circle.map(CircleDTO::fromEntity).orElse(null);
+    }
+
 }

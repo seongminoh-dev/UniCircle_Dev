@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uniCircle.backend.dto.CircleDTO;
 import uniCircle.backend.dto.UserDTO;
@@ -17,6 +18,7 @@ import uniCircle.backend.dto.response.SuccessResponse;
 import uniCircle.backend.entity.Circle;
 import uniCircle.backend.repository.UserRepository;
 import uniCircle.backend.service.CircleService;
+import uniCircle.backend.service.CircleUserService;
 import uniCircle.backend.service.UserService;
 
 import java.time.LocalDateTime;
@@ -31,6 +33,7 @@ public class CircleController {
     private final CircleService circleService;
     private final UserService userService;
     private final UserRepository userRepository;
+    private final CircleUserService circleUserService;
 
     @PostMapping("create")
     @Operation(
@@ -79,7 +82,7 @@ public class CircleController {
     @Operation(summary = "Search Circle")
     @PostMapping("/search")
     public List<String> searchCircle(@RequestParam String keyword) {
-        return circleService.searchCircle(keyword).stream()
+        return circleService.searchCircles(keyword).stream()
                 .map(CircleDTO::getName)
                 .collect(Collectors.toList());
     }
@@ -128,5 +131,25 @@ public class CircleController {
                 .build();
         circleService.updateCircle(circleDTO);
         return "redirect:/";
+    }
+
+    @DeleteMapping("/{circleId}")
+    public void deleteCircle(@PathVariable Long circleId) {
+        circleService.deleteCircle(circleId);
+    }
+
+    // 특정 Circle에 등록된 User 리스트 반환
+    @GetMapping("/{circleId}/users")
+    public ResponseEntity<List<UserDTO>> getUsersByCircle(@PathVariable Long circleId) {
+        List<UserDTO> users = circleUserService.getUsersByCircle(circleId);
+        return ResponseEntity.ok(users);
+    }
+
+    // 특정 User가 속해있는 Circle 리스트 반환
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<CircleDTO>> getCirclesByUser(@PathVariable String userEmail) {
+        UserDTO userDTO = userService.findByEmail(userEmail);
+        List<CircleDTO> circles = circleUserService.getCirclesByUser(userDTO);
+        return ResponseEntity.ok(circles);
     }
 }
