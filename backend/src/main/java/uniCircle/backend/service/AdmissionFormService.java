@@ -1,6 +1,7 @@
 package uniCircle.backend.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -8,8 +9,6 @@ import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import uniCircle.backend.dto.AdmissionFormDTO;
-import uniCircle.backend.dto.CircleDTO;
-import uniCircle.backend.dto.UserDTO;
 import uniCircle.backend.entity.AdmissionForm;
 import uniCircle.backend.entity.Circle;
 import uniCircle.backend.entity.Status;
@@ -55,15 +54,21 @@ public class AdmissionFormService {
     }
 
     //user_id로 리스트 전체 조회
-    public List<AdmissionFormDTO> getAdmissionFormsByUser(UserDTO userDTO) {
-        return admissionFormRepository.findByUserId(userDTO.getUserId()).stream()
+    public List<AdmissionFormDTO> getAdmissionFormsByUserId(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if(user.isEmpty()) return null;
+
+        return admissionFormRepository.findByUser(user.get()).stream()
                 .map(AdmissionFormDTO::fromEntity)
                 .collect(Collectors.toList());
     }
 
     //circle_id로 리스트 전체 조회
-    public List<AdmissionFormDTO> getAdmissionFormsByCircle(CircleDTO circleDTO) {
-        return admissionFormRepository.findByCircleId(circleDTO.getCircleId()).stream()
+    public List<AdmissionFormDTO> getAdmissionFormsByCircleId(Long circleId) {
+        Optional<Circle> circle = circleRepository.findById(circleId);
+        if(circle.isEmpty()) return null;
+
+        return admissionFormRepository.findByCircle(circle.get()).stream()
                 .map(AdmissionFormDTO::fromEntity)
                 .collect(Collectors.toList());
     }
