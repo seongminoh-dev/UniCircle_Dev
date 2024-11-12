@@ -24,8 +24,16 @@ public class CircleHashtag {
     private Hashtag hashtag;
 
     @Builder
-    public CircleHashtag(Circle circle) {
+    public CircleHashtag(Circle circle, Hashtag hashtag) {
         this.circle = circle;
+        this.hashtag = hashtag;
+    }
+
+    public void addCircleHashtag(Circle circle, Hashtag hashtag){
+        this.circle = circle;
+        this.hashtag = hashtag;
+        circle.getCircleHashtags().add(this);
+        hashtag.getCircleHashtags().add(this);
     }
 
     public CircleHashtag() {

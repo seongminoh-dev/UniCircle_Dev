@@ -1,6 +1,7 @@
 package uniCircle.backend.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.util.Set;
@@ -20,4 +21,14 @@ public class Hashtag {
 
     @OneToMany(mappedBy = "hashtag")
     private Set<CircleHashtag> circleHashtags;
+
+    @Builder
+    public Hashtag(Long hashtagId, String content, Set<CircleHashtag> circleHashtags) {
+        this.hashtagId = hashtagId;
+        this.content = content;
+        this.circleHashtags = circleHashtags;
+    }
+
+    public Hashtag() {
+    }
 }

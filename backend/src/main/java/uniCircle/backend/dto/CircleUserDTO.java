@@ -11,21 +11,21 @@ import uniCircle.backend.entity.CircleUser;
 public class CircleUserDTO {
 
     private Long circleUserId;
-    private CircleDTO circle;
-    private UserDTO user;
+    private CircleDTO circleDTO;
+    private UserDTO userDTO;
 
     @Builder
-    public CircleUserDTO(Long circleUserId, CircleDTO circle, UserDTO user) {
+    public CircleUserDTO(Long circleUserId, CircleDTO circleDTO, UserDTO userDTO) {
         this.circleUserId = circleUserId;
-        this.circle = circle;
-        this.user = user;
+        this.circleDTO = circleDTO;
+        this.userDTO = userDTO;
     }
 
     public static CircleUserDTO fromEntity(CircleUser circleUser) {
         return CircleUserDTO.builder()
                 .circleUserId(circleUser.getCircleUserId())
-                .circle(CircleDTO.fromEntity(circleUser.getCircle()))
-                .user(UserDTO.fromEntity(circleUser.getUser()))
+                .circleDTO(CircleDTO.fromEntity(circleUser.getCircle()))
+                .userDTO(UserDTO.fromEntity(circleUser.getUser()))
                 .build();
     }
 }
