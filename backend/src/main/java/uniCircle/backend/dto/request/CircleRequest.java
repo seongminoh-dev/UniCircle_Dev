@@ -34,4 +34,21 @@ public class CircleRequest {
             example = "jaewon@email.com")
     private String email;
 
+    @Schema(
+            name = "questions",
+            description = "admission form questions",
+            type = "String",
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            example =
+                    "circle.question\n" +
+                            "{\n" +
+                            "\t\"questions\" :\n" +
+                            "\t[\n" +
+                            "\t\t\"question1\",\n" +
+                            "\t\t\"question2\",\n" +
+                            "\t\t\"question3\"\n" +
+                            "\t]\n" +
+                            "}")
+    private String questions;
+
 }

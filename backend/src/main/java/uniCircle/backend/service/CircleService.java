@@ -72,6 +72,7 @@ public class CircleService {
                 .createdAt(originCircle.getCreatedAt())
                 .adminUser(adminUser)
                 //.circleHashtags(circleDTO.getCircleHashtags())
+                .questions(circleDTO.getQuestions())
                 .build();
 
         return CircleDTO.fromEntity(circleRepository.save(updatedCircle));
@@ -103,5 +104,7 @@ public class CircleService {
 
         return circle.map(CircleDTO::fromEntity).orElse(null);
     }
+
+
 
 }

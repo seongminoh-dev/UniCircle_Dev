@@ -23,9 +23,10 @@ public class CircleDTO {
     private UserDTO adminUser;
     //private List<CircleHashtag> circleHashtags; // ToDo List<CircleHashtagDTO> 로 수정하는게 좋을 수도 있음. 상황보고 수정
     //private List<CircleUser> circleUsers;
+    private String questions;
 
     @Builder
-    public CircleDTO(Long circleId, String name, String description, LocalDateTime createdAt, UserDTO adminUser, List<CircleHashtag> circleHashtags, List<CircleUser> circleUsers) {
+    public CircleDTO(Long circleId, String name, String description, LocalDateTime createdAt, UserDTO adminUser, List<CircleHashtag> circleHashtags, List<CircleUser> circleUsers, String questions) {
         this.circleId = circleId;
         this.name = name;
         this.description = description;
@@ -33,6 +34,7 @@ public class CircleDTO {
         this.adminUser = adminUser;
         //this.circleHashtags = circleHashtags;
         //this.circleUsers = circleUsers;
+        this.questions = questions;
     }
 
     public static CircleDTO fromEntity(Circle circle) {
@@ -44,6 +46,7 @@ public class CircleDTO {
                 .adminUser(UserDTO.fromEntity(circle.getAdminUser()))
                 //.circleHashtags(circle.getCircleHashtags())
                 //.circleUsers(circle.getCircleUsers())
+                .questions(circle.getQuestions())
                 .build();
     }
 }

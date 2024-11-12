@@ -25,6 +25,7 @@ public class CommentService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     public CommentDTO createComment(Long postId, Long userId, Visibility visibility) {
         Board post = boardRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid post ID"));
@@ -42,18 +43,21 @@ public class CommentService {
         return CommentDTO.fromEntity(savedComment);
     }
 
+    @Transactional
     public CommentDTO getCommentById(Long commentId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid comment ID"));
         return CommentDTO.fromEntity(comment);
     }
 
+    @Transactional
     public List<CommentDTO> getCommentsByPostId(Long postId) {
         return commentRepository.findByPostId(postId).stream()
                 .map(CommentDTO::fromEntity)
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public CommentDTO updateComment(Long commentId, Visibility visibility) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid comment ID"));
@@ -71,6 +75,7 @@ public class CommentService {
         return CommentDTO.fromEntity(updatedComment);
     }
 
+    @Transactional
     public void deleteComment(Long commentId) {
         if (!commentRepository.existsById(commentId)) {
             throw new IllegalArgumentException("Invalid comment ID");

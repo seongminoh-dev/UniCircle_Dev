@@ -35,8 +35,11 @@ public class Circle {
     @OneToMany(mappedBy = "circle")
     private List<CircleUser> circleUsers;
 
+    @Column(columnDefinition = "TEXT")
+    private String questions;
+
     @Builder
-    public Circle(Long circleId, String name, String description, LocalDateTime createdAt, User adminUser, List<CircleHashtag> circleHashtags, List<CircleUser> circleUsers) {
+    public Circle(Long circleId, String name, String description, LocalDateTime createdAt, User adminUser, List<CircleHashtag> circleHashtags, List<CircleUser> circleUsers, String questions) {
         this.circleId = circleId;
         this.name = name;
         this.description = description;
@@ -44,6 +47,7 @@ public class Circle {
         this.adminUser = adminUser;
         this.circleHashtags = circleHashtags;
         this.circleUsers = circleUsers;
+        this.questions = questions;
     }
 
 

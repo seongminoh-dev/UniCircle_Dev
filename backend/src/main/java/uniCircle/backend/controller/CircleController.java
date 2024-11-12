@@ -74,6 +74,7 @@ public class CircleController {
                 .description(circleRequest.getDescription())
                 .createdAt(LocalDateTime.now())
                 .adminUser(adminUser)
+                .questions(circleRequest.getQuestions())
                 .build();
 
         // circle 만들기
@@ -90,7 +91,7 @@ public class CircleController {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping("update")
+    @PostMapping("/{circleId}/update")
     @Operation(
             summary = "Update Circle",
             responses = {
@@ -120,17 +121,16 @@ public class CircleController {
                     )
             }
     )
-    public String updateCircle(@RequestParam Long id, @RequestBody CircleRequest circleRequest) {
-        // circle id로 어떤 circle을 update 할지 결정
-        // Url에서 가져오는 @PathVariable 고려하기
+    public String updateCircle(@PathVariable Long circleId, @RequestBody CircleRequest circleRequest) {
         String adminUserEmail = circleRequest.getEmail();
         UserDTO adminUser = userService.findByEmail(adminUserEmail);
 
         CircleDTO circleDTO = CircleDTO.builder()
-                .circleId(id)
+                .circleId(circleId)
                 .name(circleRequest.getName())
                 .description(circleRequest.getDescription())
                 .adminUser(adminUser)
+                .questions(circleRequest.getQuestions())
                 .build();
         circleService.updateCircle(circleDTO);
         return "redirect:/";
