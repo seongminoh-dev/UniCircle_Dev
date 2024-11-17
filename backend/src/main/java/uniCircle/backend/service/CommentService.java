@@ -52,7 +52,7 @@ public class CommentService {
 
     @Transactional
     public List<CommentDTO> getCommentsByPostId(Long postId) {
-        return commentRepository.findByPostId(postId).stream()
+        return commentRepository.findByPost(postId).stream()
                 .map(CommentDTO::fromEntity)
                 .collect(Collectors.toList());
     }
