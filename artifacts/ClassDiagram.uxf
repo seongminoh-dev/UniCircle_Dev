@@ -1,0 +1,412 @@
+<diagram program="umletino" version="15.1"><zoom_level>8</zoom_level><help_text></help_text><element><id>UMLClass</id><coordinates><x>1368</x><y>1088</y><w>192</w><h>152</h></coordinates><panel_attributes>User 
+--
+- userId: String
+- name: String
+- nickname: String 
+- email: String
+- roles: Role
+- password: String
+- createdAt: LocalDateTime 
+- lastSeen: LocalDateTime
+- circleUsers: List&lt;CircleUser&gt;[*]
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1360</x><y>1336</y><w>192</w><h>128</h></coordinates><panel_attributes>&lt;&lt;enumeration&gt;&gt;
+Role 
+--
+NON_MEMBER
+WANT_JOIN
+REQUEST_JOIN
+CIRCLE_MEMBER
+CIRCLE_ADMIN
+SYSTEM_ADMIN
+--
+- description: String
+--
++ getDescription(): String</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1648</x><y>1120</y><w>280</w><h>80</h></coordinates><panel_attributes>CircleUser 
+--
+- circleUserId: Long
+- circle: Circle
+- user: User
+--
++ addCircleUser(circle: Circle, user: User): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>2016</x><y>1096</y><w>256</w><h>128</h></coordinates><panel_attributes>Circle 
+--
+- circleId: Long
+- name: String
+- description: String
+- createdAt: LocalDateTime
+- adminUser: User
+- circleHashtags: List&lt;Hashtag&gt;
+- questions: String
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1552</x><y>1152</y><w>112</w><h>40</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+contains
+m2=0..*</panel_attributes><additional_attributes>10;20;120;20</additional_attributes></element><element><id>Relation</id><coordinates><x>1920</x><y>1144</y><w>112</w><h>40</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+contains
+m2=0..*</panel_attributes><additional_attributes>120;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>1448</x><y>1232</y><w>64</w><h>120</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes><additional_attributes>10;10;10;130</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1728</x><y>832</y><w>192</w><h>32</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
+JpaRepository</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1512</x><y>856</y><w>328</w><h>104</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>390;10;390;40;10;40;10;110</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1400</x><y>944</y><w>248</w><h>48</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
+UserRepository
+--
++ findByEmail(email: String): Optional&lt;User&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1680</x><y>920</y><w>280</w><h>88</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
+CircleUserRepository
+--
++ findByCircle(circle: Circle): List&lt;CircleUser&gt;
++ findByUser(user: User): List&lt;CircleUser&gt;
++ findByCircleAndUser(circle: Circle, user: User):
+	Optional&lt;CircleUser&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>2000</x><y>928</y><w>296</w><h>72</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
+CircleRepository
+--
++ findByName(name: String): Optional&lt;Circle&gt;
++ findByCircleId(circleId: Long): Optional&lt;Circle&gt;
++ findByNameContaining(name: String): List&lt;Circle&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1816</x><y>856</y><w>24</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;80</additional_attributes></element><element><id>Relation</id><coordinates><x>1816</x><y>856</y><w>328</w><h>88</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;40;390;40;390;90</additional_attributes></element><element><id>Relation</id><coordinates><x>1464</x><y>984</y><w>64</w><h>120</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;130;10;70;60;70;60;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1784</x><y>1000</y><w>56</w><h>136</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;150;10;40;50;40;50;10</additional_attributes></element><element><id>Relation</id><coordinates><x>2128</x><y>992</y><w>24</w><h>120</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;130;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1344</x><y>480</y><w>336</w><h>80</h></coordinates><panel_attributes>UserService
+--
+- userRepository: UserRepository {readonly}
+- passwordEncoder: BCryptPasswordEncoder {readonly}
+--
++ registerUser(userDTO: UserDTO): UserDTO
++ findByEmail(email: String): UserDTO</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1608</x><y>552</y><w>64</w><h>408</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes><additional_attributes>10;10;10;490</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1240</x><y>672</y><w>200</w><h>144</h></coordinates><panel_attributes>UserDTO
+--
+- userId: Long
+- name: String
+- nickname: String 
+- email: String
+- roles: Role
+- password: String
+- createdAt: LocalDateTime 
+- lastSeen: LocalDateTime
+--
+__+ fromEntity(user: User): UserDTO__</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1328</x><y>808</y><w>120</w><h>296</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>130;350;130;290;10;290;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1344</x><y>552</y><w>128</w><h>136</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;150;10;120;140;120;140;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>2120</x><y>440</y><w>304</w><h>120</h></coordinates><panel_attributes>CircleService
+--
+- circleRepository: CircleRepository {readonly}
+- userRepository: UserRepository {readonly}
+--
++ createCircle(circleDTO: CircleDTO): CircleDTO
++ updateCircle(circleDTO: CircleDTO): CircleDTO
++ deleteCircle(id: Long): void
++ searchCircles(keyword: String): List&lt;CircleDTO&gt;
++ getCircle(id: Long): CircleDTO</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>2200</x><y>552</y><w>64</w><h>392</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes><additional_attributes>10;10;10;470</additional_attributes></element><element><id>UMLClass</id><coordinates><x>2272</x><y>664</y><w>240</w><h>128</h></coordinates><panel_attributes>CircleDTO
+--
+- circleId: Long
+- name: String
+- description: String 
+- createdAt: LocalDateTime
+- adminUser: UserDTO
+- circleHashtags: List&lt;CircleHashtagDTO&gt;
+- questions: Stirng
+--
+__+ fromEntity(circle: Circle): CircleDTO__</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>2320</x><y>552</y><w>24</w><h>128</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;140;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>2176</x><y>784</y><w>216</w><h>328</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;390;10;310;250;310;250;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1072</x><y>1104</y><w>192</w><h>128</h></coordinates><panel_attributes>Board 
+--
+- boardId: Long
+- title: String
+- content: String
+- createdAt: LocalDateTime
+- updatedAt: LocalDateTime
+- user: User
+- comments: List&lt;Comment&gt;
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1256</x><y>1160</y><w>128</w><h>40</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+contains
+m2=0..*</panel_attributes><additional_attributes>140;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>760</x><y>1112</y><w>192</w><h>104</h></coordinates><panel_attributes>Comment 
+--
+- commentId: Long
+- content: String
+- createdAt: LocalDateTime
+- user: User
+- board: Board
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>944</x><y>1152</y><w>144</w><h>40</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+contains
+m2=0..*</panel_attributes><additional_attributes>160;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1048</x><y>944</y><w>248</w><h>48</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
+BoardRepository
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>736</x><y>944</y><w>256</w><h>48</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
+CommentRepoisitory
+--
+- findByPostId(postId: Long): List&lt;Comment&gt; </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>928</x><y>672</y><w>200</w><h>128</h></coordinates><panel_attributes>BoardDTO
+--
+- boardId: Long
+- title: String
+- content: String
+- createdAt: LocalDateTime
+- updatedAt: LocalDateTime
+- userId: Long
+- commentDTOs: List&lt;CommentDTO&gt;
+--
+- build()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>664</x><y>672</y><w>200</w><h>104</h></coordinates><panel_attributes>CommentDTO
+--
+- commentId: Long
+- content: String
+- createdAt: LocalDateTime
+- userId: Long
+- boardId: Long
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1008</x><y>792</y><w>144</w><h>328</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>160;390;160;320;10;320;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>688</x><y>768</y><w>144</w><h>360</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>160;430;160;360;10;360;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1160</x><y>984</y><w>24</w><h>136</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;150;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>848</x><y>984</y><w>24</w><h>144</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;160;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>472</x><y>440</y><w>456</w><h>136</h></coordinates><panel_attributes>CommentService
+--
+- commentRepository: CommentRepository {readonly}
+- boardRepository: BoardRepository {readonly}
+- userRepository: UserRepository {readonly}
+--
++ createComment(postId: Long, userId: Long, visibility: Visibility): CommentDTO
++ getCommentById(commentId: Long): CommentDTO
++ getCommentsByPostId(postId: Long): List&lt;CommentDTO&gt;
++ updateComment(commentId: Long, visibility: Visibility): CommentDTO
++ deleteComment(commentId: Long): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>944</x><y>440</y><w>360</w><h>144</h></coordinates><panel_attributes>BoardService
+--
+- boardRepository: BoardRepository {readonly}
+- userRepository: UserRepository {readonly}
+- circleRepository: CircleRepository {readonly}
+- hashtagRepository: HashtagRepository {readonly}
+--
++ createBoard(boardDTO: BoardDTO): BoardDTO
++ getBoardById(postId: Long): BoardDTO
++ getAllPosts(): List&lt;BoardDTO&gt;
++ updateBoard(postId: Long, boardDTO: BoardDTO): BoardDTO
++ deleteBoard(postId: Long): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1160</x><y>856</y><w>680</w><h>104</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>830;10;830;40;10;40;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>848</x><y>856</y><w>992</w><h>104</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>1220;10;1220;40;10;40;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>840</x><y>1208</y><w>608</w><h>88</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+contains
+m2=0..*</panel_attributes><additional_attributes>730;40;730;90;10;90;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1144</x><y>576</y><w>64</w><h>384</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes><additional_attributes>10;10;10;460</additional_attributes></element><element><id>Relation</id><coordinates><x>872</x><y>568</y><w>64</w><h>392</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes><additional_attributes>10;10;10;470</additional_attributes></element><element><id>Relation</id><coordinates><x>864</x><y>576</y><w>272</w><h>384</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+
+m2=1</panel_attributes><additional_attributes>310;10;310;50;10;50;10;460</additional_attributes></element><element><id>Relation</id><coordinates><x>1184</x><y>576</y><w>1016</w><h>368</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+
+m2=1</panel_attributes><additional_attributes>10;10;10;50;1240;50;1240;440</additional_attributes></element><element><id>Relation</id><coordinates><x>1064</x><y>576</y><w>24</w><h>112</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;120;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>760</x><y>568</y><w>24</w><h>120</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;130;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>640</y><w>3064</w><h>184</h></coordinates><panel_attributes>halign=left
+DTO
+bg=#F5A9A9
+transparency=80
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>832</y><w>3064</w><h>184</h></coordinates><panel_attributes>halign=left
+Repository
+bg=#BEF781
+transparency=80</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>1064</y><w>3064</w><h>408</h></coordinates><panel_attributes>halign=left
+Entity
+bg=#A9D0F5
+transparency=80</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>504</x><y>1112</y><w>192</w><h>64</h></coordinates><panel_attributes>Hashtag
+--
+- hashtagId: Long
+- content: String
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>360</x><y>944</y><w>320</w><h>48</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
+HashtagRepoisitory
+--
+- findByHashtagId(hashtagId: Long): Optional&lt;Hashtag&gt; </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>432</x><y>672</y><w>200</w><h>64</h></coordinates><panel_attributes>HashtagDTO
+--
+- HashtagId: Long
+- content: String
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>112</x><y>464</y><w>336</w><h>88</h></coordinates><panel_attributes>HashtagService
+--
+- hashtagRepository: HashtagRepository {readonly}
+--
++ createHashtag(hashtagDTO: HashtagDTO): HashtagDTO
++ getHashtagById(hashtagId: Long): HashtagDTO
++ getAllHashtags(): List&lt;HashtagDTO&gt;
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>408</y><w>3064</w><h>184</h></coordinates><panel_attributes>halign=left
+Service
+bg=#E6E6E6
+transparency=80
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>2480</x><y>936</y><w>320</w><h>64</h></coordinates><panel_attributes>&lt;&lt;interface&gt;&gt;
+AdmissionFormRepository
+--
++ findByUserId(userId: Long): Optional&lt;AdmissionForm&gt;
++ findByCircleId(CircleId: Long): Optional&lt;AdmissionForm&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>2512</x><y>424</y><w>536</w><h>160</h></coordinates><panel_attributes>AdmissionFormService
+--
+- admissionFormRepository: AdmissionFormRepository {readonly}
+- circleRepository: CircleRepository {readonly}
+- userRepository: UserRepository {readonly}
+--
++ createAdmissionForm(admissionFormDTO: AdmissionFormDTO): AdmissionFormDTO 
++ getAdmissionFormById(admissionFormDTO: AdmissionFormDTO): AdmissionFormDTO
++ getAdmissionFormsByUser(userDTO: UserDTO): list&lt;AdmissionFormDTO&gt;
++ getAdmissionFormsById(circleDTO: CircleDTO): List&lt;AdmissionFormDTO&gt;
++ updateAdmissionForm(formId: Long, admissionFormDTO: AdmissionFormDTO&gt;): AdmissionFormDTO
++ updateAdmissionFormStatus(formId: Long, status: Status): AdmissionFormDTO
++ deleteAdmissionForm(formId: Long)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>2568</x><y>1096</y><w>256</w><h>120</h></coordinates><panel_attributes>AdmissionForm
+--
+- formId: Long
+- circle: Circle
+- user: User
+- formContent: String
+- createdAt: LocalDateTime
+- status: Status
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>2600</x><y>1312</y><w>192</w><h>120</h></coordinates><panel_attributes>&lt;&lt;enumeration&gt;&gt;
+Status
+--
+PENDING
+ACCEPTED
+REJECTED
+CANCELLED
+--
+- description: String
+--
++ getDescription(): String</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>2688</x><y>1208</y><w>64</w><h>120</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes><additional_attributes>10;10;10;130</additional_attributes></element><element><id>Relation</id><coordinates><x>2672</x><y>992</y><w>24</w><h>120</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;130;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>2704</x><y>672</y><w>344</w><h>120</h></coordinates><panel_attributes>AdmissionFormDTO
+--
+- formId: Long
+- circleId: Long
+- userId: Long
+- formContent: String
+- createdAt: LocalDateTime
+- status: Status
+--
++ fromEntity(admissionForm: AdmissionForm): AdmissionFormDTO</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>2712</x><y>784</y><w>216</w><h>328</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;390;10;310;250;310;250;10</additional_attributes></element><element><id>Relation</id><coordinates><x>2632</x><y>576</y><w>64</w><h>376</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes><additional_attributes>10;10;10;450</additional_attributes></element><element><id>Relation</id><coordinates><x>2184</x><y>576</y><w>464</w><h>368</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+
+m2=1</panel_attributes><additional_attributes>10;440;10;50;550;50;550;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1592</x><y>576</y><w>1040</w><h>384</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+
+m2=1
+</panel_attributes><additional_attributes>10;460;10;60;1270;60;1270;10</additional_attributes></element><element><id>Relation</id><coordinates><x>2832</x><y>576</y><w>24</w><h>112</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;120;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1576</x><y>552</y><w>640</w><h>408</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+
+m2=1</panel_attributes><additional_attributes>10;490;10;70;770;70;770;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1696</x><y>440</y><w>384</w><h>120</h></coordinates><panel_attributes>CircleUserService
+--
+- circleUserRepository: CircleUserRepository {readonly}
+- circleRepository: CircleRepository {readonly}
+- userRepository: UserRepository {readonly}
+--
++ addUserToCircle(circleId: Long, userDTO: UserDTO): CircleUserDTO
++ getCirclesByUser(userDTO: UserDTO): List&lt;CircleDTO&gt;
++ getUsersByCircle(circleId: Long): List&lt;UserDTO&gt;
++ removeUserFromCircle(circleId: Long, userDTO: UserDTO)</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1904</x><y>552</y><w>440</w><h>128</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>530;140;530;120;10;120;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1344</x><y>552</y><w>536</w><h>136</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;150;10;120;650;120;650;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1720</x><y>696</y><w>200</w><h>80</h></coordinates><panel_attributes>CircleUserDTO
+--
+- circleUserId: Long
+- circle: circleDTO
+- user: userDTO
+--
+__+ fromEntity(circleUser: CircleUser): CircleUserDTO__</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1880</x><y>552</y><w>24</w><h>160</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;180;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1560</x><y>552</y><w>232</w><h>408</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+
+m2=1</panel_attributes><additional_attributes>260;10;260;30;10;30;10;490</additional_attributes></element><element><id>Relation</id><coordinates><x>1920</x><y>552</y><w>64</w><h>384</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes><additional_attributes>10;10;10;460</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>136</y><w>3064</w><h>224</h></coordinates><panel_attributes>halign=left
+Controller
+bg=#eeeea9
+transparency=80
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>464</x><y>224</y><w>552</w><h>112</h></coordinates><panel_attributes>CommentController
+--
+- commentService: CommentService {readonly}
+--
++ createComment(postId: Long, userId: Long, visibility: Visibility): ResponseEntity&lt;CommentDTO&gt;
++ getCommentById(commentId: Long): ResponseEntity&lt;CommentDTO&gt;
++ getCommentsByPostId(postId: Long): ResponseEntity&lt;List&lt;CommentDTO&gt;&gt;
++ updateComment(commentId: Long, visibility: Visibility): ResponseEntity&lt;CommentDTO&gt;
++ deleteComment(commentId: Long): ResponseEntity&lt;String&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>688</x><y>328</y><w>64</w><h>128</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes><additional_attributes>10;10;10;140</additional_attributes></element><element><id>Relation</id><coordinates><x>776</x><y>328</y><w>176</w><h>360</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;430;10;380;200;380;200;50;10;50;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>32</x><y>224</y><w>424</w><h>88</h></coordinates><panel_attributes>HashtagController
+--
+- hashtagService: HashtagService {readonly}
+--
++ createHashtag(hashtagDTO: HashtagDTO): ResponseEntity&lt;HashtagDTO&gt;
++ getHashtagById(hashtagId: Long): ResponseEntity&lt;HashtagDTO&gt;
++ getAllHashtags(): ResponseEntity&lt;List&lt;HashtagDTO&gt;&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>232</x><y>304</y><w>64</w><h>176</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes><additional_attributes>10;10;10;200</additional_attributes></element><element><id>Relation</id><coordinates><x>288</x><y>304</y><w>256</w><h>384</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>300;460;300;410;220;410;220;50;10;50;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1024</x><y>224</y><w>456</w><h>112</h></coordinates><panel_attributes>BoardController
+--
+- boardService: BoardService {readonly}
+--
++ createBoard(boardDTO: BoardDTO): ResponseEntity&lt;BoardDTO&gt;
++ getBoardById(postId: Long): ResponseEntity&lt;BoardDTO&gt;
++ getAllPosts(): ResponseEntity&lt;List&lt;BoardDTO&gt;&gt;
++ updateBoard(postId: Long, boardDTO: BoardDTO): ResponseEntity&lt;BoardDTO&gt;
++ deleteBoard(postId: Long): ResponseEntity&lt;String&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1120</x><y>328</y><w>64</w><h>128</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes><additional_attributes>10;10;10;140</additional_attributes></element><element><id>Relation</id><coordinates><x>1080</x><y>328</y><w>256</w><h>360</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;430;10;380;300;380;300;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1488</x><y>208</y><w>456</w><h>128</h></coordinates><panel_attributes>AuthController
+--
+- userService: UserService {readonly}
+- authenticationManager: AuthenticationManager {readonly}
+- jwtUtil: JwtUtil {readonly}
+- refreshTokenRepository: RefreshTokenRepository {readonly}
+--
++ register(userRequest: UserRequest): String
++ login(email: String, password: String): ResponseEntity&lt;String&gt;
++ refresh(request: HttpServletRequest, response: HttpServletResponse): ResponseEntity&lt;String&gt;
+- createCookie(key: String, value: String): Cookie
+- addRefreshEntity(email: String, refresh: String, expiredMs: Long): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1568</x><y>328</y><w>64</w><h>168</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes><additional_attributes>10;10;10;190</additional_attributes></element><element><id>Relation</id><coordinates><x>576</x><y>984</y><w>24</w><h>144</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;160;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>512</x><y>856</y><w>1328</w><h>104</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>1640;10;1640;40;10;40;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>520</x><y>728</y><w>192</w><h>400</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>120;480;120;410;220;410;220;170;10;170;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>256</x><y>544</y><w>208</w><h>144</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>240;160;240;110;10;110;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1488</x><y>0</y><w>456</w><h>128</h></coordinates><panel_attributes>JwtUtil
+--
+- secretKey: SecretKey
+--
++ JwtUtil(secret: String)
++ createJwt(category: String, email: String, role: String, expiredMs: Long): String
++ getEmail(token: String): String
++ getCategory(token: String): String
++ getRole(token: String): String
++ isExpired(token: String): Boolean</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1712</x><y>120</y><w>64</w><h>104</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes><additional_attributes>10;110;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>176</x><y>1104</y><w>256</w><h>88</h></coordinates><panel_attributes>RefreshToken 
+--
+- refreshTokenId: Long
+- email: String
+- tokenContent: String
+- expiration: String
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>32</x><y>944</y><w>320</w><h>48</h></coordinates><panel_attributes>RefreshTokenRepository
+&lt;&lt;interface&gt;&gt;
+--
++ existsByTokenContent(tokenContent: String): Boolean
++ deleteByTokenContent(tokenContent: String): void
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>256</x><y>984</y><w>24</w><h>136</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;150;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>192</x><y>856</y><w>1648</w><h>104</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>2040;10;2040;40;10;40;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>8</x><y>328</y><w>1528</w><h>840</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes><additional_attributes>1880;10;1880;60;90;60;90;720;10;720;10;890;130;890;130;1020;210;1020</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1960</x><y>144</y><w>408</w><h>208</h></coordinates><panel_attributes>CircleController
+--
+- circleService: circleService {readonly}
+- userService: UserService {readonly}
+- circleUserService: CircleUserService {readonly}
+--
++ createCircle(circleRequest: CircleRequest): String
++ searchCircle(keyword: String): ResponseEntity&lt;List&lt;CircleDTO&gt;&gt;
++ getCircleById(circleId: Long): ResponseEntity&lt;CircleDTO&gt;
++ updateCircle(circleId: Long, circleRequest: CircleRequest): String
++ deleteCircle(circleId: Long): void
++ getUsersByCircle(circleId: Long): ResponseEntity&lt;List&lt;UserDTO&gt;&gt;
++ getCirclesByUser(userEmail: Stirng): ResponseEntity&lt;List&lt;CircleDTO&gt;&gt;
++ getCirclesByHashtag(hashtagId: Long): ResponseEntity&lt;List&lt;UserDTO&gt;&gt;
++ getCircle(circleId: Long): ResponseEntity&lt;CircleDTO&gt;
++ addUserToCircle(circleId: Long, userEmail: String): String
++ removeUserFromCircle(circleId: Long, userEmail: String): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>2272</x><y>344</y><w>64</w><h>112</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>2040</x><y>344</y><w>64</w><h>112</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>1640</x><y>344</y><w>408</w><h>152</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes><additional_attributes>480;10;480;70;10;70;10;170</additional_attributes></element><element><id>Relation</id><coordinates><x>1328</x><y>344</y><w>696</w><h>344</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;410;10;50;850;50;850;10</additional_attributes></element><element><id>Relation</id><coordinates><x>2336</x><y>344</y><w>144</w><h>336</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>160;400;160;40;10;40;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>600</x><y>1168</y><w>1480</w><h>152</h></coordinates><panel_attributes>lt=&lt;-
+m1=0..*
+contains
+m2=1</panel_attributes><additional_attributes>10;10;10;170;1820;170;1820;70</additional_attributes></element><element><id>UMLClass</id><coordinates><x>2592</x><y>224</y><w>456</w><h>120</h></coordinates><panel_attributes>AdmissionFormController
+--
+- admissionFormService: AdmissionFormService
+--
++ createAdmissionForm(admissionFormDTO: AdmissionFormDTO): ResponseEntity&lt;AdmissionFormDTO&gt;
++ getFormById(formId: Long): ResponseEntity&lt;AdmissionFormDTO&gt;
++ getFormsByUserId(userId: Long): ResponseEntity&lt;List&lt;AdmissionFormDTO&gt;&gt;
++ getFormsByCircleId(circleId: Long): ResponseEntity&lt;List&lt;AdmissionFormDTO&gt;&gt;
++ updateForm(formId: Long): ResponseEntity&lt;AdmissionFormDTO&gt;
++ deleteForm(formId: Long): ResponseEntity&lt;String&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>2792</x><y>336</y><w>64</w><h>104</h></coordinates><panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>2480</x><y>328</y><w>264</w><h>360</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>310;430;310;380;10;380;10;50;310;50;310;10</additional_attributes></element></diagram>
