@@ -24,7 +24,8 @@ public class CircleHashtag {
     private Hashtag hashtag;
 
     @Builder
-    public CircleHashtag(Circle circle, Hashtag hashtag) {
+    public CircleHashtag(Long circleHashtagId, Circle circle, Hashtag hashtag) {
+        this.circleHashtagId = circleHashtagId;
         this.circle = circle;
         this.hashtag = hashtag;
     }

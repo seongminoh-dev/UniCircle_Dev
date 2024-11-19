@@ -55,6 +55,10 @@ public class CircleUserService {
         CircleUser circleUser = circleUserRepository.findByCircleAndUser(circle, user)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 동아리에 존재하지 않습니다."));
 
+        if (circle.getAdminUser().equals(user))
+            throw new IllegalArgumentException("동아리 관리자는 내보낼 수 없습니다.");
+
+
         circleUserRepository.delete(circleUser);
     }
 

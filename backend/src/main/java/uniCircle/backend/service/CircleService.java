@@ -2,24 +2,26 @@ package uniCircle.backend.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uniCircle.backend.dto.CircleDTO;
-import uniCircle.backend.dto.CircleUserDTO;
-import uniCircle.backend.dto.UserDTO;
+import uniCircle.backend.dto.CircleHashtagDTO;
+import uniCircle.backend.dto.HashtagDTO;
 import uniCircle.backend.entity.Circle;
-import uniCircle.backend.entity.CircleUser;
+import uniCircle.backend.entity.CircleHashtag;
+import uniCircle.backend.entity.Hashtag;
 import uniCircle.backend.entity.User;
+import uniCircle.backend.repository.CircleHashtagRepository;
 import uniCircle.backend.repository.CircleRepository;
 import uniCircle.backend.repository.UserRepository;
 
-import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CircleService {
@@ -27,6 +29,8 @@ public class CircleService {
     private final CircleRepository circleRepository;
     private final UserRepository userRepository;
     private final CircleUserService circleUserService;
+    private final CircleHashtagService circleHashtagService;
+    private final CircleHashtagRepository circleHashtagRepository;
 
     // 동아리 만들기
     @Transactional
@@ -39,17 +43,32 @@ public class CircleService {
         User adminUser = userRepository.findByUserId(circleDTO.getAdminUser().getUserId())
                 .orElseThrow(()-> new IllegalArgumentException("유효하지 않은 사용자입니다."));
 
+        Set<String> hashtagContents = circleDTO.getHashtags();
+        Set<Hashtag> hashtags = circleHashtagService.uniqueHashtagFilter(hashtagContents);
+        Set<CircleHashtagDTO> circleHashtagDTOs = hashtags.stream()
+                .map(hashtag -> CircleHashtagDTO.builder()
+                        .circle(circleDTO)
+                        .hashtag(HashtagDTO.fromEntity(hashtag))
+                        .build()).collect(Collectors.toSet());
+//        Set<CircleHashtag> circleHashtags = circleHashtagService.convertDTOsToEntities(circleHashtagDTOs);
+
         Circle circle = Circle.builder()
                 .name(circleDTO.getName())
                 .description(circleDTO.getDescription())
                 .createdAt(circleDTO.getCreatedAt())
                 .adminUser(adminUser)
-                //.circleHashtags(circleDTO.getCircleHashtags())
+//                .circleHashtags(circleHashtags)
+                .questions(circleDTO.getQuestions())
                 .build();
 
+        // repository에 circle 저장
         Circle savedCircle = circleRepository.save(circle);
 
-        circleUserService.addUserToCircle(savedCircle.getCircleId(), circleDTO.getAdminUser());
+        Long circleId = savedCircle.getCircleId();
+
+        circleHashtagService.updateHashtagsOfCircle(hashtagContents, circleId);
+        circleUserService.addUserToCircle(circleId, circleDTO.getAdminUser());
+
 
         return CircleDTO.fromEntity(savedCircle);
     }
@@ -64,16 +83,25 @@ public class CircleService {
         User adminUser = userRepository.findByUserId(circleDTO.getAdminUser().getUserId())
                 .orElseThrow(()-> new IllegalArgumentException("유효하지 않은 사용자입니다."));
 
+        Long circleId = originCircle.getCircleId();
+
+        Set<String> hashtags = circleDTO.getHashtags();
+        Set<CircleHashtagDTO> circleHashtagDTOs = circleHashtagService.updateHashtagsOfCircle(hashtags, circleId);
+        Set<CircleHashtag> circleHashtags = circleHashtagService.convertDTOsToEntities(circleHashtagDTOs);
+
+
         // 동아리 정보 업데이트
         Circle updatedCircle = Circle.builder()
-                .circleId(originCircle.getCircleId())
+                .circleId(circleId)
                 .name(circleDTO.getName())
                 .description(circleDTO.getDescription())
                 .createdAt(originCircle.getCreatedAt())
                 .adminUser(adminUser)
-                //.circleHashtags(circleDTO.getCircleHashtags())
+//                .circleHashtags(circleHashtags)
                 .questions(circleDTO.getQuestions())
                 .build();
+
+
 
         return CircleDTO.fromEntity(circleRepository.save(updatedCircle));
     }
@@ -104,7 +132,6 @@ public class CircleService {
 
         return circle.map(CircleDTO::fromEntity).orElse(null);
     }
-
 
 
 }

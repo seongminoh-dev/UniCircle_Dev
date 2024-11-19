@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uniCircle.backend.entity.User;
 
+import java.util.List;
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -35,19 +38,27 @@ public class CircleRequest {
     private String email;
 
     @Schema(
+            name = "hashtagContents",
+            description = "해시태그 리스트",
+            type = "array",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            example = "[\"a\",\"b\",\"c\"]")
+    private Set<String> hashtagContents;
+
+    @Schema(
             name = "questions",
             description = "admission form questions",
             type = "String",
             requiredMode = Schema.RequiredMode.REQUIRED,
             example =
-                    "circle.question\n" +
-                            "{\n" +
-                            "\t\"questions\" :\n" +
-                            "\t[\n" +
-                            "\t\t\"question1\",\n" +
-                            "\t\t\"question2\",\n" +
-                            "\t\t\"question3\"\n" +
-                            "\t]\n" +
+                    "circle.question" +
+                            "{" +
+                            "\"questions\" :" +
+                            "[\n" +
+                            "\"question1\"," +
+                            "\"question2\"," +
+                            "\"question3\"" +
+                            "]" +
                             "}")
     private String questions;
 

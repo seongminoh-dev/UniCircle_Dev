@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uniCircle.backend.dto.CircleDTO;
+import uniCircle.backend.dto.HashtagDTO;
 import uniCircle.backend.dto.UserDTO;
 import uniCircle.backend.dto.request.CircleRequest;
 import uniCircle.backend.dto.response.ErrorResponse;
@@ -18,6 +19,7 @@ import uniCircle.backend.dto.response.SuccessResponse;
 import uniCircle.backend.entity.Circle;
 import uniCircle.backend.repository.CircleUserRepository;
 import uniCircle.backend.repository.UserRepository;
+import uniCircle.backend.service.CircleHashtagService;
 import uniCircle.backend.service.CircleService;
 import uniCircle.backend.service.CircleUserService;
 import uniCircle.backend.service.UserService;
@@ -34,6 +36,7 @@ public class CircleController {
     private final CircleService circleService;
     private final UserService userService;
     private final CircleUserService circleUserService;
+    private final CircleHashtagService circleHashtagService;
 
     @PostMapping("create")
     @Operation(
@@ -74,6 +77,7 @@ public class CircleController {
                 .description(circleRequest.getDescription())
                 .createdAt(LocalDateTime.now())
                 .adminUser(adminUser)
+                .hashtags(circleRequest.getHashtagContents())
                 .questions(circleRequest.getQuestions())
                 .build();
 
@@ -85,10 +89,9 @@ public class CircleController {
 
     @Operation(summary = "Search Circle")
     @GetMapping("/search")
-    public List<String> searchCircle(@RequestParam String keyword) {
-        return circleService.searchCircles(keyword).stream()
-                .map(CircleDTO::getName)
-                .collect(Collectors.toList());
+    public ResponseEntity<List<CircleDTO>> searchCircle(@RequestParam String keyword) {
+        List<CircleDTO> circleDTOs = circleService.searchCircles(keyword);
+        return ResponseEntity.ok(circleDTOs);
     }
 
     @PostMapping("/{circleId}/update")
@@ -131,6 +134,7 @@ public class CircleController {
                 .description(circleRequest.getDescription())
                 .adminUser(adminUser)
                 .questions(circleRequest.getQuestions())
+                .hashtags(circleRequest.getHashtagContents())
                 .build();
         circleService.updateCircle(circleDTO);
         return "redirect:/";
@@ -182,4 +186,19 @@ public class CircleController {
 
         return "redirect:/";
     }
+
+    // circle의 hashtag 리스트
+    @GetMapping("/{circleId}/hashtags")
+    public ResponseEntity<List<HashtagDTO>> getHashtagsByCircle(@PathVariable Long circleId) {
+        List<HashtagDTO> hashtags = circleHashtagService.getHashtagsFromCircle(circleId);
+        return ResponseEntity.ok(hashtags);
+    }
+
+    // hashtag로 circle 검색
+    @GetMapping("/hashtag/{content}")
+    public ResponseEntity<List<CircleDTO>> getCirclesByHashtag(@PathVariable String content) {
+        List<CircleDTO> circles = circleHashtagService.getCirclesFromHashtag(content);
+        return ResponseEntity.ok(circles);
+    }
+
 }

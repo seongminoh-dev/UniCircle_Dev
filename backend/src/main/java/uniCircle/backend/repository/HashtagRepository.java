@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface HashtagRepository extends JpaRepository<Hashtag, Long> {
     Optional<Hashtag> findByHashtagId(Long hashtagId);
+    Optional<Hashtag> findByContent(String content);
+    Boolean existsByContent(String content);
 }

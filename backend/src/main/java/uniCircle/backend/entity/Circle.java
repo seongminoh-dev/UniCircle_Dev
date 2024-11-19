@@ -5,7 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -30,7 +32,7 @@ public class Circle {
     private User adminUser; // 각 동아리에는 한명의 관리자만 존재할 수 있음
 
     @OneToMany(mappedBy = "circle")
-    private List<CircleHashtag> circleHashtags;
+    private Set<CircleHashtag> circleHashtags = new HashSet<>();
 
     @OneToMany(mappedBy = "circle")
     private List<CircleUser> circleUsers;
@@ -39,7 +41,7 @@ public class Circle {
     private String questions;
 
     @Builder
-    public Circle(Long circleId, String name, String description, LocalDateTime createdAt, User adminUser, List<CircleHashtag> circleHashtags, List<CircleUser> circleUsers, String questions) {
+    public Circle(Long circleId, String name, String description, LocalDateTime createdAt, User adminUser, Set<CircleHashtag> circleHashtags, List<CircleUser> circleUsers, String questions) {
         this.circleId = circleId;
         this.name = name;
         this.description = description;

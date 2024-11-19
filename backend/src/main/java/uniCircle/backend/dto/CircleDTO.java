@@ -4,13 +4,13 @@ package uniCircle.backend.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import uniCircle.backend.entity.Circle;
-import uniCircle.backend.entity.CircleHashtag;
-import uniCircle.backend.entity.CircleUser;
-import uniCircle.backend.entity.User;
+import uniCircle.backend.entity.*;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
@@ -21,18 +21,18 @@ public class CircleDTO {
     private String description;
     private LocalDateTime createdAt;
     private UserDTO adminUser;
-    //private List<CircleHashtag> circleHashtags; // ToDo List<CircleHashtagDTO> 로 수정하는게 좋을 수도 있음. 상황보고 수정
+    private Set<String> hashtags;
     //private List<CircleUser> circleUsers;
     private String questions;
 
     @Builder
-    public CircleDTO(Long circleId, String name, String description, LocalDateTime createdAt, UserDTO adminUser, List<CircleHashtag> circleHashtags, List<CircleUser> circleUsers, String questions) {
+    public CircleDTO(Long circleId, String name, String description, LocalDateTime createdAt, UserDTO adminUser, Set<String> hashtags, List<CircleUser> circleUsers, String questions) {
         this.circleId = circleId;
         this.name = name;
         this.description = description;
         this.createdAt = createdAt;
         this.adminUser = adminUser;
-        //this.circleHashtags = circleHashtags;
+        this.hashtags = hashtags;
         //this.circleUsers = circleUsers;
         this.questions = questions;
     }
@@ -44,7 +44,13 @@ public class CircleDTO {
                 .description(circle.getDescription())
                 .createdAt(circle.getCreatedAt())
                 .adminUser(UserDTO.fromEntity(circle.getAdminUser()))
-                //.circleHashtags(circle.getCircleHashtags())
+                .hashtags(
+                        circle.getCircleHashtags() != null
+                                ? circle.getCircleHashtags().stream()
+                                .map(circleHashtag -> circleHashtag.getHashtag().getContent())
+                                .collect(Collectors.toSet())
+                                : Collections.emptySet() // null일 경우 빈 Set 반환
+                )
                 //.circleUsers(circle.getCircleUsers())
                 .questions(circle.getQuestions())
                 .build();
