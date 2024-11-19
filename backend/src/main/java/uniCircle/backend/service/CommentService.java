@@ -52,7 +52,10 @@ public class CommentService {
 
     @Transactional
     public List<CommentDTO> getCommentsByPostId(Long postId) {
-        return commentRepository.findByPost(postId).stream()
+        Board post = boardRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid post ID"));
+
+        return commentRepository.findByPost(post).stream()
                 .map(CommentDTO::fromEntity)
                 .collect(Collectors.toList());
     }

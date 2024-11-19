@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uniCircle.backend.dto.BoardDTO;
+import uniCircle.backend.dto.request.BoardRequest;
 import uniCircle.backend.dto.response.ErrorResponse;
 import uniCircle.backend.dto.response.SuccessResponse;
 import uniCircle.backend.service.BoardService;
@@ -37,7 +38,10 @@ public class BoardController {
                     )
             }
     )
-    public ResponseEntity<BoardDTO> createBoard(@RequestBody BoardDTO boardDTO) {
+    public ResponseEntity<BoardDTO> createBoard(@RequestBody BoardRequest boardRequest) {
+
+        boardDTO
+        boardRequest.getUserId()
         BoardDTO createdBoard = boardService.createBoard(boardDTO);
         return ResponseEntity.ok(createdBoard);
     }
