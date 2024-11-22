@@ -4,9 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import uniCircle.backend.entity.User;
 
-import java.util.List;
+
 import java.util.Set;
 
 @Getter
@@ -54,7 +53,7 @@ public class CircleRequest {
                     "circle.question" +
                             "{" +
                             "\"questions\" :" +
-                            "[\n" +
+                            "[" +
                             "\"question1\"," +
                             "\"question2\"," +
                             "\"question3\"" +

@@ -33,6 +33,11 @@ public class CircleUserService {
         User user = userRepository.findByUserId(userDTO.getUserId())
                 .orElseThrow(()-> new IllegalArgumentException("유효하지 않은 사용자입니다."));
 
+        circleUserRepository.findByCircleAndUser(circle, user)
+                .ifPresent(m -> {
+                    throw new IllegalArgumentException("동아리에 이미 존재하는 사용자입니다.");
+                });
+
         CircleUser circleUser = CircleUser.builder()
                 .circle(circle)
                 .user(user)

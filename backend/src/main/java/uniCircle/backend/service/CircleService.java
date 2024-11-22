@@ -13,9 +13,9 @@ import uniCircle.backend.entity.Hashtag;
 import uniCircle.backend.entity.User;
 import uniCircle.backend.repository.CircleHashtagRepository;
 import uniCircle.backend.repository.CircleRepository;
+import uniCircle.backend.repository.CircleUserRepository;
 import uniCircle.backend.repository.UserRepository;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -31,6 +31,7 @@ public class CircleService {
     private final CircleUserService circleUserService;
     private final CircleHashtagService circleHashtagService;
     private final CircleHashtagRepository circleHashtagRepository;
+    private final CircleUserRepository circleUserRepository;
 
     // 동아리 만들기
     @Transactional
@@ -112,6 +113,12 @@ public class CircleService {
         Circle circle = circleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 동아리입니다."));
 
+        // 동아리 있는 hashtag 제거
+        circleHashtagRepository.deleteAll(circleHashtagRepository.findByCircle(circle));
+
+        // 동아리에 부원들 제거
+        circleUserRepository.deleteAll(circleUserRepository.findByCircle(circle));
+
         // 동아리 삭제
         circleRepository.delete(circle);
     }
@@ -131,6 +138,14 @@ public class CircleService {
         Optional<Circle> circle = circleRepository.findById(id);
 
         return circle.map(CircleDTO::fromEntity).orElse(null);
+    }
+
+    @Transactional
+    public List<CircleDTO> getCircles() {
+        List<Circle> circles = circleRepository.findAll();
+        return circles.stream()
+                .map(CircleDTO::fromEntity)
+                .collect(Collectors.toList());
     }
 
 
