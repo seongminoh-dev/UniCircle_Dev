@@ -1,19 +1,26 @@
 package uniCircle.backend.controller;
 
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 import uniCircle.backend.dto.BoardDTO;
-import uniCircle.backend.dto.request.BoardRequest;
 import uniCircle.backend.dto.response.ErrorResponse;
 import uniCircle.backend.dto.response.SuccessResponse;
 import uniCircle.backend.service.BoardService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/boards")
@@ -38,14 +45,11 @@ public class BoardController {
                     )
             }
     )
-    public ResponseEntity<BoardDTO> createBoard(@RequestBody BoardRequest boardRequest) {
-
-        boardDTO
-        boardRequest.getUserId()
+    public ResponseEntity<BoardDTO> createBoard(@RequestBody BoardDTO boardDTO) {
         BoardDTO createdBoard = boardService.createBoard(boardDTO);
         return ResponseEntity.ok(createdBoard);
     }
-
+    
     @GetMapping("/{postId}")
     @Operation(
             summary = "특정 게시글 조회",

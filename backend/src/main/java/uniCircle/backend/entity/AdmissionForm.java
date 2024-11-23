@@ -26,7 +26,7 @@ public class AdmissionForm {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "form_content")
+    @Column(name = "form_content", nullable = false)    
     private String formContent;
 
     @Column(name = "admission_date")
@@ -44,5 +44,13 @@ public class AdmissionForm {
         this.formContent = formContent;
         this.createdAt = createdAt;
         this.status = status;
+    }
+
+    public void updateStatus(Status status) {
+        this.status = status;
+    }
+
+    public void updateContent(String formContent) {
+        this.formContent = formContent;
     }
 }

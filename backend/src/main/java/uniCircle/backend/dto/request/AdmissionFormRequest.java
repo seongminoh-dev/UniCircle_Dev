@@ -14,24 +14,24 @@ public class AdmissionFormRequest {
             name = "circleId",
             description = "Circle ID",
             type = "Long",
-            requiredMode = Schema.RequiredMode.REQUIRED,
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED,
             example = "12345")
     private Long circleId;
 
     @Schema(
-            name = "UserId",
+            name = "userId",
             description = "User ID",
             type = "Long",
-            requiredMode = Schema.RequiredMode.REQUIRED,
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED,
             example = "67890")
     private Long userId;
 
     @Schema(
             name = "formContent",
-            description = "Form Content",
+            description = "Form Content with [{id:int, question:text, anwser:text}...]",
             type = "String",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "{\"question1\":\"answer1\",\"question2\":\"answer2\"}"
+            example = "[{\"id\":0,\"question\":\"question Text\",\"answer\":\"answer Text\"},{\"id\":1,\"question\":\"question Text\",\"answer\":\"answer Text\"}]"
     )
     private String formContent;
 }
