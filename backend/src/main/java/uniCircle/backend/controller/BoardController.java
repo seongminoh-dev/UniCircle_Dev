@@ -1,26 +1,24 @@
 package uniCircle.backend.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import uniCircle.backend.dto.BoardDTO;
 import uniCircle.backend.dto.response.ErrorResponse;
 import uniCircle.backend.dto.response.SuccessResponse;
 import uniCircle.backend.service.BoardService;
+import uniCircle.backend.entity.Visibility;
 
 @RestController
 @RequestMapping("/boards")
@@ -32,6 +30,24 @@ public class BoardController {
     @PostMapping
     @Operation(
             summary = "게시글 생성",
+            description = "새로운 게시글을 생성합니다.",
+            requestBody = @RequestBody(
+                    description = "게시글 생성에 필요한 정보",
+                    required = true,
+                    content = @Content(
+                            schema = @Schema(example = """
+                            {
+                                "userId": 1,
+                                "circleId": 2,
+                                "title": "모집 공고",
+                                "content": "신입 회원 모집합니다.",
+                                "visibility": "PUBLIC",
+                                "hashtagId": 3,
+                                "isNotice": true
+                            }
+                            """)
+                    )
+            ),
             responses = {
                     @ApiResponse(
                             responseCode = "200",
@@ -45,14 +61,38 @@ public class BoardController {
                     )
             }
     )
-    public ResponseEntity<BoardDTO> createBoard(@RequestBody BoardDTO boardDTO) {
+    public ResponseEntity<BoardDTO> createBoard(
+            @RequestParam Long userId,
+            @RequestParam Long circleId,
+            @RequestParam String title,
+            @RequestParam String content,
+            @RequestParam Visibility visibility,
+            @RequestParam(required = false) Long hashtagId,
+            @RequestParam Boolean isNotice) {
+
+        BoardDTO boardDTO = BoardDTO.builder()
+                .userId(userId)
+                .circleId(circleId)
+                .title(title)
+                .content(content)
+                .visibility(visibility)
+                .hashtagId(hashtagId)
+                .isNotice(isNotice)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+
         BoardDTO createdBoard = boardService.createBoard(boardDTO);
         return ResponseEntity.ok(createdBoard);
     }
-    
+
     @GetMapping("/{postId}")
     @Operation(
             summary = "특정 게시글 조회",
+            description = "주어진 게시글 ID로 특정 게시글을 조회합니다.",
+            parameters = {
+                    @Parameter(name = "postId", description = "조회할 게시글의 ID", required = true, example = "1")
+            },
             responses = {
                     @ApiResponse(
                             responseCode = "200",
@@ -74,11 +114,12 @@ public class BoardController {
     @GetMapping
     @Operation(
             summary = "모든 게시글 조회",
+            description = "등록된 모든 게시글을 조회합니다.",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
                             description = "게시글 목록 조회 성공",
-                            content = @Content(schema = @Schema(implementation = BoardDTO.class))
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = BoardDTO.class)))
                     )
             }
     )
@@ -90,6 +131,27 @@ public class BoardController {
     @PutMapping("/{postId}")
     @Operation(
             summary = "게시글 수정",
+            description = "주어진 게시글 ID에 해당하는 게시글을 수정합니다.",
+            parameters = {
+                    @Parameter(name = "postId", description = "수정할 게시글의 ID", required = true, example = "1")
+            },
+            requestBody = @RequestBody(
+                    description = "수정할 게시글 정보",
+                    required = true,
+                    content = @Content(
+                            schema = @Schema(example = """
+                            {
+                                "userId": 1,
+                                "circleId": 2,
+                                "title": "수정된 제목",
+                                "content": "수정된 내용",
+                                "visibility": "PRIVATE",
+                                "hashtagId": 4,
+                                "isNotice": false
+                            }
+                            """)
+                    )
+            ),
             responses = {
                     @ApiResponse(
                             responseCode = "200",
@@ -103,7 +165,28 @@ public class BoardController {
                     )
             }
     )
-    public ResponseEntity<BoardDTO> updateBoard(@PathVariable Long postId, @RequestBody BoardDTO boardDTO) {
+    public ResponseEntity<BoardDTO> updateBoard(
+            @PathVariable Long postId,
+            @RequestParam Long userId,
+            @RequestParam Long circleId,
+            @RequestParam String title,
+            @RequestParam String content,
+            @RequestParam Visibility visibility,
+            @RequestParam(required = false) Long hashtagId,
+            @RequestParam Boolean isNotice) {
+
+        BoardDTO boardDTO = BoardDTO.builder()
+                .postId(postId)
+                .userId(userId)
+                .circleId(circleId)
+                .title(title)
+                .content(content)
+                .visibility(visibility)
+                .hashtagId(hashtagId)
+                .isNotice(isNotice)
+                .updatedAt(LocalDateTime.now())
+                .build();
+
         BoardDTO updatedBoard = boardService.updateBoard(postId, boardDTO);
         return ResponseEntity.ok(updatedBoard);
     }
@@ -111,6 +194,10 @@ public class BoardController {
     @DeleteMapping("/{postId}")
     @Operation(
             summary = "게시글 삭제",
+            description = "주어진 게시글 ID에 해당하는 게시글을 삭제합니다.",
+            parameters = {
+                    @Parameter(name = "postId", description = "삭제할 게시글의 ID", required = true, example = "1")
+            },
             responses = {
                     @ApiResponse(
                             responseCode = "200",
