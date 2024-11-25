@@ -1,25 +1,18 @@
 "use server";
-import { setCookie, deleteCookies, getCookie, PostData } from ".";
 
-export async function Login({
-  login_id,
-  password,
-})  {
-  const URL = `${process.env.NEXT_PUBLIC_API_URL}manager/login/`;
-  // const res = await fetch(URL, {
+export async function registerUser({ email, password }) {
+  // const URL = `${process.env.NEXT_PUBLIC_API_URL}/register/`;
+
+  // const response = await fetch(URL, {
   //   method: "POST",
-  //   headers: new Headers({
-  //     accept: "*/*",
+  //   headers: {
   //     "Content-Type": "application/json",
-  //   }),
-  //   body: JSON.stringify({
-  //     login_id: login_id,
-  //     password: password,
-  //   }),
-  //   cache: "no-store",
+  //   },
+  //   body: JSON.stringify({ email, password }),
   // });
-  const res = {status: 200, json: () => {return {access: "access", token: {access: "access", refresh: "refresh"}}}};
+
+  const res = {status: 200, json: () => {return {access: "access", token: {access: null, refresh: null}}}};
   if (res.status == 200) return res.json();
   if (res.status == 205) return res.json();
-  throw new Error(`Login Error:${res.status}`);
+      throw new Error(`Register Error:${res.status}`);
 }

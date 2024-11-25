@@ -6,6 +6,7 @@ import {LoginForm} from "./LoginForm";
 import {PostPreview} from "./PostPreview";
 import {SearchBar} from "./SearchBar";
 import {ApplyFormBuilder} from "./ApplyFormBuilder";
+import {RegisterForm} from "./RegisterForm";
 
 export {
     Loading,
@@ -16,4 +17,5 @@ export {
     PostPreview,
     SearchBar,
     ApplyFormBuilder,
+    RegisterForm,
 };
