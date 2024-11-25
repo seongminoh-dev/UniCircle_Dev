@@ -18,7 +18,15 @@ export async function Login({
   //   }),
   //   cache: "no-store",
   // });
-  const res = {status: 200, json: () => {return {access: "access", token: {access: "access", refresh: "refresh"}}}};
+
+  // *** 로그인 TEST용 Dummy Code 입니다 *** 
+  let res =null
+  if(login_id == "admin@uos.ac.kr" && password =="1234")
+    res = {status: 200, json: () => {return {access: "access", token: {access: "access", refresh: "refresh"}}}};
+  else
+    res = {status: 500, json: () => {return {access: "access", token: {access: null, refresh: null}}}};
+  // *** 여기까지 Dummy Code ***
+  
   if (res.status == 200) return res.json();
   if (res.status == 205) return res.json();
   throw new Error(`Login Error:${res.status}`);

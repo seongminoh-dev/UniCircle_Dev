@@ -1,23 +1,40 @@
 'use client';
+
 import { useState } from 'react';
+import Link from 'next/link';
+import { useAuth } from "@/hooks";
 import { useRouter } from "next/navigation";
 
 export const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const { signIn } = useAuth();
   const router = useRouter();
-  
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here
-    router.push("/board");
+    // 로그인 로직 여기에
+    try {
+      await signIn({ login_id: email, password });
+      router.push("/board");
+    } catch (error) {
+      setErrorMessage("아이디/비밀번호를 확인해주세요.");
+    }
   };
 
   return (
     <div className="w-full max-w-sm mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
       <h2 className="text-2xl font-semibold mb-6 text-center">로그인</h2>
 
+      {/* 에러 메시지 표시 */}
+      {errorMessage && (
+        <div className="mb-4 p-4 bg-red-100 text-red-700 rounded-md border border-red-400">
+          <p className="text-sm">{errorMessage}</p>
+        </div>
+      )}
+      
       <form onSubmit={handleSubmit}>
         {/* 이메일 입력 */}
         <div className="mb-4">
@@ -87,9 +104,9 @@ export const LoginForm = () => {
 
         {/* 비밀번호 잊었나요 링크 */}
         <div className="flex items-center justify-between mb-4">
-          <a href="#" className="text-blue-600 text-sm hover:underline">
-            비밀번호를 잊으셨나요?
-          </a>
+            <Link href="/auth/reset-password" className="text-blue-600 hover:underline">
+              비밀번호를 잊으셨나요?
+            </Link>
         </div>
 
         {/* 로그인 버튼 */}
@@ -106,9 +123,9 @@ export const LoginForm = () => {
         <div className="text-center mt-4">
           <p className="text-sm text-gray-600">
             아직 계정이 없으신가요?{' '}
-            <a href="#" className="text-blue-600 hover:underline">
+            <Link href="/auth/register" className="text-blue-600 hover:underline">
               회원가입
-            </a>
+            </Link>
           </p>
         </div>
       </form>
