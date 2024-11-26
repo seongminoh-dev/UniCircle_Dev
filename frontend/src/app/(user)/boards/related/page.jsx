@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { PostPreview } from '@/components';
+import PostPreview from '@/components/PostPreview';
 
 // 게시글 데이터를 생성
 const posts = [
