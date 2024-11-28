@@ -1,0 +1,45 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    environment:
+      POSTGRES_USER: universe
+      POSTGRES_PASSWORD: universe
+      POSTGRES_DB: unicircle
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - backend
+
+  api:
+    build:
+      context: .
+      dockerfile: ./docker/api/Dockerfile
+    container_name: api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - backend
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mailhog
+    restart: always
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis-data:
