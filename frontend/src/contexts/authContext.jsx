@@ -8,13 +8,9 @@ import {
   useReducer,
   useRef,
 } from "react";
-import {
-  Login,
-  Logout,
-  getCookie,
-  setCookie,
-} from "@/services";
+import { Login, Logout } from "@/services/Auth";
 import { checkToken,decodeToken } from "@/services/Token";
+import { getCookie, setCookie } from "@/services";
 
 //핸들러 정의
 const HANDLERS = {
@@ -79,7 +75,7 @@ export const AuthContext = createContext({
   signOut: () => {},
 });
 
-// AuthProvider 컴포넌트 정의
+// AuthProvider 정의
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const initialized = useRef(false);
@@ -131,8 +127,8 @@ export const AuthProvider = ({ children }) => {
       // 서버로 로그인 요청
       const { accessToken, refreshToken } = await Login({ email, password });
       // 쿠키 저장
-      await setCookie("access_token", accessToken, { maxAge: 86400 }); // 하루(1일) 유효
-      await setCookie("refresh_token", refreshToken, { maxAge: 86400 });
+      await setCookie("access_token", accessToken, { maxAge: 1800 }); // 30분 유효
+      await setCookie("refresh_token", refreshToken, { maxAge: 86400 }); // 24시간 유효
       // 토큰 해독 후 사용자 정보 추출
       const decodedToken = await decodeToken();
       const user = {
@@ -152,7 +148,6 @@ export const AuthProvider = ({ children }) => {
 
   const signOut = async () => {
     await Logout();
-    window.sessionStorage.removeItem('authenticated');
     dispatch({
       type: HANDLERS.SIGN_OUT,
     });

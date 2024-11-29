@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { sendEmailVerification, verifyEmailCode, registerUser } from "@/services/Register";
+import { sendEmailVerification, verifyEmailCode, registerUser } from "@/services/Auth";
 
 export const RegisterForm = () => {
     // 회원가입 정보

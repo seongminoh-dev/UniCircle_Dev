@@ -7,20 +7,15 @@ export const AuthGuard = ({
   children,
 }) => {
   const router = useRouter();
-  const { isAuthenticated, isLoading, isStaff } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
 
   useEffect(() => {
     if (!router || isLoading) return;
-
     if (!isAuthenticated) {
       router.replace("/auth/login");
       return;
     }
-    if (!isStaff) {
-      router.replace("/board");
-      return;
-    }
-  }, [isLoading, isAuthenticated]);
+  }, [isLoading, isAuthenticated, router]);
 
-  if (!isLoading && isAuthenticated && isStaff) return <>{children}</>;
+  if (!isLoading && isAuthenticated) return <>{children}</>;
 };

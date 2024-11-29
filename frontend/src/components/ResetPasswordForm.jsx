@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { sendEmailVerification, resetPassword } from "@/services/ResetPassword";
+import { sendEmailVerification, resetPassword } from "@/services/Auth";
 
 export const ResetPasswordForm = () => {
     // 이메일 인증
