@@ -8,15 +8,15 @@ import { useAuth } from "@/hooks";
 
 const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const { isLoading: isAuthLoading, isStaff, isAuthenticated } = useAuth();
+  const { isLoading: isAuthLoading, isAuthenticated } = useAuth();
   const router = useRouter();
- 
+  
   // 이미 로그인 된 상태라면 /board로 리다이렉트
   useEffect(() => {
     const isUserValid = async () => {
       if (isAuthLoading) return;
       if (isAuthenticated) {
-        router.push("/board");
+        router.push("/boards/related");
       } else {
         setIsLoading(false);
       }

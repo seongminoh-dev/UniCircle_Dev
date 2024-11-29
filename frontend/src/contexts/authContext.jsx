@@ -1,5 +1,5 @@
 "use client";
-import { jwtDecode } from "jwt-decode";
+
 import {
   createContext,
   useContext,
@@ -11,22 +11,21 @@ import {
 import {
   Login,
   Logout,
-  checkUserAuthentication,
   getCookie,
   setCookie,
 } from "@/services";
-import { useRouter } from "next/navigation";
+import { checkToken,decodeToken } from "@/services/Token";
 
+//핸들러 정의
 const HANDLERS = {
   INITIALIZE: "INITIALIZE",
   SIGN_IN: "SIGN_IN",
   SIGN_OUT: "SIGN_OUT",
-  NOT_STAFF: "NOT_STAFF",
 };
 
+//초기 상태
 const initialState = {
   isAuthenticated: false,
-  isStaff: false,
   isLoading: true,
   user: null,
 };
@@ -35,7 +34,6 @@ const initialState = {
 const handlers = {
   [HANDLERS.INITIALIZE]: (state, action) => {
     const user = action.payload;
-
     return {
       ...state,
       ...// if payload (user) is provided, then is authenticated
@@ -43,7 +41,6 @@ const handlers = {
         ? {
             isAuthenticated: true,
             isLoading: false,
-            isStaff: user.is_staff,
             user,
           }
         : {
@@ -58,7 +55,6 @@ const handlers = {
       ...state,
       isAuthenticated: true,
       isLoading: false,
-      isStaff: user.is_staff,
       user,
     };
   },
@@ -67,16 +63,6 @@ const handlers = {
       ...state,
       isAuthenticated: false,
       isLoading: false,
-      isStaff: false,
-      user: null,
-    };
-  },
-  [HANDLERS.NOT_STAFF]: (state) => {
-    return {
-      ...state,
-      isAuthenticated: true,
-      isLoading: false,
-      isStaff: false,
       user: null,
     };
   },
@@ -85,13 +71,10 @@ const handlers = {
 const reducer = (state, action) =>
   handlers[action.type] ? handlers[action.type](state, action) : state;
 
-// The role of this context is to propagate authentication state through the App tree.
-
 export const AuthContext = createContext({
   isAuthenticated: false,
   isLoading: false,
-  isStaff: false,
-  user: { nickName: '' },
+  user: { userId: '', role: '' },
   signIn: () => {},
   signOut: () => {},
 });
@@ -99,100 +82,72 @@ export const AuthContext = createContext({
 // AuthProvider 컴포넌트 정의
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const router = useRouter();
   const initialized = useRef(false);
 
+  // 초기화
   const initialize = async () => {
     // React.StrictMode로 인해 두 번 호출되는 것을 방지
     if (initialized.current) {
       return;
     }
-
     initialized.current = true;
 
-    let isAuthenticated = false;
-    let tokenValid = false;
-    try {
-      isAuthenticated = window.sessionStorage.getItem('authenticated') === 'true';
-    } catch (err) {
-      console.error(err);
-    }
-
-    if (isAuthenticated) {
-      tokenValid = await checkUserAuthentication();
-    }
-
-    if (isAuthenticated && tokenValid) {
-      try {
-        const accessToken = await getCookie('access_token');
-        if (!accessToken) throw new Error('토큰이 없습니다.');
-
-        // 토큰 해독
-        const decodedToken = jwtDecode(accessToken);
-
-        if (decodedToken.is_staff === false) {
-          throw new Error('관리자만 접근 가능합니다.');
-        }
-      } catch (error) {
-        console.error('JWT 토큰 해독 오류:', error);
+    // 초기 설정 부분
+    try{
+      // Access_Token의 존재 여부 확인
+      const accessToken = await getCookie('access_token');
+      // 토큰이 없으면 로그 아웃 처리
+      if(!accessToken){
         dispatch({
-          type: HANDLERS.NOT_STAFF,
+          type: HANDLERS.SIGN_OUT,
         });
-        return;
       }
-
-      const nickName = localStorage.getItem('nickName');
-      const user = {
-        nickName: nickName || '',
-        is_staff: true,
-      };
-      dispatch({
-        type: HANDLERS.INITIALIZE,
-        payload: user,
-      });
-    } else {
-      dispatch({
-        type: HANDLERS.SIGN_OUT,
-      });
-    }
+      // 토큰이 있으면 유효성 검사
+      const tokenValid = await checkToken();
+      // 토큰이 유효하면 사용자 정보를 설정, 유효하지 않은 토큰이면 로그아웃 처리
+      if (tokenValid){
+        const decodedToken = await decodeToken();
+        const user = {
+          userId: decodedToken.email,
+          role: decodedToken.role,
+        };
+        dispatch({ type: HANDLERS.INITIALIZE, payload: user });
+      } else {
+        dispatch({ type: HANDLERS.SIGN_OUT });
+      }
+      }catch(err){
+        console.error('인증 초기화 중 오류 발생:', err);
+        dispatch({ type: HANDLERS.SIGN_OUT });
+      }
   };
 
+  // 초기화
   useEffect(() => {
     initialize();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const signIn = async ({ login_id, password }) => {
-    const res = await Login({ login_id, password });
-    if (res.token.access && res.token.refresh) {
-      try {
-        // // 토큰 해독
-        // const decodedToken = jwtDecode(res.token.access);
-
-        // if (decodedToken.is_staff === false) {
-        //   throw new Error('관리자만 접근 가능합니다.');
-        // }
-
-        window.sessionStorage.setItem('authenticated', 'true');
-        // 쿠키 만료 기간 (예: 1일로 설정)
-        await setCookie('access_token', res.token.access, { maxAge: 86400 });
-        await setCookie('refresh_token', res.token.refresh, { maxAge: 86400 });
-      } catch (err) {
-        console.error(err);
-      }
-    } else {
-      throw new Error('아이디 / 비밀번호를 확인해주세요.');
+  const signIn = async ({ email, password }) => {
+    try {
+      // 서버로 로그인 요청
+      const { accessToken, refreshToken } = await Login({ email, password });
+      // 쿠키 저장
+      await setCookie("access_token", accessToken, { maxAge: 86400 }); // 하루(1일) 유효
+      await setCookie("refresh_token", refreshToken, { maxAge: 86400 });
+      // 토큰 해독 후 사용자 정보 추출
+      const decodedToken = await decodeToken();
+      const user = {
+        userId: decodedToken.email,
+        role: decodedToken.role,
+      };
+      dispatch({
+        type: HANDLERS.SIGN_IN,
+        payload: user,
+      });
+      return user;
+    } catch (error) {
+      console.error("로그인 오류 입니다: ", error.message);
+      throw new Error("아이디 / 비밀번호를 확인해주세요.");
     }
-
-    const user = {
-      is_staff: true,
-    };
-
-    dispatch({
-      type: HANDLERS.SIGN_IN,
-      payload: user,
-    });
-    return res;
   };
 
   const signOut = async () => {

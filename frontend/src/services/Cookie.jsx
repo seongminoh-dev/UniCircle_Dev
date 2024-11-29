@@ -1,5 +1,5 @@
 "use server";
-
+// 쿠기 관련 서비스 모듈
 import { cookies } from "next/headers";
 
 export const setCookie = (name, value) => {

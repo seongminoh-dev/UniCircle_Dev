@@ -17,7 +17,7 @@ export const LoginForm = () => {
     e.preventDefault();
     // 로그인 로직 여기에
     try {
-      await signIn({ login_id: email, password });
+      await signIn({ email, password });
       router.push("/board");
     } catch (error) {
       setErrorMessage("아이디/비밀번호를 확인해주세요.");
