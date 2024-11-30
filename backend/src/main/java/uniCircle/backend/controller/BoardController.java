@@ -27,31 +27,14 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    @PostMapping
-    @Operation(
-            summary = "게시글 생성",
-            description = "새로운 게시글을 생성합니다.",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "게시글이 성공적으로 생성됨",
-                            content = @Content(schema = @Schema(implementation = BoardDTO.class))
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "잘못된 요청",
-                            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-                    )
-            }
-    )
     public ResponseEntity<BoardDTO> createBoard(
-            @RequestParam Long userId,
-            @RequestParam Long circleId,
-            @RequestParam String title,
-            @RequestParam String content,
-            @RequestParam Visibility visibility,
-            @RequestParam(required = false) Long hashtagId,
-            @RequestParam Boolean isNotice) {
+            @Parameter(description = "사용자 ID", required = true) @RequestParam Long userId,
+            @Parameter(description = "모임 ID", required = true) @RequestParam Long circleId,
+            @Parameter(description = "게시글 제목", required = true) @RequestParam String title,
+            @Parameter(description = "게시글 내용", required = true) @RequestParam String content,
+            @Parameter(description = "게시글 공개 범위", required = true) @RequestParam Visibility visibility,
+            @Parameter(description = "해시태그 ID (선택적)") @RequestParam(required = false) Long hashtagId,
+            @Parameter(description = "공지 여부", required = true) @RequestParam Boolean isNotice) {
 
         BoardDTO boardDTO = BoardDTO.builder()
                 .userId(userId)
