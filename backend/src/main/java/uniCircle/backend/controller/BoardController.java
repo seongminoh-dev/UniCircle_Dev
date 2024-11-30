@@ -27,6 +27,23 @@ public class BoardController {
 
     private final BoardService boardService;
 
+    @PostMapping
+    @Operation(
+            summary = "게시글 생성",
+            description = "새로운 게시글을 생성합니다.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "게시글이 성공적으로 생성됨",
+                            content = @Content(schema = @Schema(implementation = BoardDTO.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "잘못된 요청",
+                            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+                    )
+            }
+    )
     public ResponseEntity<BoardDTO> createBoard(
             @Parameter(description = "사용자 ID", required = true) @RequestParam Long userId,
             @Parameter(description = "모임 ID", required = true) @RequestParam Long circleId,
