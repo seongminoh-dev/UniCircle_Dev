@@ -31,23 +31,6 @@ public class BoardController {
     @Operation(
             summary = "게시글 생성",
             description = "새로운 게시글을 생성합니다.",
-            requestBody = @RequestBody(
-                    description = "게시글 생성에 필요한 정보",
-                    required = true,
-                    content = @Content(
-                            schema = @Schema(example = """
-                            {
-                                "userId": 1,
-                                "circleId": 2,
-                                "title": "모집 공고",
-                                "content": "신입 회원 모집합니다.",
-                                "visibility": "PUBLIC",
-                                "hashtagId": 3,
-                                "isNotice": true
-                            }
-                            """)
-                    )
-            ),
             responses = {
                     @ApiResponse(
                             responseCode = "200",
