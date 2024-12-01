@@ -297,6 +297,22 @@ public class AuthController {
     }
 
     @PostMapping("/change-password")
+    @Operation(
+            summary = "Change user password",
+            description = "Allows a user to change their password by providing a valid email, username, and a new password."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Password changed successfully",
+                    content = @Content(schema = @Schema(implementation = String.class))
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid username or email",
+                    content = @Content(schema = @Schema(implementation = String.class))
+            )
+    })
     public ResponseEntity<String> changePassword(@RequestParam String email,
                                                  @RequestParam String username,
                                                  @RequestParam String newPassword) {
