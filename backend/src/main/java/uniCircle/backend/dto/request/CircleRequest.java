@@ -37,12 +37,12 @@ public class CircleRequest {
     private String email;
 
     @Schema(
-            name = "hashtagContents",
+            name = "hashtags",
             description = "해시태그 리스트",
             type = "array",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED,
             example = "[\"a\",\"b\",\"c\"]")
-    private Set<String> hashtagContents;
+    private Set<String> hashtags;
 
     @Schema(
             name = "questions",

@@ -73,7 +73,7 @@ public class CircleController {
                 .description(circleRequest.getDescription())
                 .createdAt(LocalDateTime.now())
                 .adminUser(adminUser)
-                .hashtags(circleRequest.getHashtagContents())
+                .hashtags(circleRequest.getHashtags())
                 .questions(circleRequest.getQuestions())
                 .build();
 
@@ -139,7 +139,7 @@ public class CircleController {
                 .description(circleRequest.getDescription())
                 .adminUser(adminUser)
                 .questions(circleRequest.getQuestions())
-                .hashtags(circleRequest.getHashtagContents())
+                .hashtags(circleRequest.getHashtags())
                 .build();
         circleService.updateCircle(circleDTO);
         return "redirect:/";
