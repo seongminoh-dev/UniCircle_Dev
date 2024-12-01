@@ -27,11 +27,11 @@ public class PasswordResetService {
         String newPassword = generateRandomPassword();
 
         // 새 비밀번호로 업데이트
-        userService.changePassword(email, username, passwordEncoder.encode(newPassword));
+        boolean isChanged = userService.changePassword(email, username, newPassword);
 
         // 새 비밀번호 이메일 전송
         sendPasswordResetEmail(email, newPassword);
-        return true;
+        return isChanged;
     }
 
     private String generateRandomPassword() {
