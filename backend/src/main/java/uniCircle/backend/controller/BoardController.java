@@ -115,26 +115,6 @@ public class BoardController {
     @Operation(
             summary = "게시글 수정",
             description = "주어진 게시글 ID에 해당하는 게시글을 수정합니다.",
-            parameters = {
-                    @Parameter(name = "postId", description = "수정할 게시글의 ID", required = true, example = "1")
-            },
-            requestBody = @RequestBody(
-                    description = "수정할 게시글 정보",
-                    required = true,
-                    content = @Content(
-                            schema = @Schema(example = """
-                            {
-                                "userId": 1,
-                                "circleId": 2,
-                                "title": "수정된 제목",
-                                "content": "수정된 내용",
-                                "visibility": "PRIVATE",
-                                "hashtagId": 4,
-                                "isNotice": false
-                            }
-                            """)
-                    )
-            ),
             responses = {
                     @ApiResponse(
                             responseCode = "200",
