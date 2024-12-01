@@ -33,7 +33,7 @@ jobs:
       - name: Build Docker image and deploy using Docker Compose
         run: |
           ssh -o StrictHostKeyChecking=no -i key.pem ec2-user@${{ secrets.EC2_IP }} << 'EOF'
-          cd /home/ec2-user/app
+          cd /home/ec2-user/app/backend
           docker-compose down
           docker-compose build
           docker-compose up -d
