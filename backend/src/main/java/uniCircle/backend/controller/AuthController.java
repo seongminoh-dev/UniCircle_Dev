@@ -2,6 +2,7 @@ package uniCircle.backend.controller;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,10 +29,15 @@ import uniCircle.backend.dto.response.SuccessResponse;
 import uniCircle.backend.entity.RefreshToken;
 import uniCircle.backend.entity.Role;
 import uniCircle.backend.repository.RefreshTokenRepository;
+import uniCircle.backend.service.MailService;
+import uniCircle.backend.service.PasswordResetService;
 import uniCircle.backend.service.UserService;
 import uniCircle.backend.util.JwtUtil;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 @RestController
 @RequestMapping("/auth")
@@ -42,6 +50,8 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final MailService mailService;
+    private final PasswordResetService passwordResetService;
 
     @PostMapping("/register")
     @Operation(
@@ -103,11 +113,10 @@ public class AuthController {
                             schema = @Schema(implementation = String.class))),
             @ApiResponse(
                     responseCode = "401",
-                    description = "Invalid username or password")
+                    description = "Invalid email or password")
     })
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestParam String email, @RequestParam String password) {
-        log.info("실행");
         try {
             // AuthenticationManager로 인증 시도
             Authentication authentication = authenticationManager.authenticate(
@@ -122,7 +131,7 @@ public class AuthController {
             return new ResponseEntity<>(body, HttpStatus.OK);
         } catch (AuthenticationException e) {
             // 인증 실패 시 응답
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
         }
     }
 
@@ -190,6 +199,113 @@ public class AuthController {
         response.addCookie(createCookie("refresh", newRefresh));
 
         return new ResponseEntity<>(newAccess, HttpStatus.OK);
+    }
+
+
+    // 이메일 인증 코드 전송
+    @PostMapping("/send-verification-code")
+    @Operation(summary = "Send email verification code")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Verification code sent successfully",
+                    content = @Content(
+                            schema = @Schema(implementation = String.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Failed to send verification code",
+                    content = @Content(
+                            schema = @Schema(implementation = String.class)))
+    })
+    public ResponseEntity<String> sendVerificationCode(
+            @Parameter(
+            description = "인증 코드가 보내질 이메일 주소",
+            example = "user@example.com",
+            required = true)
+            @RequestParam String email) {
+        try {
+            String verificationCode = mailService.generateAndStoreVerificationCode(email);
+            mailService.sendVerificationEmail(email, verificationCode);
+            return ResponseEntity.ok("Verification code sent successfully");
+        } catch (Exception e) {
+            log.error("Failed to send verification code: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to send verification code");
+        }
+    }
+
+    // 이메일 인증 코드 검증
+    @PostMapping("/verify-code")
+    @Operation(summary = "Verify email using verification code")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Email verified successfully",
+                    content = @Content(
+                            schema = @Schema(implementation = String.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid or expired verification code",
+                    content = @Content(
+                            schema = @Schema(implementation = String.class)))
+    })
+    public ResponseEntity<String> verifyCode(@RequestParam String email, @RequestParam String code) {
+        boolean isVerified = mailService.verifyCode(email, code);
+        if (isVerified) {
+            return ResponseEntity.ok("Email verified successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid or expired verification code");
+        }
+    }
+
+    @PostMapping("/reset-password")
+    @Operation(
+            summary = "Reset user password",
+            description = "Resets the password for a user and sends the new password to their email."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Password reset successfully",
+                    content = @Content(schema = @Schema(implementation = String.class))
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid username or email",
+                    content = @Content(schema = @Schema(implementation = String.class))
+            )
+    })
+    public ResponseEntity<String> resetPassword(
+            @Parameter(
+                    description = "The username of the account to reset the password for.",
+                    example = "user123",
+                    required = true
+            )
+            @RequestParam String username,
+            @Parameter(
+                    description = "The email associated with the account.",
+                    example = "user@example.com",
+                    required = true
+            )
+            @RequestParam String email
+    ) {
+        boolean isReset = passwordResetService.resetPassword(username, email);
+        if (isReset) {
+            return ResponseEntity.ok("A new password has been sent to your email.");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid username or email.");
+        }
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<String> changePassword(@RequestParam String email,
+                                                 @RequestParam String username,
+                                                 @RequestParam String newPassword) {
+        boolean result = userService.changePassword(email, username, newPassword);
+        if (result) {
+            return ResponseEntity.ok("Password changed successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid username or email");
+        }
     }
 
     private Cookie createCookie(String key, String value) {
