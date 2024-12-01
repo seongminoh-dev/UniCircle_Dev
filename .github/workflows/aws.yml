@@ -30,9 +30,14 @@ jobs:
         run: |
           scp -o StrictHostKeyChecking=no -i key.pem -r backend frontend README.md ec2-user@${{ secrets.EC2_IP }}:/home/ec2-user/app
 
-      - name: Deploy using Docker Compose
+      - name: Build Docker image and deploy using Docker Compose
         run: |
-          ssh -o ServerAliveInterval=60 -o StrictHostKeyChecking=no -i key.pem ec2-user@${{ secrets.EC2_IP }} "cd /home/ec2-user/app/backend && sudo docker-compose down && sudo docker-compose up -d"
-
+          ssh -o StrictHostKeyChecking=no -i key.pem ec2-user@${{ secrets.EC2_IP }} << 'EOF'
+          cd /home/ec2-user/app
+          docker-compose down
+          docker-compose build
+          docker-compose up -d
+          EOF
+          
       - name: Clean up SSH Key
         run: rm -f key.pem
