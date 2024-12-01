@@ -52,6 +52,21 @@ public class UserService {
         return user.map(UserDTO::fromEntity).orElse(null);
     }
 
+    // 패스워드 변경하기
+    @Transactional
+    public boolean changePassword(String email, String username, String newPassword) {
+        try {
+            User user = userRepository.findByEmailAndName(email, username)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid username or email"));
+
+            user.updatePassword(passwordEncoder.encode(newPassword)); // 비밀번호 변경
+            userRepository.saveAndFlush(user); // 변경 내용 저장
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 //    // 로그인 메서드
 //    public String loginUser(String email, String password) {
 //        Optional<User> userOptional = userRepository.findByEmail(email);
