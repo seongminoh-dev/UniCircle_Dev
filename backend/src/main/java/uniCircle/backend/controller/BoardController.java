@@ -5,6 +5,7 @@ import java.util.List;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
+import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -109,6 +110,29 @@ public class BoardController {
     public ResponseEntity<List<BoardDTO>> getAllPosts() {
         List<BoardDTO> posts = boardService.getAllPosts();
         return ResponseEntity.ok(posts);
+    }
+
+    @GetMapping("/circle/{circleId}")
+    @Operation(
+            summary = "동아리의 게시글 모두 조회",
+            description = "주어진 동아리 ID에 해당하는 동아리의 게시글 모두 조회.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "게시글이 성공적으로 조회됨",
+                            content = @Content(schema = @Schema(implementation = SuccessResponse.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "게시글을 찾을 수 없음",
+                            content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+                    )
+            }
+    )
+    public ResponseEntity<?> getBoardByCircleId(@PathVariable Long circleId) {
+        List<BoardDTO> boardDTOs = boardService.getAllBoardByCircleId(circleId);
+
+        return ResponseEntity.ok(boardDTOs);
     }
 
     @PutMapping("/{postId}")

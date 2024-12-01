@@ -18,7 +18,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -37,8 +39,11 @@ public class BoardService {
         Circle circle = circleRepository.findByCircleId(boardDTO.getCircleId())
                 .orElseThrow(() -> new RuntimeException("Circle not found with ID: " + boardDTO.getCircleId()));
 
-        Hashtag hashtag = hashtagRepository.findByHashtagId(boardDTO.getHashtagId())
-                .orElseThrow(() -> new RuntimeException("Hashtag not found with ID: " + boardDTO.getHashtagId()));
+        Hashtag hashtag = null;
+        if(boardDTO.getHashtagId() != null){
+            hashtag = hashtagRepository.findByHashtagId(boardDTO.getHashtagId())
+                    .orElseThrow(() -> new RuntimeException("Hashtag not found with ID: " + boardDTO.getHashtagId()));
+        }
 
         Board board = Board.builder()
                 .user(user)
@@ -62,6 +67,20 @@ public class BoardService {
                 .orElseThrow(() -> new RuntimeException("Board not found with ID: " + postId));
         return BoardDTO.fromEntity(board);
     }
+
+    public List<BoardDTO> getAllBoardByCircleId(Long circleId) {
+        Circle circle = circleRepository.findById(circleId)
+                .orElseThrow(() -> new RuntimeException("Circle not found with ID: " + circleId));
+
+        List<Board> boards = boardRepository.findAllByCircle(circle);
+
+        List<BoardDTO> dtos = boards.stream()
+                .map(board -> BoardDTO.fromEntity(board))
+                .collect(Collectors.toList());
+
+        return dtos;
+    }
+
 
     // 모든 게시글 조회
     public List<BoardDTO> getAllPosts() {
