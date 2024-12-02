@@ -37,11 +37,12 @@ export const RegisterForm = () => {
         }
         // 인증메일 전송
         try {
-            await sendEmailVerification(email);
-            setIsEmailSent(true);
+            setSuccessMessage("인증 이메일 발송 요청중..");
+            await sendEmailVerification(email);  
             setResendTimer(RESENT_TIME);
             setErrorMessage("");
-            setSuccessMessage("이메일 전송 성공. 인증번호를 입력하세요");
+            setIsEmailSent(true);
+            setSuccessMessage("인증 이메일 전송 성공. 인증번호를 입력하세요.");
             // 재전송 타이머
             const interval = setInterval(() => {
                 setResendTimer((prev) => {

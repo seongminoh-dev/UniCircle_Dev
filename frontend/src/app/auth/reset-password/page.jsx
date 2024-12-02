@@ -16,7 +16,7 @@ const ResetPasswordPage = () => {
       const isUserValid = async () => {
         if (isAuthLoading) return;
         if (isAuthenticated) {
-          router.push("/board");
+          router.push("/");
         } else {
           setIsLoading(false);
         }
