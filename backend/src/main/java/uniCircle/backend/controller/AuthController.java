@@ -1,5 +1,6 @@
 package uniCircle.backend.controller;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -140,7 +141,8 @@ public class AuthController {
             jsonResponse.addProperty("name",userDTO.getName());
             jsonResponse.addProperty("role", String.valueOf(userDTO.getRoles()));
 
-            return new ResponseEntity<>(jsonResponse.getAsString(), HttpStatus.OK);
+            Gson gson = new Gson();
+            return new ResponseEntity<>(gson.toJson(jsonResponse), HttpStatus.OK);
         } catch (AuthenticationException e) {
             // 인증 실패 시 응답
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
