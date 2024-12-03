@@ -1,3 +1,4 @@
+"use server";
 export const searchContent = async (query) => {
   const URL = `${process.env.NEXT_PUBLIC_API_URL}search?keyword=${encodeURIComponent(query)}`;
   try {
@@ -19,7 +20,7 @@ export const searchContent = async (query) => {
           tags: item.hashtags,
           image: "https://via.placeholder.com/64",
         })),
-        filteredPosts: null, // 현재 게시글은 null로 설정
+        filteredPosts: {}, // 현재 게시글은 null로 설정
       };
     } else {
       throw new Error(`Search Error: ${response.status}`);

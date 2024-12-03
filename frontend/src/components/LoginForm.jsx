@@ -15,10 +15,10 @@ export const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // 로그인 로직 여기에
+    // 로그인 로직
     try {
       await signIn({ email, password });
-      router.push("/board");
+      router.push("/");
     } catch (error) {
       setErrorMessage("아이디/비밀번호를 확인해주세요.");
     }

@@ -16,7 +16,7 @@ const LoginPage = () => {
     const isUserValid = async () => {
       if (isAuthLoading) return;
       if (isAuthenticated) {
-        router.push("/boards/related");
+        router.push("/");
       } else {
         setIsLoading(false);
       }
