@@ -1,5 +1,6 @@
 package uniCircle.backend.controller;
 
+import com.google.gson.JsonObject;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -123,12 +124,23 @@ public class AuthController {
                     new UsernamePasswordAuthenticationToken(email, password));
 
             log.info("인증성공");
-            // 인증 성공 시 JWT 생성
-            String AccessToken = jwtUtil.createJwt("access", email, authentication.getAuthorities().iterator().next().getAuthority(), 600000L);
-            String RefreshToken = jwtUtil.createJwt("refresh", email, authentication.getAuthorities().iterator().next().getAuthority(), 24000000L);
 
-            String body = "AccessToken: Bearer " + AccessToken + "\nRefreshToken: Bearer " + RefreshToken;
-            return new ResponseEntity<>(body, HttpStatus.OK);
+            UserDTO userDTO = userService.findByEmail(email);
+
+            // 인증 성공 시 JWT 생성
+            String accessToken = jwtUtil.createJwt("access", email, authentication.getAuthorities().iterator().next().getAuthority(), 600000L);
+            String refreshToken = jwtUtil.createJwt("refresh", email, authentication.getAuthorities().iterator().next().getAuthority(), 24000000L);
+
+            JsonObject jsonResponse = new JsonObject();
+            jsonResponse.addProperty("accessToken", "Bearer " + accessToken);
+            jsonResponse.addProperty("refreshToken", "Bearer " + refreshToken);
+            jsonResponse.addProperty("userId",userDTO.getUserId());
+            jsonResponse.addProperty("email",userDTO.getEmail());
+            jsonResponse.addProperty("nickname",userDTO.getNickname());
+            jsonResponse.addProperty("name",userDTO.getName());
+            jsonResponse.addProperty("role", String.valueOf(userDTO.getRoles()));
+
+            return new ResponseEntity<>(jsonResponse.getAsString(), HttpStatus.OK);
         } catch (AuthenticationException e) {
             // 인증 실패 시 응답
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
