@@ -161,59 +161,55 @@ public class AuthController {
                     description = "Invalid authority")
     })
     @PostMapping("/refresh")
-    public ResponseEntity<String> refresh(HttpServletRequest request, HttpServletResponse response) {
-        String refresh = null;
-        Cookie[] cookies = request.getCookies();
-        for(Cookie cookie : cookies) {
-            if(cookie.getName().equals("refresh")){
-                refresh = cookie.getValue();
-            }
+    public ResponseEntity<Map<String, String>> refresh(@RequestParam String refresh) {
+        // 요청에서 refresh 토큰 추출
+        if (refresh == null || !refresh.startsWith("Bearer ")) {
+            return new ResponseEntity<>(Map.of("error", "refresh token null or invalid format"), HttpStatus.BAD_REQUEST);
         }
 
-        if(refresh == null){
-            return new ResponseEntity<>("refresh token null", HttpStatus.BAD_REQUEST);
-        }
+        // "Bearer " 제거
+        refresh = refresh.substring(7);
 
-        try{
+        try {
+            // 토큰 만료 여부 확인
             jwtUtil.isExpired(refresh);
-        } catch (ExpiredJwtException e){
-            return new ResponseEntity<>("refresh token expired", HttpStatus.BAD_REQUEST);
+        } catch (ExpiredJwtException e) {
+            return new ResponseEntity<>(Map.of("error", "refresh token expired"), HttpStatus.BAD_REQUEST);
         }
 
-        // 토큰이 refresh인지 확인 (발급시 페이로드에 명시)
+        // 토큰이 refresh인지 확인
         String category = jwtUtil.getCategory(refresh);
-
-        if (!category.equals("refresh")) {
-            //response status code
-            return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
+        if (!"refresh".equals(category)) {
+            return new ResponseEntity<>(Map.of("error", "invalid refresh token"), HttpStatus.BAD_REQUEST);
         }
 
-        //DB에 저장되어 있는지 확인
-        Boolean isExist = refreshTokenRepository.existsByTokenContent(refresh);
+        // DB에 저장되어 있는지 확인
+        boolean isExist = refreshTokenRepository.existsByTokenContent(refresh);
         if (!isExist) {
-
-            //response body
-            return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Map.of("error", "invalid refresh token"), HttpStatus.BAD_REQUEST);
         }
 
-
+        // 토큰에서 이메일 및 권한 추출
         String email = jwtUtil.getEmail(refresh);
         String role = jwtUtil.getRole(refresh);
 
-        //make new JWT
+        // 새로운 access 및 refresh 토큰 생성
         String newAccess = jwtUtil.createJwt("access", email, role, 600000L);
         String newRefresh = jwtUtil.createJwt("refresh", email, role, 86400000L);
 
-        //Refresh 토큰 저장 DB에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
+        // 기존 refresh 토큰 삭제 후 새로 저장
         refreshTokenRepository.deleteByTokenContent(refresh);
         addRefreshEntity(email, newRefresh, 86400000L);
 
-        //response
-        response.setHeader("access", newAccess);
-        response.addCookie(createCookie("refresh", newRefresh));
+        // JSON 응답 생성
+        Map<String, String> responseBody = Map.of(
+                "accessToken", "Bearer " + newAccess,
+                "refreshToken", "Bearer " + newRefresh
+        );
 
-        return new ResponseEntity<>(newAccess, HttpStatus.OK);
+        return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
+
 
 
     // 이메일 인증 코드 전송
