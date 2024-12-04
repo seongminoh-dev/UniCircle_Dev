@@ -334,6 +334,42 @@ public class AuthController {
         }
     }
 
+
+    @Operation(
+            summary = "Verify JWT Token",
+            description = "Validates a provided JWT token and checks if it is still valid."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Token is valid",
+                    content = @Content(schema = @Schema(implementation = String.class))
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Invalid or expired token",
+                    content = @Content(schema = @Schema(implementation = String.class))
+            )
+    })
+    @PostMapping("/verify-token")
+    public ResponseEntity<String> verifyToken(
+            @Parameter(
+                    description = "The JWT token to verify.",
+                    example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                    required = true
+            )
+            @RequestParam String token
+    ) {
+        // Validate the token
+        boolean isExpired = jwtUtil.isExpired(token);
+        if (isExpired) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token");
+        } else {
+            return ResponseEntity.ok("Token is valid");
+        }
+    }
+
+
     private Cookie createCookie(String key, String value) {
         Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(24*60*60);
