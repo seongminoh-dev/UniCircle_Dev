@@ -5,7 +5,7 @@ import { getCookie, setCookie } from "./Cookie";
 import { jwtDecode } from "jwt-decode";
 
 // 서버에서 토큰 유효성 검사 <-- API 나오면 수정해야 함
-export const isValidToken = async (token) => {
+const isValidToken = async (token) => {
   if (!token) return false;
   return true;
 //   try {
@@ -22,7 +22,7 @@ export const isValidToken = async (token) => {
 };
 
 // Refresh 토큰으로 새로운 Access 토큰 요청 <-- 나중에 구현
-export const tokenRefresh = async (refreshToken) => {
+const tokenRefresh = async (refreshToken) => {
   if (!refreshToken) throw new Error("Refresh token이 없습니다.");
   return true;
   //   try {
@@ -38,32 +38,33 @@ export const tokenRefresh = async (refreshToken) => {
 //   }
 };
 
-// 통합 토큰 검사 및 갱신 로직 false반환시 로그아웃 처리 해야함!
-export const checkToken = async () => {
+// 통합 토큰 검사 및 갱신 로직 null 반환시 유효한 토큰 없음
+export const getAccessToken = async () => {
   try {
-    // 쿠키에서 두 토큰을 가져옴
+    // 쿠키에서 Access Token을 가져옴
     const accessToken = await getCookie("access_token");
-    const refreshToken = await getCookie("refresh_token");
 
-    // 둘 다 없으면 false 반환
-    if (!accessToken && !refreshToken) return false;
+    // Access Token 없으면 null 반환
+    if (!accessToken) return null;
 
     // access_token이 유효한 경우 true 반환
     if (accessToken && (await isValidToken(accessToken))) {
-      return true;
+      return accessToken;
     }
 
     // access_token이 유효하지 않고 refresh_token이 유효한 경우 갱신후 true 반환
+    const refreshToken = await getCookie("refresh_token");
     if (refreshToken && (await isValidToken(refreshToken))) {
       await tokenRefresh(refreshToken);
-      return true;
+      const accessToken = await getCookie("access_token");
+      return accessToken;
     }
 
     // 두 토큰 모두 유효하지 않은 경우 false 반환
-    return false;
+    return null;
   } catch (error) {
     console.error("checkToken Error", error);
-    return false;
+    return null;
   }
 };
 
