@@ -1,17 +1,20 @@
 'use client';
 import React from 'react';
 import { useState } from 'react';
+import { useAuth } from '@/hooks';
 
 export const LeftSidebar = () => {
   // 항목 리스트를 배열로 저장
   const items = ['나와 관련된 게시물','관심 동아리', '동아리 관리', '설정'];
-  const [selectedItem, setSelectedItem] = useState(null);
+  const { user } = useAuth();
+  const nickname = user?.nickname || '익명';
+  const [selectedItem, setSelectedItem] = useState(items[0]);
 
   return (
     <aside className="w-80 h-screen py-8 pl-6">
       {/* 닉네임 및 활동 정보 */}
       <div className="mb-2 space-y-4">
-        <h3 className="text-3xl font-semibold">닉네임</h3>
+        <h3 className="text-3xl font-semibold">{nickname}</h3>
         <hr className="border-t-2 border-gray-300 my-2" />   {/* 가로선 추가 */}
         <p className="text-base text-gray-600 font-semibold ">내 활동</p>
       </div>

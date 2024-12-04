@@ -1,5 +1,7 @@
 "use server";
-import { deleteCookies } from "./Cookie";
+
+// Import Module
+import { setCookie, deleteCookies } from "./Cookie";
 
 // 로그인 API 서버 통신 함수
 export async function Login({email, password}) {
@@ -12,16 +14,17 @@ export async function Login({email, password}) {
         accept: "*/*",
       },
     });
-    const rawResponse = await response.text();
+    const loginResponse = await response.json();
     // 로그인 성공, 실패
-    const result = parseTokens(rawResponse);
-    if (response.status === 200 && result.accessToken && result.refreshToken) {
-      return {
-        accessToken: result.accessToken,
-        refreshToken: result.refreshToken,
-      };
+    if (response.status === 200 && loginResponse.accessToken && loginResponse.refreshToken) {
+      setCookie("access_token", loginResponse.accessToken, { maxAge: 1800 }); // 30분 유효
+      setCookie("refresh_token", loginResponse.refreshToken, { maxAge: 86400 }); // 24시간 유효
+      delete loginResponse.accessToken;
+      delete loginResponse.refreshToken;
+      setCookie("user", JSON.stringify(loginResponse), { maxAge: 86400 }); // 24시간 유효
+      return true;
     } else {
-      throw new Error(`Invalid Email or Password: ${response.status}`);
+      return false;
     }
   } catch (error) {
     console.error("Unknown Error:", error.message);
@@ -31,16 +34,14 @@ export async function Login({email, password}) {
 
 // 로그아웃 함수
 export async function Logout() {
-  deleteCookies("refresh_token");
   deleteCookies("access_token");
+  deleteCookies("refresh_token");
+  deleteCookies("user");
   return ;
 }
 
 // 회원가입 API 서버 통신 함수
-export async function registerUser({ email, password }) {
-  const generateRandomNumber = () => Math.floor(Math.random() * 100) + 1;
-  const name = "익명";
-  const nickname = name;
+export async function registerUser({ name, nickname, email, password }) {
   const URL = `${process.env.NEXT_PUBLIC_API_URL}auth/register`;
   try {
     const response = await fetch(URL, {
@@ -156,22 +157,5 @@ export async function verifyEmailCode(email, code) {
   }
 }
 
-// 서버 응답 파싱 함수 For 로그인
-function parseTokens(responseText) {
-  const lines = responseText.split('\n');
-  let accessToken = '';
-  let refreshToken = '';
-  lines.forEach((line) => {
-    if (line.startsWith('AccessToken:')) {
-      accessToken = line.replace('AccessToken: Bearer ', '').trim();
-    } else if (line.startsWith('RefreshToken: ')) {
-      refreshToken = line.replace('RefreshToken: Bearer ', '').trim();
-    }
-  });
-  return {
-    accessToken,
-    refreshToken,
-  };
-}
 
 

@@ -1,16 +1,9 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef,
-} from "react";
+import { createContext, useEffect, useMemo, useReducer, useRef } from "react";
 import { Login, Logout } from "@/services/Auth";
-import { checkToken,decodeToken } from "@/services/Token";
-import { getCookie, setCookie } from "@/services";
+import { getAccessToken } from "@/services/Token";
+import { getCookie } from "@/services";
 
 //핸들러 정의
 const HANDLERS = {
@@ -70,7 +63,7 @@ const reducer = (state, action) =>
 export const AuthContext = createContext({
   isAuthenticated: false,
   isLoading: false,
-  user: { userId: '', role: '' },
+  user: { userId: '', email: '', nickname: '',name:'',role: '' },
   signIn: () => {},
   signOut: () => {},
 });
@@ -91,28 +84,29 @@ export const AuthProvider = ({ children }) => {
     // 초기 설정 부분
     try{
       // Access_Token의 존재 여부 확인
-      const accessToken = await getCookie('access_token');
+      const accessToken = await getAccessToken();
       // 토큰이 없으면 로그 아웃 처리
       if(!accessToken){
         dispatch({
           type: HANDLERS.SIGN_OUT,
         });
       }
-      // 토큰이 있으면 유효성 검사
-      const tokenValid = await checkToken();
       // 토큰이 유효하면 사용자 정보를 설정, 유효하지 않은 토큰이면 로그아웃 처리
-      if (tokenValid){
-        const decodedToken = await decodeToken();
+      const userInfo = JSON.parse(await getCookie('user'));
+      if (userInfo){
         const user = {
-          userId: decodedToken.email,
-          role: decodedToken.role,
+          userId: userInfo.userId,
+          email: userInfo.email,
+          nickname: userInfo.nickname,
+          name: userInfo.name,
+          role: userInfo.role,
         };
         dispatch({ type: HANDLERS.INITIALIZE, payload: user });
       } else {
         dispatch({ type: HANDLERS.SIGN_OUT });
       }
       }catch(err){
-        console.error('인증 초기화 중 오류 발생:', err);
+        console.error('User 쿠키 데이터가 훼손되었습니다.', err);
         dispatch({ type: HANDLERS.SIGN_OUT });
       }
   };
@@ -125,15 +119,16 @@ export const AuthProvider = ({ children }) => {
   const signIn = async ({ email, password }) => {
     try {
       // 서버로 로그인 요청
-      const { accessToken, refreshToken } = await Login({ email, password });
-      // 쿠키 저장
-      await setCookie("access_token", accessToken, { maxAge: 1800 }); // 30분 유효
-      await setCookie("refresh_token", refreshToken, { maxAge: 86400 }); // 24시간 유효
+      if(!await Login({ email, password })) 
+        throw new Error("아이디 / 비밀번호를 확인해주세요.");
       // 토큰 해독 후 사용자 정보 추출
-      const decodedToken = await decodeToken();
+      const userInfo = JSON.parse(await getCookie('user'));
       const user = {
-        userId: decodedToken.email,
-        role: decodedToken.role,
+        userId: userInfo.userId,
+        email: userInfo.email,
+        nickname: userInfo.nickname,
+        name: userInfo.name,
+        role: userInfo.role,
       };
       dispatch({
         type: HANDLERS.SIGN_IN,
