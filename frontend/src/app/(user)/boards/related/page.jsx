@@ -1,10 +1,10 @@
 "use client";
 
 import React from 'react';
-import PostPreview from '@/components/PostPreview';
+import BoardPreview from '@/components/BoardPreview';
 
 // 게시글 데이터를 생성
-const posts = [
+const boards = [
   {
     nickname: '닉네임A',
     club: '코딩 동아리',
@@ -93,7 +93,7 @@ const Board = () => {
   return (
     <div className="space-y-4">
         {posts.map((post, index) => (
-          <PostPreview key={index} post={post} />
+          <BoardPreview key={index} post={post} />
         ))}
     </div>
   );

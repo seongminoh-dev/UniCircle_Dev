@@ -1,9 +1,9 @@
 "use client";
 
-import ClubTag from "./ClubTag";
+import CircleTag from "./CircleTag";
 
-const ClubManagementPreview = ({ club, onManageMembers, onEditInfo }) => {
-  const { name, image, tags } = club;
+const CircleManagementPreview = ({ circle, onManageMembers, onEditInfo }) => {
+  const { name, image, tags } = circle;
 
   return (
     <div className="flex items-center p-4 bg-white rounded-lg shadow justify-between">
@@ -26,7 +26,7 @@ const ClubManagementPreview = ({ club, onManageMembers, onEditInfo }) => {
           {/* Club Tags */}
           <div className="mt-2 flex space-x-2">
             {tags.map((tag, index) => (
-              <ClubTag key={index} tag={tag} />
+              <CircleTag key={index} tag={tag} />
             ))}
           </div>
         </div>
@@ -51,4 +51,4 @@ const ClubManagementPreview = ({ club, onManageMembers, onEditInfo }) => {
   );
 };
 
-export default ClubManagementPreview;
+export default CircleManagementPreview;

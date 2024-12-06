@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-const PostEditor = ({ onUpload, onClose }) => {
+const BoardEditor = ({ onUpload, onClose }) => {
   const [content, setContent] = useState(""); // 게시글 내용 관리
 
   const handleUpload = () => {
@@ -76,4 +76,4 @@ const PostEditor = ({ onUpload, onClose }) => {
   );
 };
 
-export default PostEditor;
+export default BoardEditor;

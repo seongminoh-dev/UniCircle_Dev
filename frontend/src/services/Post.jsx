@@ -1,7 +1,7 @@
 "use server";
 import { getCookie } from ".";
 
-export async function getPostsByCircle(circleId) {
+export async function getBoardsByCircle(circleId) {
   const URL = `${process.env.NEXT_PUBLIC_API_URL}boards/circle/${circleId}`;
 
   const accessToken = await getCookie("access_token"); // 토큰 가져오기
