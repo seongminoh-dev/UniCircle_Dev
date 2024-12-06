@@ -18,7 +18,7 @@ export const SearchBar = () => {
     };
 
     return (
-    <div className="flex items-center bg-neutral-100 mx-4 p-2 rounded-xl">
+    <div className="flex items-center bg-neutral-100 mx-4 p-1 rounded-xl">
       {/* 뒤로 가기 아이콘 (옵션) */}
       <button className="p-2" onClick={() => router.back()}>
         <svg

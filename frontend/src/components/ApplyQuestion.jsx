@@ -70,7 +70,7 @@ const DropdownInput = ({ options, value, onChange }) => (
 export const ApplyQuestion = ({ question, onChange }) => {
     // onChange가 전달되지 않으면 빈 함수로 처리
     const handleChange = onChange || (() => {});
-  
+    console.log(question);
     return (
         <div className="mb-4">
         <div className="flex items-center mb-2">

@@ -28,6 +28,7 @@ const Board = () => {
 
   return (
     <div className="space-y-4">
+      <h2 className="text-xl font-semibold text-gray-500 p-2 mb-2">나와 관련된 게시물</h2>
       {loading && <p>로딩 중...</p>}
       {error && <p>{error}</p>}
       {!loading &&
