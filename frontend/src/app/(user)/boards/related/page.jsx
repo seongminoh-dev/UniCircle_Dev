@@ -92,8 +92,8 @@ const boards = [
 const Board = () => {
   return (
     <div className="space-y-4">
-        {posts.map((post, index) => (
-          <BoardPreview key={index} post={post} />
+        {boards.map((board, index) => (
+          <BoardPreview key={index} board={board} />
         ))}
     </div>
   );
