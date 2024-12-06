@@ -24,9 +24,10 @@ public class CircleDTO {
     private Set<String> hashtags;
     //private List<CircleUser> circleUsers;
     private String questions;
+    private byte[] image;
 
     @Builder
-    public CircleDTO(Long circleId, String name, String description, LocalDateTime createdAt, UserDTO adminUser, Set<String> hashtags, List<CircleUser> circleUsers, String questions) {
+    public CircleDTO(Long circleId, String name, String description, LocalDateTime createdAt, UserDTO adminUser, Set<String> hashtags, List<CircleUser> circleUsers, String questions, byte[] image) {
         this.circleId = circleId;
         this.name = name;
         this.description = description;
@@ -35,6 +36,7 @@ public class CircleDTO {
         this.hashtags = hashtags;
         //this.circleUsers = circleUsers;
         this.questions = questions;
+        this.image = image;
     }
 
     public static CircleDTO fromEntity(Circle circle) {
@@ -53,6 +55,7 @@ public class CircleDTO {
                 )
                 //.circleUsers(circle.getCircleUsers())
                 .questions(circle.getQuestions())
+                .image(circle.getImage())
                 .build();
     }
 }

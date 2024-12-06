@@ -1,12 +1,13 @@
 "use client";
-import { useState } from 'react';
 import ApplyQuestion from './ApplyQuestion';
 import { QuestionTypes, InputLimits } from '@/define/applyTypes';
+import { useState } from 'react';
 
-export const ApplyFormBuilder = () => {
-  const [formTitle, setFormTitle] = useState('');
-  const [formDescription, setFormDescription] = useState('');
-  const [questions, setQuestions] = useState([]);
+export const ApplyFormBuilder = ({questions, handleQuestionChange, onClose}) => {
+  console.log(questions, handleQuestionChange)
+  const [formTitle, setFormTitle] = useState(questions.title);
+  const [formDescription, setFormDescription] = useState(questions.description);
+  const [updatedQuestions, setUpdatedQuestions] = useState(questions.questions);
   const [newQuestion, setNewQuestion] = useState({
     title: '',
     type: QuestionTypes.TEXT,
@@ -19,7 +20,7 @@ export const ApplyFormBuilder = () => {
   // 질문 추가 핸들러
   const addQuestion = () => {
     if (newQuestion.title) {
-      setQuestions([...questions, newQuestion]);
+      setUpdatedQuestions([...updatedQuestions, newQuestion]);
       setNewQuestion({
         title: '',
         type: QuestionTypes.TEXT,
@@ -28,12 +29,14 @@ export const ApplyFormBuilder = () => {
       });
       setIsAddingQuestion(false);
       setNewOption('');
+    }else{
+      alert("제목을 채워주세요");
     }
   };
 
   // 질문 제거 핸들러
   const removeQuestion = (index) => {
-    setQuestions(questions.filter((_, i) => i !== index));
+    setUpdatedQuestions(updatedQuestions.filter((_, i) => i !== index));
   };
 
   // 옵션 추가 핸들러
@@ -41,6 +44,8 @@ export const ApplyFormBuilder = () => {
     if (newOption) {
       setNewQuestion((prev) => ({ ...prev, options: [...prev.options, newOption] }));
       setNewOption('');
+    }else{
+      alert("내용을 채워주세요");
     }
   };
 
@@ -57,16 +62,15 @@ export const ApplyFormBuilder = () => {
     const formData = {
       title: formTitle,
       description: formDescription,
-      questions: questions,
+      questions: updatedQuestions,
     };
     // TODO: 데이터 업로드 로직 추가
-    console.log('저장된 양식 데이터:', JSON.stringify(formData, null, 2));
-    
-    alert('양식이 저장되었습니다.');
+    handleQuestionChange(formData);
+    onClose();
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-md">
+    <div className="max-w-3xl mx-auto p-6 bg-white">
       <h2 className="text-xl font-semibold mb-4">동아리 가입 신청 양식</h2>
       {/* 폼 제목과 설명 */}
       <div className="mb-6">
@@ -90,10 +94,9 @@ export const ApplyFormBuilder = () => {
       {/* 기존 질문 목록 */}
       <div className="mb-4">
         <h3 className="text-lg font-semibold mb-2">질문 목록</h3>
-        {questions.map((question, index) => (
+        {updatedQuestions && updatedQuestions.map((question, index) => (
           <div key={index} className="relative p-4 mb-2 border rounded shadow-sm bg-gray-50">
             <ApplyQuestion question={question} onChange={undefined} />
-            
             {/* 제거 버튼 */}
             <div className="flex justify-end mt-2">
               <button
@@ -105,17 +108,10 @@ export const ApplyFormBuilder = () => {
             </div>
           </div>
         ))}
-        {/* 추가 버튼 */}
-        <button
-          onClick={() => setIsAddingQuestion(true)}
-          className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          새 질문 추가
-        </button>
       </div>
 
       {/* 새 질문 추가 영역 */}
-      {isAddingQuestion && (
+      {isAddingQuestion ? (
         <div className="mb-4 p-4 border rounded">
           <input
             type="text"
@@ -206,7 +202,18 @@ export const ApplyFormBuilder = () => {
             취소
           </button>
         </div>
-      )}
+      ):
+      (
+        <>
+          <button
+            onClick={() => setIsAddingQuestion(true)}
+            className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600 mb-2"
+          >
+            새 질문 추가
+          </button>
+        </>
+      )
+      }
 
       {/* 저장 버튼 */}
       <button

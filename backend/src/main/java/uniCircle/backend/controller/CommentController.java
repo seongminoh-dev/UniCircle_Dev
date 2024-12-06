@@ -5,10 +5,12 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 import uniCircle.backend.dto.CommentDTO;
+import uniCircle.backend.dto.request.CommentRequest;
 import uniCircle.backend.dto.response.SuccessResponse;
 import uniCircle.backend.entity.Visibility;
 import uniCircle.backend.service.CommentService;
@@ -18,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/comments")
 @RequiredArgsConstructor
+@Slf4j
 public class CommentController {
 
     private final CommentService commentService;
@@ -38,10 +41,12 @@ public class CommentController {
                     )
             }
     )
-    public ResponseEntity<CommentDTO> createComment(@RequestParam Long postId,
-                                                    @RequestParam Long userId,
-                                                    @RequestParam Visibility visibility) {
-        CommentDTO createdComment = commentService.createComment(postId, userId, visibility);
+    public ResponseEntity<CommentDTO> createComment(@RequestBody CommentRequest commentRequest) {
+        CommentDTO createdComment = commentService.createComment(
+                commentRequest.getPostId(),
+                commentRequest.getUserId(),
+                commentRequest.getVisibility(),
+                commentRequest.getContent());
         return ResponseEntity.ok(createdComment);
     }
 
@@ -99,8 +104,11 @@ public class CommentController {
             }
     )
     public ResponseEntity<CommentDTO> updateComment(@PathVariable Long commentId,
-                                                    @RequestParam Visibility visibility) {
-        CommentDTO updatedComment = commentService.updateComment(commentId, visibility);
+                                                    @RequestBody CommentRequest commentRequest) {
+        CommentDTO updatedComment = commentService.updateComment(
+                commentRequest.getPostId(),
+                commentRequest.getVisibility(),
+                commentRequest.getContent());
         return ResponseEntity.ok(updatedComment);
     }
 

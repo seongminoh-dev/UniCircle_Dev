@@ -1,15 +1,19 @@
 package uniCircle.backend.controller;
 
 
+import com.zaxxer.hikari.util.ClockSource;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import uniCircle.backend.dto.CircleDTO;
 import uniCircle.backend.dto.CircleUserDTO;
 import uniCircle.backend.dto.HashtagDTO;
@@ -23,6 +27,7 @@ import uniCircle.backend.service.CircleService;
 import uniCircle.backend.service.CircleUserService;
 import uniCircle.backend.service.UserService;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -36,7 +41,7 @@ public class CircleController {
     private final CircleUserService circleUserService;
     private final CircleHashtagService circleHashtagService;
 
-    @PostMapping("create")
+    @PostMapping(value = "create", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(
             summary = "Circle 생성",
             responses = {
@@ -66,9 +71,18 @@ public class CircleController {
                     )
             }
     )
-    public ResponseEntity<CircleDTO> createCircle(@RequestBody CircleRequest circleRequest) {
+    public ResponseEntity<CircleDTO> createCircle(@ModelAttribute CircleRequest circleRequest) throws IOException {
+
         String adminUserEmail = circleRequest.getEmail();
         UserDTO adminUser = userService.findByEmail(adminUserEmail);
+
+        MultipartFile file = circleRequest.getFile();
+        byte[] image = null;
+
+        if (file != null && !file.isEmpty()) {
+            image = file.getBytes();
+        }
+
 
         CircleDTO circleDTO = CircleDTO.builder()
                 .name(circleRequest.getName())
@@ -77,6 +91,7 @@ public class CircleController {
                 .adminUser(adminUser)
                 .hashtags(circleRequest.getHashtags())
                 .questions(circleRequest.getQuestions())
+                .image(image)
                 .build();
 
         // circle 만들기
@@ -101,7 +116,7 @@ public class CircleController {
         return ResponseEntity.ok(circleDTOs);
     }
 
-    @PostMapping("/{circleId}/update")
+    @PostMapping(value = "/{circleId}/update", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(
             summary = "Circle 업데이트",
             responses = {
@@ -131,9 +146,16 @@ public class CircleController {
                     )
             }
     )
-    public ResponseEntity<CircleDTO> updateCircle(@PathVariable Long circleId, @RequestBody CircleRequest circleRequest) {
+    public ResponseEntity<CircleDTO> updateCircle(@PathVariable Long circleId, @ModelAttribute CircleRequest circleRequest) throws IOException {
         String adminUserEmail = circleRequest.getEmail();
+
         UserDTO adminUser = userService.findByEmail(adminUserEmail);
+        MultipartFile file = circleRequest.getFile();
+        byte[] image = null;
+
+        if (file != null && !file.isEmpty()) {
+            image = file.getBytes();
+        }
 
         CircleDTO circleDTO = CircleDTO.builder()
                 .circleId(circleId)
@@ -142,6 +164,7 @@ public class CircleController {
                 .adminUser(adminUser)
                 .questions(circleRequest.getQuestions())
                 .hashtags(circleRequest.getHashtags())
+                .image(image)
                 .build();
         CircleDTO updatedCircle = circleService.updateCircle(circleDTO);
         return ResponseEntity.ok(updatedCircle);

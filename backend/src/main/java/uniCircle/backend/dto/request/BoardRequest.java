@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 import uniCircle.backend.entity.Visibility;
 
 @Getter
@@ -66,4 +67,12 @@ public class BoardRequest {
             requiredMode = Schema.RequiredMode.REQUIRED,
             example = "true")
     private Boolean isNotice;
+
+    @Schema(
+            name = "file",
+            description = "이미지 파일",
+            type = "file",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
+    private MultipartFile file; // 이미지 파일 추가
 }

@@ -40,8 +40,12 @@ public class Circle {
     @Column
     private String questions;
 
+    @Lob
+    @Column(name = "image")
+    private byte[] image; // 이미지 데이터
+
     @Builder
-    public Circle(Long circleId, String name, String description, LocalDateTime createdAt, User adminUser, Set<CircleHashtag> circleHashtags, List<CircleUser> circleUsers, String questions) {
+    public Circle(Long circleId, String name, String description, LocalDateTime createdAt, User adminUser, Set<CircleHashtag> circleHashtags, List<CircleUser> circleUsers, String questions, byte[] image) {
         this.circleId = circleId;
         this.name = name;
         this.description = description;
@@ -50,6 +54,7 @@ public class Circle {
         this.circleHashtags = circleHashtags;
         this.circleUsers = circleUsers;
         this.questions = questions;
+        this.image = image;
     }
 
 

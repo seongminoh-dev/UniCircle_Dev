@@ -1,16 +1,20 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks";
 import { getCircleById, getEncounteredCircle, getBoardsByCircle } from "@/services";
-import { BoardPreview } from "@/components";
+import { BoardPreview, ModalWrapper, AdmissionCreate } from "@/components";
 
 
 const CircleDetailPage = ({ params }) => {
     const { circleId } = params; // URL에서 ID 추출
     const [circleInfo, setCircleInfo] = useState(null);
     const auth = useAuth();
+    const router = useRouter();
+    const [admissionToggle, setAdmissionToggle] = useState(false);
+    const [boardToggle, setBoardToggle] = useState(false);
+    const [questions, setQuestions] = useState({"title": "", "description": "", "questions":[]});
     const [isCircleMember, setIsCircleMember] = useState(false);
     const [boards, setBoards] = useState([]);
 
@@ -18,8 +22,10 @@ const CircleDetailPage = ({ params }) => {
         const fetchData = async () => {
             const response_circle = await getCircleById(circleId);
             setCircleInfo(response_circle);
+            console.log(JSON.parse(response_circle.questions));
+            setQuestions(JSON.parse(response_circle.questions))
             
-            const response_encountered = await getEncounteredCircle(auth.user.userId);
+            const response_encountered = await getEncounteredCircle(auth.user.email);
             const isIncluded = response_encountered.some(circle => circle.circleId.toString() === circleId);
             setIsCircleMember(isIncluded);  
 
@@ -28,6 +34,14 @@ const CircleDetailPage = ({ params }) => {
         };
         fetchData();
     }, [circleId]);
+
+    const handleAdmissionToggle = (value) =>{
+        if (questions && questions.title){
+            setAdmissionToggle(value);
+        }else{
+            alert("신청할 수 없습니다");
+        }
+    }
 
 
   return (
@@ -48,13 +62,18 @@ const CircleDetailPage = ({ params }) => {
                     </div>
                     <div className="w-[118px] h-[32px] bg-[#3578FF] shadow rounded-[8px] flex items-center justify-center px-[10px] py-[8px]">
                     {isCircleMember ? (
-                    <div className="w-[98px] h-[16px] text-[#FFFFFF] font-OpenSans text-[12px] leading-[16px] font-bold text-center overflow-hidden whitespace-nowrap text-ellipsis">
-                        회원 목록
-                    </div>
-                    ):(
-                    <div className="w-[98px] h-[16px] text-[#FFFFFF] font-OpenSans text-[12px] leading-[16px] font-bold text-center overflow-hidden whitespace-nowrap text-ellipsis">
-                        가입하기
-                    </div>
+                        <>
+                            <div className="w-[98px] h-[16px] text-[#FFFFFF] font-OpenSans text-[12px] leading-[16px] font-bold text-center overflow-hidden whitespace-nowrap text-ellipsis">
+                                회원 목록
+                            </div>
+                            <div onClick={() => {setBoardToggle(true)}} className="w-[98px] h-[16px] text-[#FFFFFF] font-OpenSans text-[12px] leading-[16px] font-bold text-center overflow-hidden whitespace-nowrap text-ellipsis">
+                                글쓰기
+                            </div>
+                        </>
+                        ):(
+                        <div onClick={() => {handleAdmissionToggle(true)}} className="w-[98px] h-[16px] text-[#FFFFFF] font-OpenSans text-[12px] leading-[16px] font-bold text-center overflow-hidden whitespace-nowrap text-ellipsis">
+                            가입하기
+                        </div>
                     )}
                     </div>
                 </div>
@@ -83,11 +102,29 @@ const CircleDetailPage = ({ params }) => {
             )}
             </div>
             <div className="flex-shrink-0 w-full h-[161px] bg-white shadow rounded-[20px] flex flex-col items-start p-[17px] overflow-hidden">
-            {boards.map((board, index) => (
-                <BoardPreview key={index} board={board} />
-            ))}
+            {boards.length == 0 ? 
+                (
+                    <div className="bg-white rounded-xl shadow p-6 mb-4 w-full">
+                        <p>게시글이 없습니다</p>
+                    </div>
+                ):
+                (
+                    <>         
+                        {boards.map((board, index) => (
+                            <BoardPreview key={index} board={board} />
+                        ))}
+                    </>
+                )
+            }
             </div>
         </div>
+        {
+            admissionToggle && (
+                <ModalWrapper isOpen={admissionToggle} onClose={() => setAdmissionToggle(false)}>
+                    <AdmissionCreate questions={questions} />
+                </ModalWrapper>
+            )
+        }
         <div className="w-full h-[80px] flex justify-center items-center px-[10px] bg-transparent mt-[20px]">
             <div className="w-[60px] h-[60px] relative">
             <div className="absolute inset-0 bg-white"></div>
