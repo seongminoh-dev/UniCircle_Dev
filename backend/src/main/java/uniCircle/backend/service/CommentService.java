@@ -26,7 +26,7 @@ public class CommentService {
     private final UserRepository userRepository;
 
     @Transactional
-    public CommentDTO createComment(Long postId, Long userId, Visibility visibility) {
+    public CommentDTO createComment(Long postId, Long userId, Visibility visibility, String content) {
         Board post = boardRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid post ID"));
         User user = userRepository.findById(userId)
@@ -37,6 +37,7 @@ public class CommentService {
                 .user(user)
                 .visibility(visibility)
                 .createdAt(LocalDateTime.now())
+                .content(content)
                 .build();
 
         Comment savedComment = commentRepository.save(comment);
@@ -61,7 +62,7 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentDTO updateComment(Long commentId, Visibility visibility) {
+    public CommentDTO updateComment(Long commentId, Visibility visibility, String content) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid comment ID"));
 
@@ -72,6 +73,7 @@ public class CommentService {
                 .visibility(visibility)
                 .createdAt(comment.getCreatedAt())
                 .updatedAt(LocalDateTime.now())
+                .content(comment.getContent())
                 .build();
 
         Comment updatedComment = commentRepository.save(comment);

@@ -36,14 +36,18 @@ public class Comment {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt; // 수정일
 
+    @Column(name = "content")
+    private String content;
+
     @Builder
     public Comment(Long commentId, Board post, User user, Visibility visibility,
-                   LocalDateTime createdAt, LocalDateTime updatedAt) {
+                   LocalDateTime createdAt, LocalDateTime updatedAt, String content) {
         this.commentId = commentId;
         this.post = post;
         this.user = user;
         this.visibility = visibility;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.content = content;
     }
 }
