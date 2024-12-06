@@ -1,15 +1,15 @@
 "use server";
-import { getCookie } from ".";
+import {getAccessToken} from "./Token";
 
 export async function getBoardsByCircle(circleId) {
   const URL = `${process.env.NEXT_PUBLIC_API_URL}boards/circle/${circleId}`;
 
-  const accessToken = await getCookie("access_token"); // 토큰 가져오기
+  const accessToken = await getAccessToken(); // 토큰 가져오기
   const res = await fetch(URL, {
     method: "GET",
     headers: new Headers({
       "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `${accessToken}`,
     }),
     cache: "no-store",
   });

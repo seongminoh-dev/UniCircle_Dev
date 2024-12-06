@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from "@/hooks";
 import { useRouter } from "next/navigation";
@@ -10,7 +10,7 @@ export const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const { signIn } = useAuth();
+  const { isAuthenticated,signIn } = useAuth();
   const router = useRouter();
 
   const handleSubmit = async (e) => {

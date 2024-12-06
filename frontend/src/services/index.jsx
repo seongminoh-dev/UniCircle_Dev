@@ -1,7 +1,7 @@
 import { setCookie, getCookie, getAllCookies, deleteCookies } from './Cookie';
 import { PostData } from './PostData';
 import { getCircleById, getEncounteredCircle, updateCircle, createCircle } from './Circle';
-import { getPostsByCircle } from './Post';
+import { getBoardsByCircle } from './Board';
 export {
   deleteCookies,
   setCookie,
@@ -12,5 +12,5 @@ export {
   getEncounteredCircle,
   updateCircle,
   createCircle,
-  getPostsByCircle
+  getBoardsByCircle
 };
