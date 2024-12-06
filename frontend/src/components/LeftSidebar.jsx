@@ -46,6 +46,14 @@ export const LeftSidebar = () => {
     setSelectedItem(path); // 선택 상태 업데이트
   };
 
+  const handleItemClick = (item) => {
+    setSelectedItem(item);
+    // '동아리 관리' 버튼이 눌리면 특정 경로로 이동
+    if (item === '동아리 관리') {
+      router.push('/circle-management/'); // 원하는 경로로 라우팅
+    }
+  };
+
   return (
     <aside className="w-80 h-screen py-8 pl-6">
       {/* 닉네임 및 활동 정보 */}

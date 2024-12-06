@@ -8,7 +8,7 @@ import { useAuth } from "@/hooks";
 import { getAccessToken } from "@/services/Token";
 import { getCircleById } from "@/services";
 import { getAllFormByCircleId } from "@/services/AdmissionFormAPI";
-import { getCircleMembers } from "@/services/Circle";
+import { getCircleMembers } from "@/services";
 
 const MemberManagement = () => {
   const router = useRouter();
@@ -24,7 +24,7 @@ const MemberManagement = () => {
   useEffect(() => {
     if (!auth.isAuthenticated) {
       alert("로그인이 필요합니다.");
-      router.push("/login");
+      router.push("/auth//login");
       return;
     }
 
@@ -54,7 +54,7 @@ const MemberManagement = () => {
         const membersData = await getCircleMembers(circleId);
         const mappedMembers = membersData.map(user => ({
           nickname: user.nickname,
-          date: user.joinDate
+          date: "2024년 12월 5일",
         }));
         setMembers(mappedMembers);
 
@@ -65,7 +65,7 @@ const MemberManagement = () => {
     };
 
     fetchData();
-  }, [circleId, router, auth.isAuthenticated]);
+  }, [circleId]);
 
   const handleViewForm = (nickname) => {
     alert(`${nickname}의 가입 양식을 확인합니다.`);
@@ -78,7 +78,6 @@ const MemberManagement = () => {
   const handleReject = (nickname) => {
     alert(`${nickname}의 요청을 거절합니다.`);
   };
-
   const handleLeave = (nickname) => {
     alert(`${nickname}의 동아리 탈퇴를 처리합니다.`);
   };
