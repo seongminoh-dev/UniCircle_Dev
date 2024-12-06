@@ -41,9 +41,9 @@ const SplashScreen = () => {
                 <LeftSidebar />
   
                 {/* Scrollable children */}
-                <div className="bg-neutral-50 rounded-lg m-4 p-2 space-y-4 flex-grow overflow-y-auto">
-                  {children}
-                </div>
+                <div className="bg-white rounded-lg m-4 p-2 space-y-4 flex-grow overflow-y-auto">
+                  {children} 
+
   
                 {/* Right Sidebar */}
                 <RightSidebar />

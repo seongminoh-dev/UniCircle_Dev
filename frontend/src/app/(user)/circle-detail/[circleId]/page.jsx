@@ -57,7 +57,7 @@ const CircleDetailPage = ({ params }) => {
     };
 
   return (
-    <div >
+    <div className="px-2">
     
             <div className="bg-white rounded-lg shadow">
             {circleInfo && (

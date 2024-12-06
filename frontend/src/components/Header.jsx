@@ -40,9 +40,8 @@ export const Header = () => {
         </div>
 
         {/* 검색창 */}
-        <div className="flex-grow">
-          <SearchBar />
-        </div>
+        <div className="px-4 flex-grow">
+
 
         {/* 로그아웃 버튼 */}
         <div className="w-80 flex-shrink-0 flex justify-end px-4">
