@@ -3,9 +3,9 @@
 import MemberCard from "./MemberCard";
 
 // 가입한 멤버 카드
-const ApprovedMemberCard = ({ nickname, date, onViewForm, onLeave }) => {
+const ApprovedMemberCard = ({ nickname, email, onViewForm, onLeave }) => {
   return (
-    <MemberCard nickname={nickname} date={`${date} 가입`}>
+    <MemberCard nickname={nickname} info={`${email}`}>
       <button
         onClick={onViewForm}
         className="bg-blue-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-600"

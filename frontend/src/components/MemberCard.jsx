@@ -1,21 +1,21 @@
 "use client";
 
-const MemberCard = ({ nickname, date, children }) => {
+const MemberCard = ({ nickname, info, children }) => {
   return (
-    <div className="flex items-center justify-between bg-white p-4 shadow rounded-md mb-4">
-      {/* Left Section: Member Info */}
-      <div className="flex items-center">
-        <div className="h-12 w-12 bg-gray-200 rounded-full flex items-center justify-center mr-4">
-          <span className="text-gray-500 text-xl">👤</span>
-        </div>
-        <div>
-          <h3 className="font-semibold text-gray-800">{nickname}</h3>
-          <p className="text-sm text-gray-500">{date}</p>
-        </div>
+    <div className="w-60 flex flex-col items-center bg-white p-6 shadow-md rounded-md mb-4">
+      {/* Avatar Section */}
+      <div className="h-16 w-16 bg-gray-200 rounded-full flex items-center justify-center mb-4">
+        <span className="text-gray-500 text-2xl">👤</span>
       </div>
 
-      {/* Right Section: Buttons */}
-      <div className="flex flex-col space-y-2">{children}</div>
+      {/* Nickname */}
+      <h3 className="font-semibold text-gray-800 text-lg mb-2 text-center">{nickname}</h3>
+
+      {/* Info */}
+      <p className="text-sm text-gray-500 text-center">{info}</p>
+
+      {/* Buttons */}
+      <div className="flex flex-col space-y-2 mt-4">{children}</div>
     </div>
   );
 };

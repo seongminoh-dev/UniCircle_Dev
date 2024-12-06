@@ -68,17 +68,19 @@ const CircleManagementPage = () => {
   };
 
   return (
-    <div>
+    <div className="p-2">
       <h1 className="text-2xl font-bold text-gray-900 mb-2">동아리 관리</h1>
 
       {/* 내가 가입한 동아리 */}
-      <section className="mb-6 flex-1 overflow-y-auto p-4">
+      <section className="mb-6 flex-1 overflow-y-auto p-2">
         <h2 className="text-lg font-semibold text-gray-500 mb-4">
           내가 가입한 동아리
         </h2>
-        <div className="bg-gray-100 p-4 space-y-4 rounded-lg">
+        <div >
           {joinedCircles.length === 0 ? (
+            <div className="bg-gray-100 p-4 space-y-4 rounded-lg">
             <p className="text-gray-500">아직 가입한 동아리가 없습니다.</p>
+            </div>
           ) : (
             joinedCircles.map((circle, index) => (
               <CirclePreview key={index} circle={circle} />
@@ -91,13 +93,15 @@ const CircleManagementPage = () => {
       <hr className="my-4 border-gray-300" />
 
       {/* 내가 관리중인 동아리 */}
-      <section className="flex-1 overflow-y-auto p-4">
+      <section className="flex-1 overflow-y-auto p-2">
         <h2 className="text-lg font-semibold text-gray-500 mb-4">
           내가 관리중인 동아리
         </h2>
-        <div className="bg-gray-100 p-4 space-y-4 rounded-lg">
+        <div>
           {managedCircles.length === 0 ? (
+            <div className="bg-gray-100 p-4 space-y-4 rounded-lg">
             <p className="text-gray-500">관리중인 동아리가 없습니다.</p>
+            </div>
           ) : (
             managedCircles.map((circle, index) => (
               <CircleManagementPreview

@@ -2,36 +2,49 @@
 
 import ApplicationMemberCard from "@/components/ApplicationMemberCard";
 import ApprovedMemberCard from "@/components/ApprovedMemberCard";
+import ModalWrapper from "@/components/ModalWrapper"; // Import the ModalWrapper component
+import ApplyFormViewer from "@/components/ApplyFormViewer"; // Import the ApplyFormViewer component
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/hooks";
 import { getAccessToken } from "@/services/Token";
 import { getCircleById } from "@/services";
-import { getAllFormByCircleId } from "@/services/AdmissionFormAPI";
+import { getAllFormByCircleId } from "@/services/AdmissionForm";
 import { getCircleMembers } from "@/services";
+import { updateAdmissionFormStatus } from "@/services/AdmissionForm";
+import { acceptUserByFormId } from "@/services/AdmissionForm";
+import { getAdmissionForm } from "@/services/AdmissionForm";
 
 const MemberManagement = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  
+
   const circleId = searchParams.get("circleId");
-  
+
   const [applications, setApplications] = useState([]);
+  const [memberForms, setMemberForms] = useState([]);
   const [members, setMembers] = useState([]);
   const [circleName, setCircleName] = useState("");
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedFormData, setSelectedFormData] = useState({
+    id:-1,
+    title: "",
+    description: "",
+    questions: [],
+  });
   const auth = useAuth();
 
   useEffect(() => {
     if (!auth.isAuthenticated) {
       alert("로그인이 필요합니다.");
-      router.push("/auth//login");
+      router.push("/auth/login");
       return;
     }
 
     const token = getAccessToken();
     if (!circleId) {
       alert("잘못된 접근입니다. circleId가 필요합니다.");
-      router.push("/"); 
+      router.push("/");
       return;
     }
 
@@ -43,21 +56,24 @@ const MemberManagement = () => {
 
         // 입부신청서 목록 가져오기
         const formsData = await getAllFormByCircleId(circleId);
-        const pendingForms = formsData.filter(form => form.status === 'PENDING');
-        const mappedApplications = pendingForms.map(form => ({
-          nickname: `User${form.userId}`,
-          date: form.createdAt
-        }));
-        setApplications(mappedApplications);
+        const pendingForms = formsData.filter(
+          (form) => form.status === "PENDING"
+        );
+        setApplications(pendingForms);
+
+        const acceptedForms = formsData.filter(
+          (form) => form.status === "ACCEPTED"
+        );
+        setMemberForms(acceptedForms);
 
         // 동아리 회원 목록 가져오기
         const membersData = await getCircleMembers(circleId);
-        const mappedMembers = membersData.map(user => ({
+        const mappedMembers = membersData.map((user) => ({
+          id: user.userId,
           nickname: user.nickname,
-          date: "2024년 12월 5일",
+          email: user.email,
         }));
         setMembers(mappedMembers);
-
       } catch (error) {
         console.error(error);
         alert("데이터 로딩에 실패했습니다.");
@@ -67,23 +83,64 @@ const MemberManagement = () => {
     fetchData();
   }, [circleId]);
 
-  const handleViewForm = (nickname) => {
-    alert(`${nickname}의 가입 양식을 확인합니다.`);
+  const handleViewForm = (formData) => {
+    let formContent = formData.formContent;
+  
+    // JSON 문자열인지 확인 후 파싱
+    if (typeof formContent === "string") {
+      try {
+        formContent = JSON.parse(formContent);
+      } catch (error) {
+        console.error("Invalid JSON format in formContent:", formContent);
+        return;
+      }
+    }
+  
+    // 상태 업데이트
+    setSelectedFormData({
+      id: formData.formId,
+      title: formContent.title || "No Title",
+      description: formContent.description || "No Description",
+      questions: formContent.questions || [],
+    });
+  
+    // 상태 업데이트 이후 모달 열기
+    setTimeout(() => {
+      setModalOpen(true);
+    }, 0); // 0ms 지연으로 상태 업데이트 완료 후 모달 열기
+  };
+  const handleApprove = (formData) => {
+    console.log(formData);
+    acceptUserByFormId(formData.formId);
+    alert(`${formData.userId}의 가입 신청을 수락합니다.`);
   };
 
-  const handleApprove = (nickname) => {
-    alert(`${nickname}의 가입 신청을 수락합니다.`);
+  const handleReject = (formData) => {
+    updateAdmissionFormStatus(formData.formId,"REJECTED");
+    alert(`${formData.userId}의 요청을 거절합니다.`);
   };
 
-  const handleReject = (nickname) => {
-    alert(`${nickname}의 요청을 거절합니다.`);
+  const handleLeave = (userId) => {
+    alert(`${userId}의 동아리 탈퇴를 처리합니다.`);
   };
-  const handleLeave = (nickname) => {
-    alert(`${nickname}의 동아리 탈퇴를 처리합니다.`);
+
+  const handleAcceptInForm = () => {
+    acceptUserByFormId(selectedFormData.formId);
+    alert(`가입을 수락하였습니다.`);
+  };
+
+  const handleViewMemberForm = (userId) => {
+    // memberForms에서 userId와 일치하는 formData 찾기
+    const matchedForm = memberForms.find((form) => form.userId === userId);
+    if (matchedForm) {
+      handleViewForm(matchedForm); // handleViewForm 호출
+    } else {
+      alert("해당 회원의 폼 데이터를 찾을 수 없습니다.");
+    }
   };
 
   return (
-    <div>
+    <div className="p-4">
       <h1 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
         동아리 회원 관리
         <span className="border-l border-gray-300 mx-3 h-6"></span>
@@ -91,49 +148,63 @@ const MemberManagement = () => {
       </h1>
 
       {/* 가입 신청 목록 */}
-      <section className="mb-10">
+      <section className="bg-gray-100 p-4 rounded-lg ">
         <h2 className="text-lg font-semibold text-gray-700 mb-4">가입 신청 목록</h2>
-        <div className="bg-gray-100 p-4 rounded-lg">
-          {applications.length === 0 ? (
-            <p className="text-gray-500">아직 가입 신청이 없습니다.</p>
-          ) : (
-            applications.map((app, index) => (
-              <ApplicationMemberCard
-                key={index}
-                nickname={app.nickname}
-                date={app.date}
-                onViewForm={() => handleViewForm(app.nickname)}
-                onApprove={() => handleApprove(app.nickname)}
-                onReject={() => handleReject(app.nickname)}
-              />
-            ))
-          )}
+        <div className="overflow-x-auto">
+          <div className="flex space-x-4">
+            {applications.length === 0 ? (
+              <p className="text-gray-500">아직 가입 신청이 없습니다.</p>
+            ) : (
+              applications.map((app, index) => (
+                <ApplicationMemberCard
+                  key={index}
+                  nickname={"임시 닉네임"} // 닉네임 처리
+                  date={app.createdAt}
+                  onViewForm={() => handleViewForm(app)} // Trigger modal on click
+                  onApprove={() => handleApprove(app)}
+                  onReject={() => handleReject(app)}
+                />
+              ))
+            )}
+          </div>
         </div>
       </section>
 
       {/* Divider */}
-      <hr className="my-4 border-gray-300" />
+      <div className="mx-10 my-8" />
 
       {/* 회원 목록 */}
-      <section>
+      <section className="bg-gray-100 p-4 rounded-lg ">
         <h2 className="text-lg font-semibold text-gray-700 mb-4">회원 목록</h2>
-        <div className="bg-gray-100 p-4 rounded-lg">
-          {members.length === 0 ? (
-            <p className="text-gray-500">아직 회원 목록이 없습니다.</p>
-          ) : (
-            members.map((member, index) => (
-              <ApprovedMemberCard
-                key={index}
-                nickname={member.nickname}
-                date={member.date}
-                onViewForm={() => handleViewForm(member.nickname)}
-                onLeave={() => handleLeave(member.nickname)}
-              />
-            ))
-          )}
+        <div className="overflow-x-auto">
+          <div className="flex space-x-4">
+            {members.length === 0 ? (
+              <p className="text-gray-500">아직 회원 목록이 없습니다.</p>
+            ) : (
+              members.map((member, index) => (
+                <ApprovedMemberCard
+                  key={index}
+                  nickname={member.nickname}
+                  email={member.email}
+                  onViewForm={()=> handleViewMemberForm(member.id)}
+                  onLeave={() => handleLeave(member.nickname)}
+                />
+              ))
+            )}
+          </div>
         </div>
       </section>
+
+      {/* Modal for Viewing Forms */}
+      <ModalWrapper isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+      {selectedFormData && selectedFormData.title ? (
+        <ApplyFormViewer formData={selectedFormData} />
+      ) : (
+        <div>로딩 중...</div>
+      )}
+      </ModalWrapper>
     </div>
+
   );
 };
 

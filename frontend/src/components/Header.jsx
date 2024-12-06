@@ -41,8 +41,7 @@ export const Header = () => {
 
         {/* 검색창 */}
         <div className="px-4 flex-grow">
-          <SearchBar />
-        </div>
+
 
         {/* 로그아웃 버튼 */}
         <div className="w-80 flex-shrink-0 flex justify-end px-4">

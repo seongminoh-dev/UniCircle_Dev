@@ -177,3 +177,26 @@ export async function sendAdmissionForm({ circleId, userId, formContent }) {
       throw error;
     }
   }
+
+  export async function acceptUserByFormId(formId) {
+    const URL = `${process.env.NEXT_PUBLIC_API_URL}forms/accept/${formId}`;
+    try {
+      const accessToken = await getAccessToken(); // Access Token 가져오기
+      const response = await fetch(URL, {
+        method: "PUT",
+        headers: {
+          accept: "*/*",
+          "Authorization": accessToken,
+        },
+      });
+  
+      if (response.status === 200) {
+        return; // 성공 시 추가 작업 필요 없음
+      } else {
+        throw new Error(`Admission Form 승인 실패: ${response.status}`);
+      }
+    } catch (error) {
+      console.error("Unknown Error in acceptUseByFormId", error.message);
+      throw error; // 예외를 다시 던져 호출자가 처리
+    }
+  }
