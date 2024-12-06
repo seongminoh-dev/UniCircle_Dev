@@ -50,7 +50,7 @@ public class CircleUserService {
 
     // 유저를 동아리에서 제거
     @Transactional
-    public void removeUserFromCircle(Long circleId, UserDTO userDTO) {
+    public CircleUserDTO removeUserFromCircle(Long circleId, UserDTO userDTO) {
         Circle circle = circleRepository.findByCircleId(circleId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 동아리입니다."));
 
@@ -65,6 +65,8 @@ public class CircleUserService {
 
 
         circleUserRepository.delete(circleUser);
+
+        return CircleUserDTO.fromEntity(circleUser);
     }
 
     // 유저가 속한 동아리 목록

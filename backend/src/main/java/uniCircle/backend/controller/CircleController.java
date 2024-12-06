@@ -11,11 +11,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uniCircle.backend.dto.CircleDTO;
+import uniCircle.backend.dto.CircleUserDTO;
 import uniCircle.backend.dto.HashtagDTO;
 import uniCircle.backend.dto.UserDTO;
 import uniCircle.backend.dto.request.CircleRequest;
 import uniCircle.backend.dto.response.ErrorResponse;
 import uniCircle.backend.dto.response.SuccessResponse;
+import uniCircle.backend.entity.Circle;
 import uniCircle.backend.service.CircleHashtagService;
 import uniCircle.backend.service.CircleService;
 import uniCircle.backend.service.CircleUserService;
@@ -64,7 +66,7 @@ public class CircleController {
                     )
             }
     )
-    public String createCircle(@RequestBody CircleRequest circleRequest) {
+    public ResponseEntity<CircleDTO> createCircle(@RequestBody CircleRequest circleRequest) {
         String adminUserEmail = circleRequest.getEmail();
         UserDTO adminUser = userService.findByEmail(adminUserEmail);
 
@@ -80,7 +82,7 @@ public class CircleController {
         // circle 만들기
         CircleDTO createdCircle = circleService.createCircle(circleDTO);
 
-        return "redirect:/";
+        return ResponseEntity.ok(createdCircle);
     }
 
     @Operation(
@@ -129,7 +131,7 @@ public class CircleController {
                     )
             }
     )
-    public String updateCircle(@PathVariable Long circleId, @RequestBody CircleRequest circleRequest) {
+    public ResponseEntity<CircleDTO> updateCircle(@PathVariable Long circleId, @RequestBody CircleRequest circleRequest) {
         String adminUserEmail = circleRequest.getEmail();
         UserDTO adminUser = userService.findByEmail(adminUserEmail);
 
@@ -141,8 +143,8 @@ public class CircleController {
                 .questions(circleRequest.getQuestions())
                 .hashtags(circleRequest.getHashtags())
                 .build();
-        circleService.updateCircle(circleDTO);
-        return "redirect:/";
+        CircleDTO updatedCircle = circleService.updateCircle(circleDTO);
+        return ResponseEntity.ok(updatedCircle);
     }
 
     @DeleteMapping("/{circleId}/delete")
@@ -254,12 +256,12 @@ public class CircleController {
             }
     )
     @PostMapping("/{circleId}/add")
-    public String addUserToCircle(@PathVariable Long circleId, @RequestParam String userEmail) {
+    public ResponseEntity<CircleUserDTO> addUserToCircle(@PathVariable Long circleId, @RequestParam String userEmail) {
         UserDTO userDTO = userService.findByEmail(userEmail);
 
-        circleUserService.addUserToCircle(circleId, userDTO);
+        CircleUserDTO circleUserDTO = circleUserService.addUserToCircle(circleId, userDTO);
 
-        return "redirect:/";
+        return ResponseEntity.ok(circleUserDTO);
     }
 
     // circle에 속한 user 제거
@@ -280,12 +282,12 @@ public class CircleController {
             }
     )
     @DeleteMapping("/{circleId}/remove")
-    public String removeUserFromCircle(@PathVariable Long circleId, @RequestParam String userEmail) {
+    public ResponseEntity<CircleUserDTO> removeUserFromCircle(@PathVariable Long circleId, @RequestParam String userEmail) {
         UserDTO userDTO = userService.findByEmail(userEmail);
 
-        circleUserService.removeUserFromCircle(circleId, userDTO);
+        CircleUserDTO circleUserDTO = circleUserService.removeUserFromCircle(circleId, userDTO);
 
-        return "redirect:/";
+        return ResponseEntity.ok(circleUserDTO);
     }
 
     // circle의 hashtag 리스트
