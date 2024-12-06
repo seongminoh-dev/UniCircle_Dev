@@ -2,13 +2,13 @@
 
 import ApplyQuestion from './ApplyQuestion';
 
-const ApplyFormViewer = ({ formData}) => {
-  if (!formData) {
+const ApplyFormViewer = ({ formData, onClickAccept}) => {
+  if (!formData || !formData.title) {
     return <div>로딩 중...</div>;
   }
-
+  console.log(formData);
   return (
-    <div className="mx-auto p-6 bg-white border rounded shadow-lg">
+    <div className="w-96 mx-auto p-2 bg-white">
       <h1 className="text-2xl font-bold mb-4">{formData.title}</h1>
       <p className="mb-6">{formData.description}</p>
 
@@ -22,7 +22,7 @@ const ApplyFormViewer = ({ formData}) => {
       ))}
 
       <button
-        onClick={handleSubmit}
+        onClick={onClickAccept}
         className="w-full p-2 bg-green-500 text-white rounded hover:bg-green-600"
       >
         수락하기
