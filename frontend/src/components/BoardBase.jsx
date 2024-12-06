@@ -40,12 +40,7 @@ const BoardBase = ({ board, isPreview = false }) => {
 
       {/* Tags and Stats */}
       <div className="flex justify-between items-center">
-        {/* Tags */}
-        <div className="flex space-x-2">
-          {tags.map((tag, index) => (
-            <CircleTag key={index} tag={tag} />
-          ))}
-        </div>
+      
 
         {/* Views and Comments */}
         <div className="flex items-center space-x-4 text-gray-500 mx-4">
