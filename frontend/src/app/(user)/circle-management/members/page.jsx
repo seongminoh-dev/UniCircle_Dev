@@ -2,6 +2,8 @@
 
 import ApplicationMemberCard from "@/components/ApplicationMemberCard";
 import ApprovedMemberCard from "@/components/ApprovedMemberCard";
+import ModalWrapper from "@/components/ModalWrapper"; // Import the ModalWrapper component
+import ApplyFormViewer from "@/components/ApplyFormViewer"; // Import the ApplyFormViewer component
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/hooks";
@@ -13,25 +15,27 @@ import { getCircleMembers } from "@/services";
 const MemberManagement = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  
+
   const circleId = searchParams.get("circleId");
-  
+
   const [applications, setApplications] = useState([]);
   const [members, setMembers] = useState([]);
   const [circleName, setCircleName] = useState("");
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedFormData, setSelectedFormData] = useState(null); // State to manage the form data for the modal
   const auth = useAuth();
 
   useEffect(() => {
     if (!auth.isAuthenticated) {
       alert("로그인이 필요합니다.");
-      router.push("/auth//login");
+      router.push("/auth/login");
       return;
     }
 
     const token = getAccessToken();
     if (!circleId) {
       alert("잘못된 접근입니다. circleId가 필요합니다.");
-      router.push("/"); 
+      router.push("/");
       return;
     }
 
@@ -43,23 +47,24 @@ const MemberManagement = () => {
 
         // 입부신청서 목록 가져오기
         const formsData = await getAllFormByCircleId(circleId);
-        const pendingForms = formsData.filter(form => form.status === 'PENDING');
-        const mappedApplications = pendingForms.map(form => ({
-          userId:user.userId,
-          nickname: `User${form.userId}`,
-          date: form.createdAt
-        }));
-        setApplications(mappedApplications);
+        const pendingForms = formsData.filter(
+          (form) => form.status === "PENDING"
+        );
+        // const mappedApplications = pendingForms.map((form) => ({
+        //   userId: form.userId,
+        //   nickname: `User${form.userId}`,
+        //   date: form.createdAt,
+        //   formData: form.formContent,
+        // }));
+        setApplications(pendingForms);
 
         // 동아리 회원 목록 가져오기
         const membersData = await getCircleMembers(circleId);
-        const mappedMembers = membersData.map(user => ({
-          id:user.userId,
+        const mappedMembers = membersData.map((user) => ({
           nickname: user.nickname,
-          email: user.email,
+          date: "2024년 12월 5일",
         }));
         setMembers(mappedMembers);
-
       } catch (error) {
         console.error(error);
         alert("데이터 로딩에 실패했습니다.");
@@ -69,17 +74,21 @@ const MemberManagement = () => {
     fetchData();
   }, [circleId]);
 
-  const handleViewForm = (nickname) => {
-    alert(`${nickname}의 가입 양식을 확인합니다.`);
+  const handleViewForm = (formData) => {
+    console.log("폼:"+ formData);
+    setSelectedFormData(formData); // Set the selected form data
+    setModalOpen(true); // Open the modal
   };
 
   const handleApprove = (nickname) => {
+
     alert(`${nickname}의 가입 신청을 수락합니다.`);
   };
 
   const handleReject = (nickname) => {
     alert(`${nickname}의 요청을 거절합니다.`);
   };
+
   const handleLeave = (nickname) => {
     alert(`${nickname}의 동아리 탈퇴를 처리합니다.`);
   };
@@ -102,11 +111,11 @@ const MemberManagement = () => {
             applications.map((app, index) => (
               <ApplicationMemberCard
                 key={index}
-                nickname={app.nickname}
-                date={app.date}
-                onViewForm={() => handleViewForm(app.nickname)}
-                onApprove={() => handleApprove(app.nickname)}
-                onReject={() => handleReject(app.nickname)}
+                nickname={app.nickname} // !!!!!!!!!!!!!! 닉네임 처리 !!!!!!!!!!!
+                date={app.createdAt}
+                onViewForm={() => handleViewForm(app.formContent)} // Trigger modal on click
+                onApprove={() => handleApprove(app.formId)}
+                onReject={() => handleReject(app.userId)}
               />
             ))
           )}
@@ -128,13 +137,17 @@ const MemberManagement = () => {
                 key={index}
                 nickname={member.nickname}
                 date={member.date}
-                onViewForm={() => handleViewForm(member.nickname)}
                 onLeave={() => handleLeave(member.nickname)}
               />
             ))
           )}
         </div>
       </section>
+
+      {/* Modal for Viewing Forms */}
+      <ModalWrapper isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+        <ApplyFormViewer formData={selectedFormData} /> {/* Pass selected form data */}
+      </ModalWrapper>
     </div>
   );
 };
