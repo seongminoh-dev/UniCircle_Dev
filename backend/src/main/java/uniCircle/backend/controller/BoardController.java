@@ -18,8 +18,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 import uniCircle.backend.dto.BoardDTO;
+import uniCircle.backend.dto.request.BoardRequest;
 import uniCircle.backend.dto.response.ErrorResponse;
 import uniCircle.backend.dto.response.SuccessResponse;
+import uniCircle.backend.entity.Board;
 import uniCircle.backend.service.BoardService;
 import uniCircle.backend.entity.Visibility;
 
@@ -47,28 +49,26 @@ public class BoardController {
                     )
             }
     )
-    public ResponseEntity<BoardDTO> createBoard(
-            @Parameter(description = "사용자 ID", required = true) @RequestParam Long userId,
-            @Parameter(description = "모임 ID", required = true) @RequestParam Long circleId,
-            @Parameter(description = "게시글 제목", required = true) @RequestParam String title,
-            @Parameter(description = "게시글 내용", required = true) @RequestParam String content,
-            @Parameter(description = "게시글 공개 범위", required = true) @RequestParam Visibility visibility,
-            @Parameter(description = "해시태그 ID (선택적)") @RequestParam(required = false) Long hashtagId,
-            @Parameter(description = "공지 여부", required = true) @RequestParam Boolean isNotice,
-            @Parameter(description = "이미지", required = false) @RequestParam MultipartFile file) throws IOException {
+    public ResponseEntity<BoardDTO> createBoard(@ModelAttribute BoardRequest boardRequest) throws IOException {
 
-        byte[] imageData = file.getBytes();
+        MultipartFile file = boardRequest.getFile();
+        byte[] imageData = null;
+
+        if (file != null && !file.isEmpty()) {
+            imageData = file.getBytes();
+        }
+
         BoardDTO boardDTO = BoardDTO.builder()
-                .userId(userId)
-                .circleId(circleId)
-                .title(title)
-                .content(content)
-                .visibility(visibility)
-                .hashtagId(hashtagId)
-                .isNotice(isNotice)
+                .userId(boardRequest.getUserId())
+                .circleId(boardRequest.getCircleId())
+                .title(boardRequest.getTitle())
+                .content(boardRequest.getContent())
+                .visibility(boardRequest.getVisibility())
+                .hashtagId(boardRequest.getHashtagId())
+                .isNotice(boardRequest.getIsNotice())
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
-                .image(imageData)
+                .image(imageData) // 이미지 데이터 설정
                 .build();
 
         BoardDTO createdBoard = boardService.createBoard(boardDTO);
@@ -157,30 +157,26 @@ public class BoardController {
                     )
             }
     )
-    public ResponseEntity<BoardDTO> updateBoard(
-            @PathVariable Long postId,
-            @RequestParam Long userId,
-            @RequestParam Long circleId,
-            @RequestParam String title,
-            @RequestParam String content,
-            @RequestParam Visibility visibility,
-            @RequestParam(required = false) Long hashtagId,
-            @RequestParam Boolean isNotice,
-            @RequestParam MultipartFile file) throws IOException {
+    public ResponseEntity<BoardDTO> updateBoard(@PathVariable Long postId, @ModelAttribute BoardRequest boardRequest) throws IOException {
 
-        byte[] imageData = file.getBytes();
+        byte[] imageData = null;
+        MultipartFile file = boardRequest.getFile();
+
+        if(file != null && !file.isEmpty()){
+            imageData = file.getBytes();
+        }
 
         BoardDTO boardDTO = BoardDTO.builder()
-                .postId(postId)
-                .userId(userId)
-                .circleId(circleId)
-                .title(title)
-                .content(content)
-                .visibility(visibility)
-                .hashtagId(hashtagId)
-                .isNotice(isNotice)
+                .userId(boardRequest.getUserId())
+                .circleId(boardRequest.getCircleId())
+                .title(boardRequest.getTitle())
+                .content(boardRequest.getContent())
+                .visibility(boardRequest.getVisibility())
+                .hashtagId(boardRequest.getHashtagId())
+                .isNotice(boardRequest.getIsNotice())
+                .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
-                .image(imageData)
+                .image(imageData) // 이미지 데이터 설정
                 .build();
 
         BoardDTO updatedBoard = boardService.updateBoard(postId, boardDTO);

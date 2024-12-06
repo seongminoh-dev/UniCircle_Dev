@@ -60,6 +60,7 @@ public class CircleService {
                 .adminUser(adminUser)
 //                .circleHashtags(circleHashtags)
                 .questions(circleDTO.getQuestions())
+                .image(circleDTO.getImage())
                 .build();
 
         // repository에 circle 저장
@@ -100,6 +101,7 @@ public class CircleService {
                 .adminUser(adminUser)
 //                .circleHashtags(circleHashtags)
                 .questions(circleDTO.getQuestions())
+                .image(circleDTO.getImage())
                 .build();
 
 

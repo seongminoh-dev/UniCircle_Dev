@@ -14,17 +14,17 @@ services:
     networks:
       - backend
 
-  api:
-    build:
-      context: .
-      dockerfile: ./docker/api/Dockerfile
-    container_name: api
-    ports:
-      - "8080:8080"
-    depends_on:
-      - postgres
-    networks:
-      - backend
+#  api:
+#    build:
+#      context: .
+#      dockerfile: ./docker/api/Dockerfile
+#    container_name: api
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - postgres
+#    networks:
+#      - backend
 
   mailhog:
     image: mailhog/mailhog:latest

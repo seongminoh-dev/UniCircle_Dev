@@ -1,9 +1,11 @@
 package uniCircle.backend.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.annotation.Nullable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.util.Set;
@@ -61,4 +63,6 @@ public class CircleRequest {
                             "}")
     private String questions;
 
+    @Nullable
+    private MultipartFile file;
 }
