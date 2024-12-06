@@ -49,9 +49,13 @@ public class Board {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt; // 수정일
 
+    @Lob
+    @Column(name = "image")
+    private byte[] image; // 이미지 데이터
+
     @Builder
     public Board(User user, Circle circle, String title, String content, Visibility visibility,
-                 Hashtag hashtag, Boolean isNotice, LocalDateTime createdAt, LocalDateTime updatedAt) {
+                 Hashtag hashtag, Boolean isNotice, LocalDateTime createdAt, LocalDateTime updatedAt, byte[] image) {
         this.user = user;
         this.circle = circle;
         this.title = title;
@@ -61,6 +65,7 @@ public class Board {
         this.isNotice = isNotice;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.image = image;
     }
 
 }

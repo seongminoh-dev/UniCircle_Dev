@@ -55,6 +55,7 @@ public class BoardService {
                 .isNotice(boardDTO.getIsNotice())
                 .createdAt(boardDTO.getCreatedAt())
                 .updatedAt(boardDTO.getUpdatedAt())
+                .image(boardDTO.getImage())
                 .build();
 
         boardRepository.save(board);
@@ -112,6 +113,7 @@ public class BoardService {
                 .isNotice(boardDTO.getIsNotice())
                 .createdAt(existingBoard.getCreatedAt()) // 기존 생성일 유지
                 .updatedAt(LocalDateTime.now()) // 수정일 갱신
+                .image(boardDTO.getImage())
                 .build();
 
         // 기존 엔티티 삭제 후 새로운 엔티티 저장 (JPA에서 merge 가능)

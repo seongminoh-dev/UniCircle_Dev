@@ -1,5 +1,6 @@
 package uniCircle.backend.controller;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 import uniCircle.backend.dto.BoardDTO;
 import uniCircle.backend.dto.response.ErrorResponse;
 import uniCircle.backend.dto.response.SuccessResponse;
@@ -28,7 +30,7 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    @PostMapping
+    @PostMapping(consumes = {"multipart/form-data"})
     @Operation(
             summary = "게시글 생성",
             description = "새로운 게시글을 생성합니다.",
@@ -52,8 +54,10 @@ public class BoardController {
             @Parameter(description = "게시글 내용", required = true) @RequestParam String content,
             @Parameter(description = "게시글 공개 범위", required = true) @RequestParam Visibility visibility,
             @Parameter(description = "해시태그 ID (선택적)") @RequestParam(required = false) Long hashtagId,
-            @Parameter(description = "공지 여부", required = true) @RequestParam Boolean isNotice) {
+            @Parameter(description = "공지 여부", required = true) @RequestParam Boolean isNotice,
+            @Parameter(description = "이미지", required = false) @RequestParam MultipartFile file) throws IOException {
 
+        byte[] imageData = file.getBytes();
         BoardDTO boardDTO = BoardDTO.builder()
                 .userId(userId)
                 .circleId(circleId)
@@ -64,6 +68,7 @@ public class BoardController {
                 .isNotice(isNotice)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
+                .image(imageData)
                 .build();
 
         BoardDTO createdBoard = boardService.createBoard(boardDTO);
@@ -160,7 +165,10 @@ public class BoardController {
             @RequestParam String content,
             @RequestParam Visibility visibility,
             @RequestParam(required = false) Long hashtagId,
-            @RequestParam Boolean isNotice) {
+            @RequestParam Boolean isNotice,
+            @RequestParam MultipartFile file) throws IOException {
+
+        byte[] imageData = file.getBytes();
 
         BoardDTO boardDTO = BoardDTO.builder()
                 .postId(postId)
@@ -172,6 +180,7 @@ public class BoardController {
                 .hashtagId(hashtagId)
                 .isNotice(isNotice)
                 .updatedAt(LocalDateTime.now())
+                .image(imageData)
                 .build();
 
         BoardDTO updatedBoard = boardService.updateBoard(postId, boardDTO);

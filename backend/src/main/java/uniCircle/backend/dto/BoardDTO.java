@@ -21,9 +21,10 @@ public class BoardDTO {
     private Boolean isNotice;      // 공지사항 여부
     private LocalDateTime createdAt; // 작성일
     private LocalDateTime updatedAt; // 수정일
+    private byte[] image; // 이미지 데이터
 
     @Builder
-    public BoardDTO(Long postId, Long userId, Long circleId, String title, String content, Visibility visibility, Long hashtagId, Boolean isNotice, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public BoardDTO(Long postId, Long userId, Long circleId, String title, String content, Visibility visibility, Long hashtagId, Boolean isNotice, LocalDateTime createdAt, LocalDateTime updatedAt, byte[] image) {
         this.postId = postId;
         this.userId = userId;
         this.circleId = circleId;
@@ -34,6 +35,7 @@ public class BoardDTO {
         this.isNotice = isNotice;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.image = image;
     }
 
     public static BoardDTO fromEntity(Board board) {
@@ -48,6 +50,7 @@ public class BoardDTO {
                 .isNotice(board.getIsNotice())
                 .createdAt(board.getCreatedAt())
                 .updatedAt(board.getUpdatedAt())
+                .image(board.getImage())
                 .build();
     }
 }
