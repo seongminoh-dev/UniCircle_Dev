@@ -33,7 +33,7 @@ const MemberManagement = ({ params }) => {
   //     router.push("/unauthorized"); // 권한 없음 페이지로 리다이렉트
   //   }
   // }, []);
-  const { clubName } = params;
+  const { circleName } = params;
   
   const handleViewForm = (nickname) => {
     alert(`${nickname}의 가입 양식을 확인합니다.`);
@@ -56,7 +56,7 @@ const MemberManagement = ({ params }) => {
       <h1 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
         동아리 회원 관리
         <span className="border-l border-gray-300 mx-3 h-6"></span> {/* 세로 구분선 */}
-        <span className="text-lg text-gray-500">{clubName}</span>
+        <span className="text-lg text-gray-500">{circleName}</span>
       </h1>
 
       {/* 가입 신청 목록 */}

@@ -1,8 +1,8 @@
 "use client";
 
-import ClubTag from "./ClubTag";
+import CircleTag from "./CircleTag";
 
-const ClubPreview = ({ club }) => {
+const CirclePreview = ({ circle }) => {
   const { name, image, tags } = club;
 
   return (
@@ -24,7 +24,7 @@ const ClubPreview = ({ club }) => {
         {/* Club Tags */}
         <div className="mt-2 flex space-x-2">
           {tags.map((tag, index) => (
-            <ClubTag key={index} tag={tag} />
+            <CircleTag key={index} tag={tag} />
           ))}
         </div>
       </div>
@@ -32,4 +32,4 @@ const ClubPreview = ({ club }) => {
   );
 };
 
-export default ClubPreview;
+export default CirclePreview;

@@ -1,10 +1,10 @@
 "use client";
 
-import ClubPreview from "@/components/ClubPreview";
-import ClubManagementPreview from "@/components/ClubManagementPreview";
+import CirclePreview from "@/components/CirclePreview";
+import CircleManagementPreview from "@/components/CircleManagementPreview";
 
-const ClubManagementPage = () => {
-  const joinedClubs = [
+const CircleManagementPage = () => {
+  const joinedCircles = [
     {
       name: "게임 동아리",
       image: "https://via.placeholder.com/150",
@@ -17,7 +17,7 @@ const ClubManagementPage = () => {
     },
   ];
 
-  const managedClubs = [
+  const managedCircles = [
     {
       name: "농구 동아리",
       image: "https://via.placeholder.com/150",
@@ -25,15 +25,15 @@ const ClubManagementPage = () => {
     },
   ];
 
-  const handleManageMembers = (clubName) => {
-    alert(`${clubName} 회원 관리 클릭됨!`);
+  const handleManageMembers = (circleName) => {
+    alert(`${circleName} 회원 관리 클릭됨!`);
   };
 
-  const handleEditInfo = (clubName) => {
-    alert(`${clubName} 정보 수정 클릭됨!`);
+  const handleEditInfo = (circleName) => {
+    alert(`${circleName} 정보 수정 클릭됨!`);
   };
 
-  const handleCreateClub = () => {
+  const handleCreateCircle = () => {
     alert("동아리 개설 버튼 클릭됨!");
   };
 
@@ -41,14 +41,14 @@ const ClubManagementPage = () => {
     <div>
       <h1 className="text-2xl font-bold text-gray-900 mb-2">동아리 관리</h1>
 
-      {/* My Joined Clubs */}
+      {/* My Joined Circles */}
       <section className="mb-6 flex-1 overflow-y-auto p-4">
         <h2 className="text-lg font-semibold text-gray-500 mb-4">
           내가 가입한 동아리
         </h2>
         <div className="bg-gray-100 p-4 space-y-4 rounded-lg">
-          {joinedClubs.map((club, index) => (
-            <ClubPreview key={index} club={club} />
+          {joinedCircles.map((circle, index) => (
+            <CirclePreview key={index} circle={circle} />
           ))}
         </div>
       </section>
@@ -56,27 +56,27 @@ const ClubManagementPage = () => {
       {/* Divider */}
       <hr className="my-4 border-gray-300" />
 
-      {/* Clubs I Manage */}
+      {/* Circles I Manage */}
       <section className="flex-1 overflow-y-auto p-4">
         <h2 className="text-lg font-semibold text-gray-500 mb-4">
           내가 관리중인 동아리
         </h2>
         <div className="bg-gray-100 p-4 space-y-4 rounded-lg">
-          {managedClubs.map((club, index) => (
-            <ClubManagementPreview
+          {managedCircles.map((circle, index) => (
+            <CircleManagementPreview
               key={index}
-              club={club}
-              onManageMembers={() => handleManageMembers(club.name)}
-              onEditInfo={() => handleEditInfo(club.name)}
+              circle={circle}
+              onManageMembers={() => handleManageMembers(circle.name)}
+              onEditInfo={() => handleEditInfo(circle.name)}
             />
           ))}
         </div>
       </section>
 
-      {/* Floating "Create Club" Button */}
+      {/* Floating "Create Circle" Button */}
       <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2">
         <button
-          onClick={handleCreateClub}
+          onClick={handleCreateCircle}
           className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-600"
         >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -92,4 +92,4 @@ const ClubManagementPage = () => {
   );
 };
 
-export default ClubManagementPage;
+export default CircleManagementPage;

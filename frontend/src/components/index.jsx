@@ -3,7 +3,7 @@ import {Header} from "./Header";
 import {LeftSidebar} from "./LeftSidebar";
 import {RightSidebar} from "./RightSidebar";
 import {LoginForm} from "./LoginForm";
-import {PostPreview} from "./PostPreview";
+import {PostPreview} from "./BoardPreview";
 import {SearchBar} from "./SearchBar";
 import {ApplyFormBuilder} from "./ApplyFormBuilder";
 import {RegisterForm} from "./RegisterForm";

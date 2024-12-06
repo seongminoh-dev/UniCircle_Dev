@@ -2,16 +2,16 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import Post from "@/components/Post";
+import Board from "@/components/Board";
 import CommentInput from "@/components/CommentInput";
 import CommentList from "@/components/CommentList";
 
 // Mock 데이터 가져오기 함수
-const fetchPostData = async (id) => {
+const fetchBoardData = async (id) => {
   // 여기에 API 호출을 추가하거나 데이터베이스에서 데이터를 가져오도록 구현
   // !!!!!!!!!!!!!!!!!!! 아래는 임시 데이터임 !!!!!!!!!!!!!!!!!!!!
   return {
-    post:
+    board:
         {
             id,
             nickname: '닉네임C',
@@ -45,14 +45,14 @@ const fetchPostData = async (id) => {
 
 const BoardPage = ({ params }) => {
   const { id } = params; // URL에서 ID 추출
-  const [post, setPost] = useState(null);
+  const [board, setBoard] = useState(null);
   const [comments, setComments] = useState([]);
 
   // 게시글 데이터 가져오기
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetchPostData(id);
-      setPost(data.post);
+      const data = await fetchBoardData(id);
+      setBoard(data.board);
       setComments(data.comments);
     };
     fetchData();
@@ -68,12 +68,12 @@ const BoardPage = ({ params }) => {
     setComments([newCommentObj, ...comments]); // 새로운 댓글 추가
   };
 
-  if (!post) return <p>Loading...</p>; // 데이터 로딩 중
+  if (!board) return <p>Loading...</p>; // 데이터 로딩 중
 
   return (
     <div className="p-6 min-h-screen space-y-6">
       {/* 게시글 */}
-      <Post post={post} />
+      <Board board={board} />
 
       {/* 댓글 입력 */}
       <CommentInput onSubmit={handleAddComment} />

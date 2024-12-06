@@ -1,9 +1,9 @@
 "use client";
 
-import ClubTag from "./ClubTag";
+import CircleTag from "./CircleTag";
 
-const PostBase = ({ post, isPreview = false }) => {
-  const { nickname, club, timestamp, title, content, tags, views, comments } = post;
+const BoardBase = ({ post, isPreview = false }) => {
+  const { nickname, circle, timestamp, title, content, tags, views, comments } = post;
 
   // Content 처리: Preview 모드일 경우 자르기
   const displayContent = isPreview && content.length > 100 ? content.slice(0, 100) + "..." : content;
@@ -15,7 +15,7 @@ const PostBase = ({ post, isPreview = false }) => {
         <div className="flex items-center space-x-2">
           <h3 className="text-lg font-bold">{nickname}</h3>
           <span className="border-l-2 border-gray-300 h-5 mx-2"></span> {/* 세로선 */}
-          <span className="text-sm text-gray-500">{club}</span>
+          <span className="text-sm text-gray-500">{circle}</span>
         </div>
         <div className="text-gray-500">
           <svg
@@ -43,7 +43,7 @@ const PostBase = ({ post, isPreview = false }) => {
         {/* Tags */}
         <div className="flex space-x-2">
           {tags.map((tag, index) => (
-            <ClubTag key={index} tag={tag} />
+            <CircleTag key={index} tag={tag} />
           ))}
         </div>
 
@@ -98,4 +98,4 @@ const PostBase = ({ post, isPreview = false }) => {
   );
 };
 
-export default PostBase;
+export default BoardBase;

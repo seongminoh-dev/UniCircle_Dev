@@ -2,16 +2,16 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { searchContent } from "@/services/Search";
-import PostPreview from "@/components/PostPreview";
-import ClubPreview from "@/components/ClubPreview";
+import BoardPreview from "@/components/BoardPreview";
+import CirclePreview from "@/components/CirclePreview";
 
 const SearchPage = () => {
     // 쿼리 값 가져오기
     const searchParams = useSearchParams();
     const query = searchParams.get("query") || "";
     // UI
-    const [filteredClubs, setFilteredClubs] = useState([]);
-    const [filteredPosts, setFilteredPosts] = useState([]);
+    const [filteredCircles, setFilteredCircles] = useState([]);
+    const [filteredBoards, setFilteredBoards] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -19,12 +19,12 @@ const SearchPage = () => {
         setLoading(true);
         try {
             const data = await searchContent(query); // 서비스 호출
-            setFilteredClubs(data.filteredClubs);
-            setFilteredPosts(data.filteredPosts);
+            setFilteredCircles(data.filteredCircles);
+            setFilteredBoards(data.filteredBoards);
         } catch (error) {
             console.error(error.message);
-            setFilteredClubs([]);
-            setFilteredPosts([]);
+            setFilteredCircles([]);
+            setFilteredBoards([]);
         } finally {
             setLoading(false);
         }
@@ -42,10 +42,10 @@ const SearchPage = () => {
             {/* 동아리 검색 결과 */}
             <div className="mb-8">
                 <h3 className="text-xl font-bold">동아리</h3>
-                {filteredClubs.length > 0 ? (
+                {filteredCircles.length > 0 ? (
                 <div className="flex flex-col space-y-4">
-                {filteredClubs.map((club) => (
-                  <ClubPreview key={club.id} club={club} />
+                {filteredCircles.map((circle) => (
+                  <CirclePreview key={circle.id} circle={circle} />
                 ))}
                 </div>
             ) : (
@@ -56,10 +56,10 @@ const SearchPage = () => {
             {/* 게시글 검색 결과 */}
             <div>
                 <h3 className="text-xl font-bold">게시글</h3>
-                {filteredPosts.length > 0 ? (
+                {filteredBoards.length > 0 ? (
                 <div className="flex flex-col space-y-4">
-                {filteredPosts.map((post) => (
-                    <PostPreview key={post.id} post={post} />
+                {filteredBoards.map((board) => (
+                    <BoardPreview key={board.id} board={board} />
                 ))}
             </div>
             ) : (

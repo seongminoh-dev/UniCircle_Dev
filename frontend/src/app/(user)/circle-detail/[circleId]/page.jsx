@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "@/hooks";
-import { getCircleById, getEncounteredCircle, getPostsByCircle } from "@/services";
-import { PostPreview } from "@/components";
+import { getCircleById, getEncounteredCircle, getBoardsByCircle } from "@/services";
+import { BoardPreview } from "@/components";
 
 
 const CircleDetailPage = ({ params }) => {
@@ -12,7 +12,7 @@ const CircleDetailPage = ({ params }) => {
     const [circleInfo, setCircleInfo] = useState(null);
     const auth = useAuth();
     const [isCircleMember, setIsCircleMember] = useState(false);
-    const [posts, setPosts] = useState([]);
+    const [boards, setBoards] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -23,8 +23,8 @@ const CircleDetailPage = ({ params }) => {
             const isIncluded = response_encountered.some(circle => circle.circleId.toString() === circleId);
             setIsCircleMember(isIncluded);  
 
-            const response_posts = await getPostsByCircle(circleId);
-            setPosts(response_posts);
+            const response_boards = await getBoardsByCircle(circleId);
+            setBoards(response_boards);
         };
         fetchData();
     }, [circleId]);
@@ -83,8 +83,8 @@ const CircleDetailPage = ({ params }) => {
             )}
             </div>
             <div className="flex-shrink-0 w-full h-[161px] bg-white shadow rounded-[20px] flex flex-col items-start p-[17px] overflow-hidden">
-            {posts.map((post, index) => (
-                <PostPreview key={index} post={post} />
+            {boards.map((board, index) => (
+                <BoardPreview key={index} board={board} />
             ))}
             </div>
         </div>
