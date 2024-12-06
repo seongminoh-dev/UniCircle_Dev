@@ -2,8 +2,8 @@
 
 import CircleTag from "./CircleTag";
 
-const BoardBase = ({ post, isPreview = false }) => {
-  const { nickname, circle, timestamp, title, content, tags, views, comments } = post;
+const BoardBase = ({ board, isPreview = false }) => {
+  const { nickname, circle, timestamp, title, content, tags, views, comments } = board;
 
   // Content 처리: Preview 모드일 경우 자르기
   const displayContent = isPreview && content.length > 100 ? content.slice(0, 100) + "..." : content;
