@@ -10,7 +10,7 @@ export const LeftSidebar = () => {
   const items = [
     { label: '나와 관련된 게시물', path: '/boards/related' },
     { label: '관심 동아리', path: '/no-link' },
-    { label: '동아리 관리', path: '/no-link' },
+    { label: '동아리 관리', path: '/circle-management' },
     { label: '설정', path: '/no-link' },
   ];
   const { user } = useAuth();
@@ -44,6 +44,14 @@ export const LeftSidebar = () => {
   const handleNavigation = (path) => {
     router.push(path); // 페이지 이동
     setSelectedItem(path); // 선택 상태 업데이트
+  };
+
+  const handleItemClick = (item) => {
+    setSelectedItem(item);
+    // '동아리 관리' 버튼이 눌리면 특정 경로로 이동
+    if (item === '동아리 관리') {
+      router.push('/circle-management/'); // 원하는 경로로 라우팅
+    }
   };
 
   return (

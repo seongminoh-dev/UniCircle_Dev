@@ -2,40 +2,48 @@
 
 import { useState, useEffect } from 'react';
 import { QuestionTypes } from '@/define/applyTypes';
-
 import ApplyQuestion from './ApplyQuestion';
+import { useAuth } from "@/hooks";
+import { sendAdmissionForm } from "@/services";
 
-const AdmissionCreate = ({ questions }) => {
+const AdmissionCreate = ({ circleId, questions, onclose }) => {
   const [formData, setFormData] = useState(null);
-  const [answers, setAnswers] = useState({});
+  const auth = useAuth();
 
   useEffect(() => {
     if (questions) {
-      setFormData(questions);
-
-      const initialAnswers = {};
-      questions.questions.forEach((q, idx) => {
+      const updatedQuestions = questions.questions.map((q) => {
         if (q.type === QuestionTypes.CHECKBOX) {
-          initialAnswers[idx] = q.value || [];
+          return { ...q, value: q.value || [] };
         } else {
-          initialAnswers[idx] = q.value || '';
+          return { ...q, value: q.value || '' };
         }
       });
-      setAnswers(initialAnswers);
+
+      setFormData({
+        title: questions.title,
+        description: questions.description,
+        questions: updatedQuestions,
+      });
     }
   }, [questions]);
 
   const handleAnswerChange = (index, event) => {
     const value = event.target.value;
-    setAnswers((prev) => ({
-      ...prev,
-      [index]: value,
-    }));
+
+    setFormData((prevFormData) => {
+      const updatedQuestions = [...prevFormData.questions];
+      updatedQuestions[index] = {
+        ...updatedQuestions[index],
+        value: value,
+      };
+      return { ...prevFormData, questions: updatedQuestions };
+    });
   };
 
   const handleSubmit = () => {
-    console.log("사용자 응답:", answers);
-    alert("폼이 제출되었습니다!");
+    sendAdmissionForm( circleId, auth.user.userId, formData);
+    onclose();
   };
 
   if (!formData) {
@@ -43,22 +51,18 @@ const AdmissionCreate = ({ questions }) => {
   }
 
   return (
-    <div className="w-full mx-auto p-6 bg-white border rounded shadow-lg">
+    <div className="mx-auto p-6 bg-white border rounded shadow-lg">
       <h1 className="text-2xl font-bold mb-4">{formData.title}</h1>
       <p className="mb-6">{formData.description}</p>
 
-      {formData.questions.map((question, index) => {
-        const questionWithValue = { ...question, value: answers[index] };
-        
-        return (
-          <div key={index} className="mb-6">
-            <ApplyQuestion 
-              question={questionWithValue} 
-              onChange={(e) => handleAnswerChange(index, e)} 
-            />
-          </div>
-        );
-      })}
+      {formData.questions.map((question, index) => (
+        <div key={index} className="mb-6">
+          <ApplyQuestion
+            question={question}
+            onChange={(e) => handleAnswerChange(index, e)}
+          />
+        </div>
+      ))}
 
       <button
         onClick={handleSubmit}
