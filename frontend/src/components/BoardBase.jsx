@@ -16,9 +16,9 @@ const BoardBase = ({ board, isPreview = false }) => {
       {/* Header Section */}
       <div className="flex justify-between items-center mb-2">
         <div className="flex items-center space-x-2">
-          <h3 className="text-lg font-bold">{nickname}</h3>
+          <h3 className="text-lg font-bold">USER_{nickname}</h3>
           <span className="border-l-2 border-gray-300 h-5 mx-2"></span> {/* 세로선 */}
-          <span className="text-sm text-gray-500">{circle}</span>
+          <span className="text-sm text-gray-500">CIRCLE_{circle}</span>
         </div>
         <div className="text-gray-500">
           <svg

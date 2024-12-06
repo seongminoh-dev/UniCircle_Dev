@@ -1,9 +1,7 @@
 "use client";
 
-"use client";
-
 const CommentItem = ({ comment }) => {
-    const { targetUsername, content, authorUsername, isCircleMember } = comment;
+    const { content, userId, isCircleMember } = comment;
   
     return (
       <div className="flex mb-4">
@@ -18,13 +16,12 @@ const CommentItem = ({ comment }) => {
         <div className="bg-white flex-grow shadow rounded-lg p-4">
           {/* Target Username */}
           <p className="font-semibold mb-2">
-            @{targetUsername}
             <span className="ml-2 text-gray-700">{content}</span>
           </p>
   
           {/* Author Username */}
           <div className="text-sm text-gray-500 flex justify-between items-center mt-2">
-            <span>by @{authorUsername}</span>
+            <span>by @USER_{userId}</span>
             <button className="text-blue-500 hover:underline">답글</button>
           </div>
         </div>
