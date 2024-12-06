@@ -20,11 +20,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import uniCircle.backend.dto.AdmissionFormDTO;
+import uniCircle.backend.dto.CircleUserDTO;
+import uniCircle.backend.dto.UserDTO;
 import uniCircle.backend.dto.request.AdmissionFormRequest;
 import uniCircle.backend.dto.response.ErrorResponse;
 import uniCircle.backend.dto.response.SuccessResponse;
 import uniCircle.backend.entity.Status;
+import uniCircle.backend.repository.UserRepository;
 import uniCircle.backend.service.AdmissionFormService;
+import uniCircle.backend.service.CircleUserService;
+import uniCircle.backend.service.UserService;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,7 +38,9 @@ import uniCircle.backend.service.AdmissionFormService;
 public class AdmissionFormController {
     
     private final AdmissionFormService admissionFormService;
-
+    private final CircleUserService circleUserService;
+    private final UserService userService;
+    private final UserRepository userRepository;
 
     //Create operations
 
@@ -194,6 +201,35 @@ public class AdmissionFormController {
     )
     public ResponseEntity<AdmissionFormDTO> updateAdmissionFormStatus(@PathVariable Long formId, @PathVariable String status) {
         AdmissionFormDTO form = admissionFormService.updateAdmissionFormStatus(formId, status);
+        return ResponseEntity.ok(form);
+    }
+
+    @PutMapping("/accept/{formId}")
+    @Operation(
+            summary = "입부신청서 승인 및 동아리원으로 추가",
+            responses = {
+                @ApiResponse(
+                        responseCode = "200",
+                        description = "입부신청서 승인됨",
+                        content = @Content(schema = @Schema(implementation = AdmissionFormDTO.class)
+                        )
+                ),
+                @ApiResponse(
+                            responseCode = "400",
+                            description = "이미 승인된 신청서거나 사용자가 이미 가입되어있음",
+                            content = @Content(schema = @Schema(implementation = ErrorResponse.class)
+                            )
+                    ),
+                @ApiResponse(
+                        responseCode = "404",
+                        description = "입부신청서가 존재하지 않음",
+                        content = @Content(schema = @Schema(implementation = ErrorResponse.class)
+                        )
+                )
+        }
+    )
+    public ResponseEntity<AdmissionFormDTO> AcceptAdmissionForm(@PathVariable Long formId) {
+        AdmissionFormDTO form = admissionFormService.acceptAdmissionForm(formId);
         return ResponseEntity.ok(form);
     }
 

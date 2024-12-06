@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import uniCircle.backend.dto.AdmissionFormDTO;
+import uniCircle.backend.dto.CircleUserDTO;
+import uniCircle.backend.dto.UserDTO;
 import uniCircle.backend.entity.AdmissionForm;
 import uniCircle.backend.entity.Circle;
 import uniCircle.backend.entity.Status;
@@ -16,6 +18,7 @@ import uniCircle.backend.entity.User;
 import uniCircle.backend.repository.AdmissionFormRepository;
 import uniCircle.backend.repository.CircleRepository;
 import uniCircle.backend.repository.UserRepository;
+import uniCircle.backend.service.CircleUserService;
 
 
 @Service
@@ -25,6 +28,7 @@ public class AdmissionFormService {
     private final AdmissionFormRepository admissionFormRepository;
     private final CircleRepository circleRepository;
     private final UserRepository userRepository;
+    private final CircleUserService circleUserService;
 
     @Transactional
     public AdmissionFormDTO createAdmissionForm(AdmissionFormDTO admissionFormDTO) {
@@ -100,6 +104,22 @@ public class AdmissionFormService {
         catch(Exception e) { throw new AdmissionFormCustomException(AdmissionFormErrorCode.BAD_REQUEST_STATUS); }
 
         form.updateStatus(Status.valueOf(status));
+        return AdmissionFormDTO.fromEntity(form);
+    }
+
+    @Transactional
+    public AdmissionFormDTO acceptAdmissionForm(Long formId) {
+
+        AdmissionForm form = admissionFormRepository.findById(formId)
+                .orElseThrow(() -> new AdmissionFormCustomException(AdmissionFormErrorCode.NOT_FOUND_FORM));
+
+        try {
+                CircleUserDTO circleUser = circleUserService.addUserToCircle(form.getCircle().getCircleId(), UserDTO.fromEntity(form.getUser()));
+        }
+        catch (IllegalArgumentException e) {
+                throw new AdmissionFormCustomException(AdmissionFormErrorCode.BAD_REQUEST_FORM);
+        }
+        form.updateStatus(Status.ACCEPTED);
         return AdmissionFormDTO.fromEntity(form);
     }
 
