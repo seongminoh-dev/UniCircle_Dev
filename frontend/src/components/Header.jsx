@@ -4,10 +4,15 @@ import React from 'react';
 import { useAuth } from '@/hooks';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import SearchBar from './SearchBar';
 
 export const Header = () => {
   const { isAuthenticated, signOut } = useAuth();
   const router = useRouter();
+
+  const handleClickLogo = () => {
+    router.push('/boards/related');
+  };
 
   const handleLogout = async () => {
     try {
@@ -19,37 +24,44 @@ export const Header = () => {
   };
 
   return (
-    <header className="bg-gradient-to-r from-white via-gray-50 to-gray-100 py-4 shadow-md">
-    <div className="container mx-auto px-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+    <header className="h-15 bg-white py-2 shadow-md">
+      <div className="w-full mx-auto flex items-center">
+        {/* 로고 */}
+        <div
+          onClick={handleClickLogo}
+          className="flex items-center space-x-1 cursor-pointer w-80 flex-shrink-0 px-4"
+        >
+          <div className="w-6 h-6 bg-blue-400 rounded-full flex items-center justify-center">
             <span className="text-white font-bold">U</span>
           </div>
-          <span className="text-xl font-bold text-gray-800 tracking-tight">
+          <span className="text-lg font-bold text-gray-800 tracking-tight">
             유니서클
           </span>
         </div>
-        <div className="ml-auto">
-        {isAuthenticated ? (
-          <button
-            onClick={handleLogout}
-            className="ml-4 focus:outline-none flex items-center"
-            aria-label="로그아웃"
-          >
-            <Image src="/logout.png" alt="Logout" width={24} height={24} />
-          </button>
-        ) : (
-          // 로그아웃 버튼이 사라져도 공간 유지
-          <div style={{ width: '24px', height: '24px' }}></div>
-        )}
+
+        {/* 검색창 */}
+        <div className="flex-grow">
+          <SearchBar />
+        </div>
+
+        {/* 로그아웃 버튼 */}
+        <div className="w-80 flex-shrink-0 flex justify-end px-4">
+          {isAuthenticated ? (
+            <button
+              onClick={handleLogout}
+              className="focus:outline-none flex items-center"
+              aria-label="로그아웃"
+            >
+              <Image src="/logout.png" alt="Logout" width={24} height={24} />
+            </button>
+          ) : (
+            <div style={{ width: '24px', height: '24px' }}></div>
+          )}
+        </div>
       </div>
-      </div>
-    </div>
-  </header>
+    </header>
+
   );
 };
 
 export default Header;
-
-

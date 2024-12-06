@@ -14,15 +14,13 @@ const CommentItem = ({ comment }) => {
   
         {/* Comment Content */}
         <div className="bg-white flex-grow shadow rounded-lg p-4">
-          {/* Target Username */}
           <p className="font-semibold mb-2">
             <span className="ml-2 text-gray-700">{content}</span>
           </p>
-  
+
           {/* Author Username */}
-          <div className="text-sm text-gray-500 flex justify-between items-center mt-2">
+          <div className="text-sm text-gray-500 flex justify-between items-center mt-2 ml-2">
             <span>by @USER_{userId}</span>
-            <button className="text-blue-500 hover:underline">답글</button>
           </div>
         </div>
       </div>

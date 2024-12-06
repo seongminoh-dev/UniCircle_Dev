@@ -1,6 +1,6 @@
 "use client";
 
-const MemberCard = ({ nickname, date, children }) => {
+const MemberCard = ({ nickname, email, children }) => {
   return (
     <div className="flex items-center justify-between bg-white p-4 shadow rounded-md mb-4">
       {/* Left Section: Member Info */}
@@ -10,7 +10,7 @@ const MemberCard = ({ nickname, date, children }) => {
         </div>
         <div>
           <h3 className="font-semibold text-gray-800">{nickname}</h3>
-          <p className="text-sm text-gray-500">{date}</p>
+          <p className="text-sm text-gray-500">{email}</p>
         </div>
       </div>
 

@@ -45,6 +45,7 @@ const MemberManagement = () => {
         const formsData = await getAllFormByCircleId(circleId);
         const pendingForms = formsData.filter(form => form.status === 'PENDING');
         const mappedApplications = pendingForms.map(form => ({
+          userId:user.userId,
           nickname: `User${form.userId}`,
           date: form.createdAt
         }));
@@ -53,8 +54,9 @@ const MemberManagement = () => {
         // 동아리 회원 목록 가져오기
         const membersData = await getCircleMembers(circleId);
         const mappedMembers = membersData.map(user => ({
+          id:user.userId,
           nickname: user.nickname,
-          date: "2024년 12월 5일",
+          email: user.email,
         }));
         setMembers(mappedMembers);
 
