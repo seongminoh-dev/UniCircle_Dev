@@ -42,7 +42,7 @@ const AdmissionCreate = ({ circleId, questions, onclose }) => {
   };
 
   const handleSubmit = () => {
-    sendAdmissionForm( circleId, auth.user.userId, formData);
+    sendAdmissionForm({"circleId":circleId, "userId":auth.user.userId, "formContent":formData});
     onclose();
   };
 
@@ -51,7 +51,7 @@ const AdmissionCreate = ({ circleId, questions, onclose }) => {
   }
 
   return (
-    <div className="mx-auto p-6 bg-white border rounded shadow-lg">
+    <div className="mx-auto p-6 bg-white border w-[500px] rounded shadow-lg">
       <h1 className="text-2xl font-bold mb-4">{formData.title}</h1>
       <p className="mb-6">{formData.description}</p>
 

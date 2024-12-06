@@ -50,7 +50,35 @@ export const getPost= async (postId) => {
   }
 };
 
-export async function getPostsByCircle(circleId) {
+export async function createBoard(boardData) {
+  const url = `${process.env.NEXT_PUBLIC_API_URL}boards`;
+
+  const formData = new FormData();
+  formData.append("userId", boardData.userId);       
+  formData.append("circleId", boardData.circleId);  
+  formData.append("title", boardData.title);        
+  formData.append("content", boardData.content);    
+  formData.append("visibility", boardData.visibility); 
+  formData.append("hashtagId", 1);
+  formData.append("isNotice", false);
+
+  const accessToken = getAccessToken();
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: formData,
+  });
+
+  if (!res.ok) {
+    throw new Error(`Create Board Error: ${res.status} - ${await res.text()}`);
+  }
+  return res.json();
+}
+
+export async function getBoardsByCircle(circleId) {
   const URL = `${process.env.NEXT_PUBLIC_API_URL}boards/circle/${circleId}`;
 
   const accessToken = await getAccessToken(); // 토큰 가져오기

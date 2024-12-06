@@ -4,6 +4,7 @@ import { getAccessToken } from "./Token";
 
 // 입부 신청서 작성 함수(테스트완)
 export async function sendAdmissionForm({ circleId, userId, formContent }) {
+    console.log("Circle", circleId, userId, formContent);
     const URL = `${process.env.NEXT_PUBLIC_API_URL}forms/create`;
     try {
       const accessToken = await getAccessToken();

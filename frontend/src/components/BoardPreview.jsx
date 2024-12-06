@@ -11,7 +11,7 @@ const BoardPreview = ({ board }) => {
   };
 
   return (
-    <div onClick={handleClick} className="cursor-pointer">
+    <div onClick={handleClick} className="cursor-pointer w-full">
       <BoardBase board={board} isPreview={true} />
     </div>
   );

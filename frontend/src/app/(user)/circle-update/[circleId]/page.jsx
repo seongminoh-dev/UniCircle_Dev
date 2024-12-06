@@ -51,9 +51,7 @@ const CircleUpdatePage = ({ params }) => {
       const filtered = filterKeys(response, allowedKeys);
       filtered.email = auth.user.email;
       setUpdatedCircleInfo(filtered);
-      console.log(extractQuestions(filtered.questions))
       setQuestions(extractQuestions(filtered.questions));
-      console.log(questions)
     };
     if (circleId !== "0")
       fetchData();
@@ -166,12 +164,8 @@ const CircleUpdatePage = ({ params }) => {
                             <img src="/check.svg" alt="아이콘" className="w-8 h-8 mt-2" />
                         </div>
                     </div>
-                {questionToggle ? (
-                    <ModalWrapper isOpen={questionToggle} onClose={() => setQuestionToggle(false)}>
-                        <ApplyFormBuilder questions={questions} handleQuestionChange={handleQuestionChange} onClose={() => setQuestionToggle(false)}/>
-                    </ModalWrapper>
-                  ):
-                  (
+                {!questionToggle &&
+                  ( 
                     <div className="w-full h-[52px] bg-purple-500  rounded flex justify-center items-center" onClick={() => {setQuestionToggle(true)}}>
                       <div className="text-white font-semibold text-[14px] leading-[20px]">
                       가입 양식 수정
@@ -185,6 +179,13 @@ const CircleUpdatePage = ({ params }) => {
                     </div>
                 </div>
             </div>
+            {questionToggle &&
+              (
+                <ModalWrapper isOpen={questionToggle} onClose={() => setQuestionToggle(false)}>
+                  <ApplyFormBuilder questions={questions} handleQuestionChange={handleQuestionChange} onClose={() => setQuestionToggle(false)}/>
+                </ModalWrapper>
+              )
+            }
             </>
             )}
         </div>

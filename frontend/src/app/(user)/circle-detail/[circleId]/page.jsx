@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks";
 import { getCircleById, getEncounteredCircle, getBoardsByCircle } from "@/services";
 import { BoardPreview, ModalWrapper, AdmissionCreate } from "@/components";
+import BoardEditor from "@/components/BoardEditor";
 
 
 const CircleDetailPage = ({ params }) => {
@@ -18,22 +19,30 @@ const CircleDetailPage = ({ params }) => {
     const [isCircleMember, setIsCircleMember] = useState(false);
     const [boards, setBoards] = useState([]);
 
+    
     useEffect(() => {
         const fetchData = async () => {
             const response_circle = await getCircleById(circleId);
             setCircleInfo(response_circle);
-            console.log(JSON.parse(response_circle.questions));
             setQuestions(JSON.parse(response_circle.questions))
-            
-            const response_encountered = await getEncounteredCircle(auth.user.email);
-            const isIncluded = response_encountered.some(circle => circle.circleId.toString() === circleId);
-            setIsCircleMember(isIncluded);  
-
-            const response_boards = await getBoardsByCircle(circleId);
-            setBoards(response_boards);
         };
         fetchData();
     }, [circleId]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            if (admissionToggle === false){
+                const response_encountered = await getEncounteredCircle(auth.user.email);
+                const isIncluded = response_encountered.some(circle => circle.circleId.toString() === circleId);
+                setIsCircleMember(isIncluded);
+            }
+            if (admissionToggle === false){
+                const response_boards = await getBoardsByCircle(circleId);
+                setBoards(response_boards);
+            }
+        };
+        fetchData();
+    }, [admissionToggle, boardToggle]);
 
     const handleAdmissionToggle = (value) =>{
         if (questions && questions.title){
@@ -55,7 +64,7 @@ const CircleDetailPage = ({ params }) => {
                     image
                 </div>
                 </div>
-                <div className="w-full h-[153px] flex flex-col justify-center items-start gap-[8px] px-[16px] py-[32px]">
+                <div className="w-full h-[180px] flex flex-col justify-center items-start gap-[8px] px-[16px] py-[32px]">
                 <div className="w-full h-[48px] flex justify-between items-start px-[1px] py-[6px] overflow-hidden">
                     <div className="w-[186px] h-[36px] text-[#26262C] font-OpenSans text-[28px] leading-[36px] font-bold overflow-hidden whitespace-nowrap text-ellipsis">
                     {circleInfo.name}
@@ -63,24 +72,29 @@ const CircleDetailPage = ({ params }) => {
                     <div className="w-[118px] h-[32px] bg-[#3578FF] shadow rounded-[8px] flex items-center justify-center px-[10px] py-[8px]">
                     {isCircleMember ? (
                         <>
-                            <div className="w-[98px] h-[16px] text-[#FFFFFF] font-OpenSans text-[12px] leading-[16px] font-bold text-center overflow-hidden whitespace-nowrap text-ellipsis">
+                            <div className="w-[98px] h-[16px] text-[#FFFFFF] font-OpenSans text-[12px] leading-[16px] cursor-pointer font-bold text-center overflow-hidden whitespace-nowrap text-ellipsis">
                                 회원 목록
                             </div>
-                            <div onClick={() => {setBoardToggle(true)}} className="w-[98px] h-[16px] text-[#FFFFFF] font-OpenSans text-[12px] leading-[16px] font-bold text-center overflow-hidden whitespace-nowrap text-ellipsis">
+                            <div onClick={() => {setBoardToggle(true)}} className="w-[98px] h-[16px] text-[#FFFFFF] cursor-pointer font-OpenSans text-[12px] leading-[16px] font-bold text-center overflow-hidden whitespace-nowrap text-ellipsis">
                                 글쓰기
                             </div>
                         </>
                         ):(
-                        <div onClick={() => {handleAdmissionToggle(true)}} className="w-[98px] h-[16px] text-[#FFFFFF] font-OpenSans text-[12px] leading-[16px] font-bold text-center overflow-hidden whitespace-nowrap text-ellipsis">
+                        <>
+                        {/* <div onClick={() => {handleAdmissionToggle(true)}} className="w-[98px] h-[16px] text-[#FFFFFF] cursor-pointer font-OpenSans text-[12px] leading-[16px] font-bold text-center overflow-hidden whitespace-nowrap text-ellipsis">
                             가입하기
-                        </div>
+                        </div> */}
+                        <div onClick={() => {setBoardToggle(true)}} className="w-[98px] h-[16px] text-[#FFFFFF] cursor-pointer font-OpenSans text-[12px] leading-[16px] font-bold text-center overflow-hidden whitespace-nowrap text-ellipsis">
+                                글쓰기
+                            </div>
+                        </>
                     )}
                     </div>
                 </div>
                 <div className="w-full h-[20px] text-[#4C4C57] font-Inter text-[16px] leading-[19px] overflow-hidden whitespace-nowrap text-ellipsis">
                     {circleInfo.description}
                 </div>
-                <div className="w-full h-[17px] flex items-center gap-[5px]">
+                <div className="w-full h-[17px] flex items-center gap-[5px] mt-3">
                     <div className="h-[17px] bg-[#D8D8D8] rounded-[6px] flex items-center justify-center px-[7px] py-[2px] overflow-hidden">
                     <div className="text-[rgba(61,61,61,0.7)] font-Amiko text-[10px] leading-[20px] font-semibold tracking-[0.1em]">
                         {circleInfo.hashtags[0]}
@@ -101,7 +115,7 @@ const CircleDetailPage = ({ params }) => {
             </div>
             )}
             </div>
-            <div className="flex-shrink-0 w-full h-[161px] bg-white shadow rounded-[20px] flex flex-col items-start p-[17px] overflow-hidden">
+            <div className="flex-shrink-0 w-full bg-white shadow rounded-[20px] flex flex-col items-start p-[17px]">
             {boards.length == 0 ? 
                 (
                     <div className="bg-white rounded-xl shadow p-6 mb-4 w-full">
@@ -117,14 +131,21 @@ const CircleDetailPage = ({ params }) => {
                 )
             }
             </div>
-        </div>
-        {
+            {
             admissionToggle && (
                 <ModalWrapper isOpen={admissionToggle} onClose={() => setAdmissionToggle(false)}>
-                    <AdmissionCreate questions={questions} />
+                    <AdmissionCreate circleId={circleId} questions={questions} onclose={() => setAdmissionToggle(false)} />
                 </ModalWrapper>
             )
-        }
+            }
+            {
+                boardToggle && (
+                    <ModalWrapper isOpen={boardToggle} onClose={() => setBoardToggle(false)}>
+                        <BoardEditor onClose={() => setBoardToggle(false)}/>
+                    </ModalWrapper>
+                )
+            }
+        </div>
         <div className="w-full h-[80px] flex justify-center items-center px-[10px] bg-transparent mt-[20px]">
             <div className="w-[60px] h-[60px] relative">
             <div className="absolute inset-0 bg-white"></div>
