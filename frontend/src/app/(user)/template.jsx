@@ -3,7 +3,7 @@
 import { AuthGuard } from "@/guards/authGuard";
 import { useAuth } from "@/hooks";
 import { Loading } from "@/components";
-import {Header, LeftSidebar, RightSidebar, SearchBar} from "@/components";
+import {Header, LeftSidebar, RightSidebar} from "@/components";
 
 const SplashScreen = () => {
     return (
@@ -25,7 +25,7 @@ const SplashScreen = () => {
     );
   };
 
-export default function Template({ children }) {
+  export default function Template({ children }) {
     const auth = useAuth();
   
     return (
@@ -34,22 +34,21 @@ export default function Template({ children }) {
           <SplashScreen />
         ) : (
           <>
-            {/*<AuthGuard>*/}
-            <div>
-              <Header/>
-              <div className="z-10 min-h-screen flex space-x-4">
+            <div className="h-screen flex flex-col">
+              <Header />
+              <div className="flex flex-grow overflow-hidden">
+                {/* Left Sidebar */}
                 <LeftSidebar />
-                <div className="h-screen flex flex-col flex-1 p-4 ">
-                  <SearchBar/>
-                  {/* 내용물(children) 목록 스크롤 가능 영역 */}
-                  <div className="overflow-y-auto p-4 space-y-4 flex-grow">
-                    {children}
-                  </div>
+  
+                {/* Scrollable children */}
+                <div className="bg-white rounded-lg m-4 p-2 space-y-4 flex-grow overflow-y-auto">
+                  {children} 
                 </div>
+  
+                {/* Right Sidebar */}
                 <RightSidebar />
               </div>
             </div>
-            {/*</AuthGuard>*/}
           </>
         )}
       </>
