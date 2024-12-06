@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.google.gson.JsonObject;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import org.springframework.boot.json.GsonJsonParser;
@@ -95,9 +96,9 @@ public class BoardController {
                     )
             }
     )
-    public ResponseEntity<BoardDTO> getBoardById(@PathVariable Long postId) {
-        BoardDTO board = boardService.getBoardById(postId);
-        return ResponseEntity.ok(board);
+    public ResponseEntity<?> getBoardById(@PathVariable Long postId) {
+        JsonObject jsonObject = boardService.getBoardByIdAndUserInfo(postId);
+        return ResponseEntity.ok(jsonObject.toString());
     }
 
     @GetMapping
