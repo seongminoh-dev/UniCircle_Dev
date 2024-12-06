@@ -1,7 +1,21 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import BoardBase from "./BoardBase";
 
 const BoardPreview = ({ board }) => {
-  return <BoardBase board={board} isPreview={true} />;
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push(`/boards/${board.postId}`);
+  };
+
+  return (
+    <div onClick={handleClick} className="cursor-pointer">
+      <BoardBase board={board} isPreview={true} />
+    </div>
+  );
 };
 
 export default BoardPreview;
+
