@@ -10,6 +10,8 @@ export const RegisterForm = () => {
     const [emailCode, setEmailCode] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [name, setName] = useState("");
+    const [nickname, setNickname] = useState("");
     //이메일 인증
     const [isEmailSent, setIsEmailSent] = useState(false); //이메일 전송 여부
     const [isEmailVerified, setIsEmailVerified] = useState(false); //이메일 인증 여부
@@ -89,7 +91,7 @@ export const RegisterForm = () => {
         }
         // 회원가입
         try {
-            await registerUser({ email, password });
+            await registerUser({ name, nickname, email, password });
             setErrorMessage("");
             setSuccessMessage("회원가입이 완료되었습니다! 로그인 화면으로 이동합니다.");
             // 회원가입 성공시 3초후 로그인 페이지로 이동
@@ -192,6 +194,45 @@ export const RegisterForm = () => {
                 </button>
                 </div>
                 )}
+                
+                {/* 이름 입력 */}
+                <div className="mb-4">
+                <label
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                    htmlFor="name"
+                >
+                    이름
+                </label>
+                <input
+                    id="name"
+                    type="text"
+                    placeholder="이름"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="shadow appearance-none border rounded w-full px-3 py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    required
+                />
+                </div>
+
+                {/* 닉네임 입력 */}
+                <div className="mb-4">
+                <label
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                    htmlFor="nickname"
+                >
+                    닉네임
+                </label>
+                <input
+                    id="nickname"
+                    type="text"
+                    placeholder="닉네임"
+                    value={nickname}
+                    onChange={(e) => setNickname(e.target.value)}
+                    className="shadow appearance-none border rounded w-full px-3 py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    required
+                />
+                </div>
+
 
                 {/* 비밀번호 입력 */}
                 <div className="mb-4">
