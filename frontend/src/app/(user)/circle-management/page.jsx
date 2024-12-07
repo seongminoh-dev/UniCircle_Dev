@@ -119,7 +119,7 @@ const CircleManagementPage = () => {
       <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2">
         <button
           onClick={handleCreateCircle}
-          className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-600"
+          className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600 focus:outline-none"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path
