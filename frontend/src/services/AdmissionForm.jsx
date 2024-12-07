@@ -180,6 +180,7 @@ export async function sendAdmissionForm({ circleId, userId, formContent }) {
 
   export async function acceptUserByFormId(formId) {
     const URL = `${process.env.NEXT_PUBLIC_API_URL}forms/accept/${formId}`;
+    console.log("ACCEPT:"+formId);
     try {
       const accessToken = await getAccessToken(); // Access Token 가져오기
       const response = await fetch(URL, {
