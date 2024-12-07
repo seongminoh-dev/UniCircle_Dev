@@ -97,3 +97,29 @@ export async function getBoardsByCircle(circleId) {
     throw new Error(`Create Circle Error: ${res.status}`);
   }
 }
+
+
+// 게시글삭제
+export const deletePost= async (postId) => {
+  const URL = `${process.env.NEXT_PUBLIC_API_URL}boards/${postId}`;
+  console.log(URL);
+  try {
+    const accessToken = await getAccessToken();
+    const response = await fetch(URL, {
+      method: 'DELETE',
+      headers: {
+        'accept': '*/*',
+        "Authorization": accessToken,
+      },
+    });
+    if (response.status === 200) {
+      const result = await response.json();
+      return result;
+    } else {
+      throw new Error(`Unknown Error:${response.status}`);
+    }
+  } catch (error) {
+    console.error("Unknown Error in getPost", error.message);
+    throw error;
+  }
+}

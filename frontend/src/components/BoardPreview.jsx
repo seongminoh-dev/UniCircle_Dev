@@ -7,7 +7,7 @@ const BoardPreview = ({ board }) => {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push(`/boards/${board.postId}`);
+    router.push(`/boards/${board.board.postId}`);
   };
 
   return (

@@ -11,7 +11,7 @@ import { useAuth } from "@/hooks";
 
 
 const BoardPage = ({ params }) => {
-  const { id } = params; // URL에서 ID 추출
+  const { postId } = params; // URL에서 ID 추출
   const [board, setBoard] = useState(null);
   const [comments, setComments] = useState([]);
   const auth = useAuth();
@@ -20,16 +20,16 @@ const BoardPage = ({ params }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const boardData = await getPost(id);
+        const boardData = await getPost(postId);
         setBoard(boardData);
-        const commentData = await getComment(id);
+        const commentData = await getComment(postId);
         setComments(commentData);
       } catch (error) {
         console.error("Error fetching board data:", error);
       }
     };
     fetchData();
-  }, [id]);
+  }, [postId]);
 
   const handleAddComment = async (newComment) => {
     const newCommentObj = {

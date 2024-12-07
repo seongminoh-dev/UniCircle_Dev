@@ -16,7 +16,7 @@ export const LeftSidebar = () => {
   const nickname = user?.nickname || '익명';
   const router = useRouter();
   const pathname = usePathname(); // 현재 경로 읽기
-  const userEmail = user.email;
+  const userEmail = user?.email ;
 
   // 선택된 메뉴 항목 상태
   const [selectedItem, setSelectedItem] = useState(pathname);
