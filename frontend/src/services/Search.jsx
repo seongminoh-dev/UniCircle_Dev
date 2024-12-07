@@ -14,13 +14,13 @@ export const searchContent = async (query) => {
     if (response.status === 200) {
       const result = await response.json();
       return {
-        filteredClubs: result.map(item => ({
+        filteredCircles: result.map(item => ({
           id: item.circleId,
           name: item.name,
           tags: item.hashtags,
           image: "https://via.placeholder.com/64",
         })),
-        filteredPosts: {}, // 현재 게시글은 null로 설정
+        filteredBoards: {}, // 현재 게시글은 null로 설정
       };
     } else {
       throw new Error(`Search Error: ${response.status}`);

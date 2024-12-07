@@ -54,6 +54,7 @@ const SearchPage = () => {
             </div>
 
             {/* 게시글 검색 결과 */}
+            {filteredBoards.length > 0 ? (
             <div>
                 <h3 className="text-xl font-bold">게시글</h3>
                 {filteredBoards.length > 0 ? (
@@ -66,6 +67,7 @@ const SearchPage = () => {
               <p>게시글이 없습니다.</p>
             )}
             </div>
+            ):(<div></div>)}
             </>
         )}
         </div>
