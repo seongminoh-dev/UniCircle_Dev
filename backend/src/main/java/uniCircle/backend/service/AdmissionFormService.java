@@ -150,4 +150,23 @@ public class AdmissionFormService {
                 .orElseThrow(() -> new AdmissionFormCustomException(AdmissionFormErrorCode.NOT_FOUND_FORM));
         admissionFormRepository.delete(form);
     }
+
+    @Transactional
+    public Map<String, Object> getAdmissionFormsByUserIdAndCircleId(Long userId, Long circleId) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        Circle circle = circleRepository.findByCircleId(circleId)
+                .orElseThrow(() -> new IllegalArgumentException("circle not found"));
+
+        AdmissionForm form = admissionFormRepository.findByUserAndCircle(user, circle)
+                .orElseThrow(() -> new AdmissionFormCustomException(AdmissionFormErrorCode.NOT_FOUND_FORM));
+
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("AdmissionForm", AdmissionFormDTO.fromEntity(form));
+        map.put("userNickName", user.getNickname());
+
+        return map;
+    }
 }

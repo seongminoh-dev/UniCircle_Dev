@@ -158,6 +158,29 @@ public class AdmissionFormController {
         return ResponseEntity.ok(forms);
     }
 
+    @GetMapping("/search/{userId}/{circleId}")
+    @Operation(
+            summary = "User ID와 Circle ID 따른 입부신청서 검색",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "UserID가 일치하는 리스트 전송 성공",
+                            content = @Content(schema = @Schema(implementation = AdmissionFormDTO.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "유저가 존재하지 없음",
+                            content = @Content(schema = @Schema(implementation = ErrorResponse.class)
+                            )
+                    )
+            }
+    )
+    public ResponseEntity<Map<String, Object>> getFormsByUserIdAndCircleId(@PathVariable Long userId, @PathVariable Long circleId) {
+        Map<String, Object> form = admissionFormService.getAdmissionFormsByUserIdAndCircleId(userId, circleId);
+        return ResponseEntity.ok(form);
+    }
+
     //Update Operations
 
     //@PutMapping("/{id}") updateform - 폼 변경
