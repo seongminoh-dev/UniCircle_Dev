@@ -52,6 +52,14 @@ public class UserService {
         return user.map(UserDTO::fromEntity).orElse(null);
     }
 
+    @Transactional
+    public UserDTO findByUserId(Long userId) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(()-> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+
+        return UserDTO.fromEntity(user);
+    }
+
     // 패스워드 변경하기
     @Transactional
     public boolean changePassword(String email, String username, String newPassword) {

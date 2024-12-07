@@ -2,7 +2,9 @@ package uniCircle.backend.controller;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gson.JsonObject;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -19,12 +21,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 import uniCircle.backend.dto.BoardDTO;
+import uniCircle.backend.dto.UserDTO;
 import uniCircle.backend.dto.request.BoardRequest;
 import uniCircle.backend.dto.response.ErrorResponse;
 import uniCircle.backend.dto.response.SuccessResponse;
 import uniCircle.backend.entity.Board;
 import uniCircle.backend.service.BoardService;
 import uniCircle.backend.entity.Visibility;
+import uniCircle.backend.service.UserService;
 
 @RestController
 @RequestMapping("/boards")
@@ -32,6 +36,7 @@ import uniCircle.backend.entity.Visibility;
 public class BoardController {
 
     private final BoardService boardService;
+    private final UserService userService;
 
     @PostMapping(consumes = {"multipart/form-data"})
     @Operation(
@@ -50,14 +55,18 @@ public class BoardController {
                     )
             }
     )
-    public ResponseEntity<BoardDTO> createBoard(@ModelAttribute BoardRequest boardRequest) throws IOException {
-
+    public ResponseEntity<Map<String, Object>> createBoard(@ModelAttribute BoardRequest boardRequest) throws IOException {
         MultipartFile file = boardRequest.getFile();
         byte[] imageData = null;
 
         if (file != null && !file.isEmpty()) {
             imageData = file.getBytes();
         }
+
+        // UserNickName 조회
+        Long userId = boardRequest.getUserId();
+
+        UserDTO userDTO = userService.findByUserId(userId);
 
         BoardDTO boardDTO = BoardDTO.builder()
                 .userId(boardRequest.getUserId())
@@ -73,7 +82,13 @@ public class BoardController {
                 .build();
 
         BoardDTO createdBoard = boardService.createBoard(boardDTO);
-        return ResponseEntity.ok(createdBoard);
+
+        // 응답 데이터 구성
+        Map<String, Object> response = new HashMap<>();
+        response.put("board", createdBoard);
+        response.put("userNickName", userDTO.getNickname());
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{postId}")

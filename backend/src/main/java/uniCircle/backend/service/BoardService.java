@@ -82,6 +82,7 @@ public class BoardService {
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("userName", userName);
+        jsonObject.addProperty("userNickName", board.getUser().getNickname());
         jsonObject.addProperty("circleName", circleName);
         jsonObject.addProperty("postId", postId);
         jsonObject.addProperty("userId", board.getUser().getUserId());
