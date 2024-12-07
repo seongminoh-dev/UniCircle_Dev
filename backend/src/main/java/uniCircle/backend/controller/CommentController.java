@@ -10,12 +10,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 import uniCircle.backend.dto.CommentDTO;
+import uniCircle.backend.dto.UserDTO;
 import uniCircle.backend.dto.request.CommentRequest;
 import uniCircle.backend.dto.response.SuccessResponse;
-import uniCircle.backend.entity.Visibility;
 import uniCircle.backend.service.CommentService;
+import uniCircle.backend.service.UserService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/comments")
@@ -24,6 +27,7 @@ import java.util.List;
 public class CommentController {
 
     private final CommentService commentService;
+    private final UserService userService;
 
     @PostMapping
     @Operation(
@@ -41,13 +45,19 @@ public class CommentController {
                     )
             }
     )
-    public ResponseEntity<CommentDTO> createComment(@RequestBody CommentRequest commentRequest) {
+    public ResponseEntity<Map<String, Object>> createComment(@RequestBody CommentRequest commentRequest) {
         CommentDTO createdComment = commentService.createComment(
                 commentRequest.getPostId(),
                 commentRequest.getUserId(),
                 commentRequest.getVisibility(),
                 commentRequest.getContent());
-        return ResponseEntity.ok(createdComment);
+
+        UserDTO userDTO = userService.findByUserId(commentRequest.getUserId());
+
+        Map<String, Object> commentMap = new HashMap<>();
+        commentMap.put("comment", createdComment);
+        commentMap.put("userNickName",userDTO.getNickname());
+        return ResponseEntity.ok(commentMap);
     }
 
     @GetMapping("/{commentId}")
@@ -66,9 +76,17 @@ public class CommentController {
                     )
             }
     )
-    public ResponseEntity<CommentDTO> getCommentById(@PathVariable Long commentId) {
-        CommentDTO comment = commentService.getCommentById(commentId);
-        return ResponseEntity.ok(comment);
+    public ResponseEntity<Map<String, Object>> getCommentById(@PathVariable Long commentId) {
+        CommentDTO commentDTO = commentService.getCommentById(commentId);
+        Long userId = commentDTO.getUserId();
+
+        UserDTO userDTO = userService.findByUserId(userId);
+
+        Map<String, Object> commentMap = new HashMap<>();
+        commentMap.put("comment", commentDTO);
+        commentMap.put("userNickName",userDTO.getNickname());
+
+        return ResponseEntity.ok(commentMap);
     }
 
     @GetMapping("/post/{postId}")
@@ -82,8 +100,8 @@ public class CommentController {
                     )
             }
     )
-    public ResponseEntity<List<CommentDTO>> getCommentsByPostId(@PathVariable Long postId) {
-        List<CommentDTO> comments = commentService.getCommentsByPostId(postId);
+    public ResponseEntity<List<Map<String, Object>>> getCommentsByPostId(@PathVariable Long postId) {
+        List<Map<String, Object>> comments = commentService.getCommentsByPostId(postId);
         return ResponseEntity.ok(comments);
     }
 

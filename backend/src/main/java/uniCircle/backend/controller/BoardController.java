@@ -112,8 +112,16 @@ public class BoardController {
             }
     )
     public ResponseEntity<?> getBoardById(@PathVariable Long postId) {
-        JsonObject jsonObject = boardService.getBoardByIdAndUserInfo(postId);
-        return ResponseEntity.ok(jsonObject.toString());
+        BoardDTO boardDTO = boardService.getBoardById(postId);
+
+        Long userId = boardDTO.getUserId();
+        UserDTO userDTO = userService.findByUserId(userId);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("board", boardDTO);
+        response.put("userNickName", userDTO.getNickname());
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping
@@ -128,8 +136,8 @@ public class BoardController {
                     )
             }
     )
-    public ResponseEntity<List<BoardDTO>> getAllPosts() {
-        List<BoardDTO> posts = boardService.getAllPosts();
+    public ResponseEntity<List<Map<String, Object>>> getAllPosts() {
+        List<Map<String, Object>> posts = boardService.getAllPosts();
         return ResponseEntity.ok(posts);
     }
 
@@ -151,9 +159,9 @@ public class BoardController {
             }
     )
     public ResponseEntity<?> getBoardByCircleId(@PathVariable Long circleId) {
-        List<BoardDTO> boardDTOs = boardService.getAllBoardByCircleId(circleId);
+        List<Map<String, Object>> boardList = boardService.getAllBoardByCircleId(circleId);
 
-        return ResponseEntity.ok(boardDTOs);
+        return ResponseEntity.ok(boardList);
     }
 
     @PutMapping("/{postId}")

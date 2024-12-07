@@ -13,7 +13,9 @@ import uniCircle.backend.repository.CommentRepository;
 import uniCircle.backend.repository.UserRepository;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,12 +54,21 @@ public class CommentService {
     }
 
     @Transactional
-    public List<CommentDTO> getCommentsByPostId(Long postId) {
+    public List<Map<String, Object>> getCommentsByPostId(Long postId) {
         Board post = boardRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid post ID"));
 
         return commentRepository.findByPost(post).stream()
-                .map(CommentDTO::fromEntity)
+                .map(comment -> {
+                    Map<String, Object> commentMap = new HashMap<>();
+
+                    commentMap.put("comment",CommentDTO.fromEntity(comment));
+
+                    commentMap.put("userNickName", comment.getUser().getNickname());
+                    commentMap.put("circleName", post.getCircle().getName());
+
+                    return commentMap;
+                })
                 .collect(Collectors.toList());
     }
 
