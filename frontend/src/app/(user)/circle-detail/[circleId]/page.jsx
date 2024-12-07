@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks";
-import { getCircleById, getEncounteredCircle, getBoardsByCircle } from "@/services";
+import { getCircleById, getEncounteredCircle, getBoardsByCircle, getAllFormByCircleId } from "@/services";
 import { BoardPreview, ModalWrapper, AdmissionCreate } from "@/components";
 import BoardEditor from "@/components/BoardEditor";
 
@@ -17,6 +17,7 @@ const CircleDetailPage = ({ params }) => {
     const [boardToggle, setBoardToggle] = useState(false);
     const [questions, setQuestions] = useState({"title": "", "description": "", "questions":[]});
     const [isCircleMember, setIsCircleMember] = useState(false);
+    const [alreadySubmit, setAlreadySubmit] = useState(false);
     const [boards, setBoards] = useState([]);
 
     
@@ -35,8 +36,11 @@ const CircleDetailPage = ({ params }) => {
                 const response_encountered = await getEncounteredCircle(auth.user.email);
                 const isIncluded = response_encountered.some(circle => circle.circleId.toString() === circleId);
                 setIsCircleMember(isIncluded);
+                const response_admission = await getAllFormByCircleId(circleId);
+                const submitted = response_admission.some(admission => admission.form.userId === auth.user.userId && admission.form.status === "PENDING");
+                setAlreadySubmit(submitted);
             }
-            if (admissionToggle === false){
+            if (boardToggle === false){
                 const response_boards = await getBoardsByCircle(circleId);
                 setBoards(response_boards);
             }
@@ -68,24 +72,38 @@ const CircleDetailPage = ({ params }) => {
                 </div>
                 </div>
                 <div className="w-full h-[180px] flex flex-col justify-center items-start gap-[8px] px-[16px] py-[32px]">
-                <div className="w-full h-[48px] flex justify-between items-start px-[1px] py-[6px] overflow-hidden">
+                <div className="w-full h-[48px] flex justify-between items-end px-[1px] py-[6px] overflow-hidden">
                     <div className="w-[186px] h-[36px] text-[#26262C] font-OpenSans text-[28px] leading-[36px] font-bold overflow-hidden whitespace-nowrap">
                     {circleInfo.name}
                     </div>
-                    <div className="w-[118px] h-[32px] bg-[#3578FF] shadow rounded-[8px] flex items-center justify-center px-[10px] py-[8px]">
+                    <div className="w-[300px] h-[32px] flex items-center justify-end px-[10px] py-[8px]">
                     {isCircleMember ? (
                         <>
-                            <div 
-                            onClick={handleMemberListClicked}
-                            className="w-[98px] h-[16px] text-[#FFFFFF] font-OpenSans text-[12px] leading-[16px] cursor-pointer font-bold text-center overflow-hidden whitespace-nowrap">
-                                회원 목록
+                            <div className="flex items-center justify-center gap-[5px]">
+                                <div 
+                                onClick={handleMemberListClicked}
+                                className="w-[118px] h-[32px] text-[#FFFFFF] bg-[#3578FF] rounded-[8px] flex items-center justify-center font-OpenSans text-[15px] leading-[16px] cursor-pointer font-bold text-center overflow-hidden whitespace-nowrap">
+                                    회원 목록
+                                </div>
+                                <div 
+                                onClick={() => {setBoardToggle(true)}}
+                                className="w-[118px] h-[32px] text-[#FFFFFF] bg-[#3578FF] rounded-[8px] flex items-center justify-center font-OpenSans text-[15px] leading-[16px] cursor-pointer font-bold text-center overflow-hidden whitespace-nowrap">
+                                    글쓰기
+                                </div>
                             </div>
                         </>
                         ):(
                         <>
-                        <div onClick={() => {handleAdmissionToggle(true)}} className="w-[98px] h-[16px] text-[#FFFFFF] cursor-pointer font-OpenSans text-[12px] leading-[16px] font-bold text-center overflow-hidden whitespace-nowrap text-ellipsis">
-                            가입하기
-                        </div>
+                        {alreadySubmit ? (
+                            <div className="w-[118px] h-[32px] text-[#FFFFFF] bg-[#3578FF] rounded-[8px] flex items-center justify-center font-OpenSans text-[15px] leading-[16px] cursor-pointer font-bold text-center overflow-hidden whitespace-nowrap">
+                            대기중
+                            </div>
+                        ):
+                        (
+                            <div onClick={() => {handleAdmissionToggle(true)}} className="w-[118px] h-[32px] text-[#FFFFFF] bg-[#3578FF] rounded-[8px] flex items-center justify-center font-OpenSans text-[15px] leading-[16px] cursor-pointer font-bold text-center overflow-hidden whitespace-nowrap">
+                                가입하기
+                            </div>
+                        )}
                         </>
                     )}
                     </div>

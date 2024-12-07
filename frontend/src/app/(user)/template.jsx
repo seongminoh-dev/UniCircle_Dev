@@ -34,6 +34,7 @@ const SplashScreen = () => {
           <SplashScreen />
         ) : (
           <>
+            <AuthGuard>
             <div className="h-screen flex flex-col">
               <Header />
               <div className="flex flex-grow overflow-hidden">
@@ -49,6 +50,7 @@ const SplashScreen = () => {
                 <RightSidebar />
               </div>
             </div>
+            </AuthGuard>
           </>
         )}
       </>
