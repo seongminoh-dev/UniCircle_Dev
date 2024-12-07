@@ -113,13 +113,12 @@ export const deletePost= async (postId) => {
       },
     });
     if (response.status === 200) {
-      const result = await response.json();
-      return result;
+      return;
     } else {
       throw new Error(`Unknown Error:${response.status}`);
     }
   } catch (error) {
-    console.error("Unknown Error in getPost", error.message);
+    console.error("Unknown Error in deletePost", error.message);
     throw error;
   }
 }

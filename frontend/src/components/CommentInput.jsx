@@ -37,3 +37,4 @@ const CommentInput = ({ onSubmit }) => {
 };
 
 export default CommentInput;
+

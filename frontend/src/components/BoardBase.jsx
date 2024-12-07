@@ -19,7 +19,7 @@ const BoardBase = ({ board, isPreview = false }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // 메뉴 상태를 관리합니다.
 
   // 데이터 처리
-  const { userNickName: nickname, circleName: circle, board: boardData } = board;
+  const { userNickName: nickname, circleName: circle, board: boardData, circleId : circleNameTemp } = board;
   const title = boardData.title ?? "오류";
   const content = boardData.content ?? "내용을 불러오는데 실패했습니다.";
   const circleId = boardData.circleId ?? 0;
@@ -93,7 +93,7 @@ const BoardBase = ({ board, isPreview = false }) => {
           <h3 className="text-lg font-bold">{nickname}</h3>
           <span className="border-l-2 border-gray-300 h-5 mx-2"></span> {/* 세로선 */}
           <span className="text-sm text-gray-500 cursor-pointer" onClick={handleCircleClick}>
-            {circle}
+            {circle ?? circleNameTemp ?? "동아리"}
           </span>
         </div>
         {/* Menu Button */}
