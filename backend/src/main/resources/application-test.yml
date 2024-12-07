@@ -1,0 +1,85 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+  forward-headers-strategy: framework
+
+app:
+  secret: dummy
+  jwt:
+    token:
+      expires-in: 3600000 # 60 minutes in milliseconds
+    refresh-token:
+      expires-in: 86400000 # 24 hours in milliseconds
+    remember-me:
+      expires-in: 1728000000 # 20 days in milliseconds
+  registration:
+    email:
+      token:
+        expires-in: 3600000 # 60 minutes in milliseconds
+    password:
+      token:
+        expires-in: 3600000 # 60 minutes in milliseconds
+  default-locale: en
+  default-timezone: Europe/Istanbul
+  url: http://localhost:8080
+  frontend-url: http://localhost:3000
+
+spring:
+  application:
+    name: UniCircle
+    description: University Of Seoul Circle Application
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: false
+        format_sql: true
+        globally_quoted_identifiers: true
+    open-in-view: false
+  datasource:
+    url: jdbc:postgresql://localhost:5432/unicircle
+    username: universe
+    password: universe
+    driver-class-name: org.postgresql.Driver
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  messages:
+    basename: locales.messages
+    encoding: UTF-8
+    cache-duration: -1
+  jackson:
+    mapper:
+      accept-case-insensitive-enums: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: dummy
+    password: dummy
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  docker:
+    compose:
+      lifecycle-management: none
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    enabled: true
+    operationsSorter: alpha
+    tagsSorter: alpha
+    path: /swagger-ui
+  show-actuator: true

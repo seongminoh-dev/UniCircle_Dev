@@ -21,6 +21,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 import uniCircle.backend.dto.BoardDTO;
+import uniCircle.backend.dto.CircleDTO;
 import uniCircle.backend.dto.UserDTO;
 import uniCircle.backend.dto.request.BoardRequest;
 import uniCircle.backend.dto.response.ErrorResponse;
@@ -28,6 +29,7 @@ import uniCircle.backend.dto.response.SuccessResponse;
 import uniCircle.backend.entity.Board;
 import uniCircle.backend.service.BoardService;
 import uniCircle.backend.entity.Visibility;
+import uniCircle.backend.service.CircleService;
 import uniCircle.backend.service.UserService;
 
 @RestController
@@ -37,6 +39,7 @@ public class BoardController {
 
     private final BoardService boardService;
     private final UserService userService;
+    private final CircleService circleService;
 
     @PostMapping(consumes = {"multipart/form-data"})
     @Operation(
@@ -115,10 +118,13 @@ public class BoardController {
         BoardDTO boardDTO = boardService.getBoardById(postId);
 
         Long userId = boardDTO.getUserId();
+        Long circleId = boardDTO.getCircleId();
         UserDTO userDTO = userService.findByUserId(userId);
+        CircleDTO circleDTO = circleService.getCircle(circleId);
 
         Map<String, Object> response = new HashMap<>();
         response.put("board", boardDTO);
+        response.put("circleId", circleDTO.getName());
         response.put("userNickName", userDTO.getNickname());
 
         return ResponseEntity.ok(response);
