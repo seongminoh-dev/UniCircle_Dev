@@ -107,3 +107,23 @@ export async function getCircleMembers(circleId) {
     throw new Error(`Get Circle Members Error: ${res.status}`);
   }
 }
+
+export async function removeUserFromCircle(circleId, userEmail) {
+  const url = `${process.env.NEXT_PUBLIC_API_URL}${circleId}/remove?userEmail=${encodeURIComponent(userEmail)}`;
+  const accessToken = await getAccessToken();
+
+  const res = await fetch(url, {
+    method: "DELETE",
+    headers: new Headers({
+      Authorization: `${accessToken}`,
+      Accept: "*/*", // 'accept: */*' 헤더 추가
+    }),
+    cache: "no-store",
+  });
+
+  if (res.ok) {
+    return res.json();
+  } else {
+    throw new Error(`Remove User From Circle Error: ${res.status}`);
+  }
+}

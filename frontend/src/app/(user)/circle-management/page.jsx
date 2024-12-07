@@ -59,8 +59,8 @@ const CircleManagementPage = () => {
     router.push(`/circle-management/members?circleId=${circleId}`);
   };
 
-  const handleEditInfo = (circleName) => {
-    alert(`${circleName} 정보 수정 클릭됨!`);
+  const handleEditInfo = (circleId) => {
+    router.push(`/circle-update/${circleId}`);
   };
 
   const handleCreateCircle = () => {
@@ -77,7 +77,7 @@ const CircleManagementPage = () => {
           내가 가입한 동아리
         </h2>
         <div >
-          {joinedCircles.length === 0 ? (
+          {!joinedCircles || joinedCircles.length === 0 ? (
             <div className="bg-gray-100 p-4 space-y-4 rounded-lg">
             <p className="text-gray-500">아직 가입한 동아리가 없습니다.</p>
             </div>
@@ -98,7 +98,7 @@ const CircleManagementPage = () => {
           내가 관리중인 동아리
         </h2>
         <div>
-          {managedCircles.length === 0 ? (
+          {!managedCircles || managedCircles.length === 0 ? (
             <div className="bg-gray-100 p-4 space-y-4 rounded-lg">
             <p className="text-gray-500">관리중인 동아리가 없습니다.</p>
             </div>

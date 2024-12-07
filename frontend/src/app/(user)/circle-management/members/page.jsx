@@ -14,6 +14,8 @@ import { getCircleMembers } from "@/services";
 import { updateAdmissionFormStatus } from "@/services/AdmissionForm";
 import { acceptUserByFormId } from "@/services/AdmissionForm";
 import { getAdmissionForm } from "@/services/AdmissionForm";
+import { removeUserFromCircle } from "@/services/Circle";
+
 
 const MemberManagement = () => {
   const router = useRouter();
@@ -120,8 +122,9 @@ const MemberManagement = () => {
     alert(`${formData.userId}의 요청을 거절합니다.`);
   };
 
-  const handleLeave = (userId) => {
-    alert(`${userId}의 동아리 탈퇴를 처리합니다.`);
+  const handleLeave = (userEmail) => {
+    alert(`${userEmail}의 동아리 탈퇴를 처리합니다.`);
+    removeUserFromCircle(circleId ,userEmail);
   };
 
   const handleAcceptInForm = () => {
@@ -187,7 +190,7 @@ const MemberManagement = () => {
                   nickname={member.nickname}
                   email={member.email}
                   onViewForm={()=> handleViewMemberForm(member.id)}
-                  onLeave={() => handleLeave(member.nickname)}
+                  onLeave={() => handleLeave(member.email)}
                 />
               ))
             )}
