@@ -166,7 +166,7 @@ const CircleDetailPage = ({ params }) => {
             }
             {
                 boardToggle && (
-                    <ModalWrapper isOpen={boardToggle} onClose={() => setBoardToggle(false)}>
+                    <ModalWrapper isOpen={boardToggle} onClose={() => setBoardToggle(false)} isTransparent={true}>
                         <BoardEditor circleId={circleId} onClose={() => setBoardToggle(false)}/>
                     </ModalWrapper>
                 )

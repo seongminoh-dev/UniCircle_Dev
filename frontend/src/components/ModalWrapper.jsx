@@ -1,7 +1,19 @@
 "use client";
 
-const ModalWrapper = ({ isOpen, onClose, children }) => {
+const ModalWrapper = ({ isOpen, onClose, children, isTransparent }) => {
   if (!isOpen) return null;
+
+  if(isTransparent)
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50" onClick={onClose}>
+      <div
+        className="bg-white bg-opacity-0 p-6 relative max-w-[800px]"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {children}
+      </div>
+    </div>
+  );
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50" onClick={onClose}>

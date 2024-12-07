@@ -1,12 +1,16 @@
 "use client";
 
 import CircleTag from "./CircleTag";
-
+import { useRouter } from "next/navigation";
 const CirclePreview = ({ circle }) => {
-  const { name, image, tags } = club;
+  const {id, name, image, tags } = circle;
+  const router = useRouter();
+  const handleClickCircle = () => {
+    router.push(`/circle-detail/${id}`);
+  };
 
   return (
-    <div className="flex items-center p-4 bg-white rounded-lg shadow">
+    <div className="flex items-center p-4 bg-white rounded-lg shadow cursor-pointer" onClick={handleClickCircle}>
       {/* Club Image */}
       <div className="flex-shrink-0 w-16 h-16">
         <img

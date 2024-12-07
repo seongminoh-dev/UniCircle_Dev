@@ -1,14 +1,19 @@
 "use client";
 
 import CircleTag from "./CircleTag";
+import { useRouter } from "next/navigation";
 
 const CircleManagementPreview = ({ circle, onManageMembers, onEditInfo }) => {
-  const { name, image, tags } = circle;
+  const {id, name, image, tags } = circle;
+  const router = useRouter();
+  const handleClickCircle = () => {
+    router.push(`/circle-detail/${id}`);
+  };
 
   return (
     <div className="flex items-center p-4 bg-white rounded-lg shadow justify-between">
       {/* Left Section: Image and Club Details */}
-      <div className="flex items-center">
+      <div className="flex-grow flex items-center cursor-pointer" onClick={handleClickCircle}>
         {/* Club Image */}
         <div className="flex-shrink-0 w-16 h-16">
           <img
