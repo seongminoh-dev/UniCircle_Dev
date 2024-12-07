@@ -70,7 +70,29 @@ export const ApplyFormBuilder = ({questions, handleQuestionChange, onClose}) => 
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white">
+    <div className="shadow-md rounded-lg max-w-3xl mx-auto p-6 bg-white">
+            {/* 닫기 버튼 */}
+            <button
+        onClick={onClose}
+        className="absolute top-8 right-8 text-gray-400 hover:text-gray-600 focus:outline-none"
+        aria-label="닫기"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+
       <h2 className="text-xl font-semibold mb-4">동아리 가입 신청 양식</h2>
       {/* 폼 제목과 설명 */}
       <div className="mb-6">
@@ -94,20 +116,22 @@ export const ApplyFormBuilder = ({questions, handleQuestionChange, onClose}) => 
       {/* 기존 질문 목록 */}
       <div className="mb-4">
         <h3 className="text-lg font-semibold mb-2">질문 목록</h3>
-        {updatedQuestions && updatedQuestions.map((question, index) => (
-          <div key={index} className="relative p-4 mb-2 border rounded shadow-sm bg-gray-50">
-            <ApplyQuestion question={question} onChange={undefined} />
-            {/* 제거 버튼 */}
-            <div className="flex justify-end mt-2">
-              <button
-                onClick={() => removeQuestion(index)}
-                className="w-6 h-6 flex items-center justify-center bg-gray-400 text-white rounded hover:bg-gray-500"
-              >
-                -
-              </button>
+        <div className="max-h-64 overflow-y-auto">
+          {updatedQuestions && updatedQuestions.map((question, index) => (
+            <div key={index} className="relative p-4 mb-2 border rounded shadow-sm bg-gray-50">
+              <ApplyQuestion question={question} onChange={undefined} />
+              {/* 제거 버튼 */}
+              <div className="flex justify-end mt-2">
+                <button
+                  onClick={() => removeQuestion(index)}
+                  className="w-6 h-6 flex items-center justify-center bg-gray-400 text-white rounded hover:bg-gray-500"
+                >
+                  -
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       {/* 새 질문 추가 영역 */}
@@ -207,7 +231,7 @@ export const ApplyFormBuilder = ({questions, handleQuestionChange, onClose}) => 
         <>
           <button
             onClick={() => setIsAddingQuestion(true)}
-            className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600 mb-2"
+            className="shadow-md w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600 mb-2"
           >
             새 질문 추가
           </button>
@@ -218,7 +242,7 @@ export const ApplyFormBuilder = ({questions, handleQuestionChange, onClose}) => 
       {/* 저장 버튼 */}
       <button
         onClick={saveForm}
-        className="w-full p-2 bg-purple-500 text-white rounded hover:bg-purple-600"
+        className="shadow-md w-full p-2 bg-purple-500 text-white rounded hover:bg-purple-600"
       >
         저장
       </button>

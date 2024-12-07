@@ -108,87 +108,103 @@ const CircleUpdatePage = ({ params }) => {
   return (
     <div className="p-6 min-h-screen space-y-6">
         <div className="flex flex-col relative">
-            
         <div className="w-full flex flex-col items-start overflow-hidden">
-            {updatedCircleInfo && (
-                <>
-                <div className="w-full h-[347px] flex items-end p-[8px] bg-[#EEEEF0] relative">
-                <img src="https://image-resource.creatie.ai/139025621997997/139025621998006/bdf19faa702d587331b82c039b703068.jpeg" className="absolute inset-0 w-full h-full object-cover" />
+          {updatedCircleInfo && (
+            <>
+              <div className="w-full h-[347px] flex items-end p-[8px] bg-[#EEEEF0] relative">
+                <img
+                  src="https://image-resource.creatie.ai/139025621997997/139025621998006/bdf19faa702d587331b82c039b703068.jpeg"
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
                 <img src="add.svg" alt="아이콘" className="w-8 h-8" />
+              </div>
+              <div className="w-full flex flex-col items-start space-y-[24px] px-[24px] pt-[88px] pb-[24px] bg-white">
+                {/* 동아리 이름 */}
+                <div className="w-full h-[60px] border border-[#D9D9DE] rounded flex flex-row justify-start items-center px-[12px] py-[4px]">
+                  <div className="w-full flex flex-col gap-y-1">
+                    <label className="text-[#91929F] text-[10px] leading-[20px]">동아리 이름</label>
+                    <input
+                      className="w-full text-[#26262C] font-semibold text-[16px] leading-[20px] focus:outline-none"
+                      name="name"
+                      value={updatedCircleInfo.name}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <img src="/check.svg" alt="아이콘" className="w-8 h-8 ml-2" />
                 </div>
-                <div className="w-full flex flex-col items-start space-y-[24px] px-[24px] pt-[88px] pb-[24px] bg-white">
-                    <div className="w-full h-[60px] border border-[#D9D9DE] rounded flex flex-row justify-start items-start px-[12px] pt-[4px] pb-[4px]">
-                        <div className="w-full h-[20px] flex-col items-start gap-x-[20px]">
-                        <div className="text-[#91929F] text-[10px] leading-[20px]">
-                        동아리 이름
-                        </div>
-                        <input className="flex-grow text-[#26262C] font-semibold text-[16px] leading-[20px]" name="name" value={updatedCircleInfo.name} onChange={handleInputChange}/>
-                        </div>
-                        <img src="/check.svg" alt="아이콘" className="w-8 h-8 mt-2" />
-                    </div>
-                    <div className="w-full h-[60px] border border-[#D9D9DE] rounded flex flex-row justify-start items-start px-[12px] pt-[4px] pb-[20px]">
-                        <div className="w-full h-[20px] flex-col items-start gap-x-[20px]">
-                        <div className="text-[#91929F] text-[10px] leading-[20px]">
-                        동아리 소개
-                        </div>
-                        <input className="flex-grow text-[#26262C] font-semibold text-[16px] leading-[20px]" name="description" value={updatedCircleInfo.description} onChange={handleInputChange}/>
-                        </div>
-                        <img src="/check.svg" alt="아이콘" className="w-8 h-8 mt-2" />
-                    </div>
-                    <div className="w-full h-[60px] rounded flex flex-row justify-start items-start pt-[4px] pb-[20px] gap-x-[11px]">
-                        <div className="w-[164px] h-[60px] border border-[#D9D9DE] rounded flex flex-row justify-start items-start px-[12px] pt-[4px] pb-[20px]">
-                            <div className="w-full h-[20px] flex-col items-start gap-x-[20px]">
-                            <div className="text-[#91929F] text-[10px] leading-[20px]">
-                            해시태그 1
-                            </div>
-                            <input className="w-[80px] flex-grow text-[#26262C] font-semibold text-[16px] leading-[20px]" name="hashtag 0" value={updatedCircleInfo.hashtags[0]} onChange={(e) => {handleHashtagChange(0, e.target.value)}}/>
-                            </div>
-                            <img src="/check.svg" alt="아이콘" className="w-8 h-8 mt-2" />
-                        </div>
-                        <div className="w-[164px] h-[60px] border border-[#D9D9DE] rounded flex flex-row justify-start items-start px-[12px] pt-[4px] pb-[20px]">
-                            <div className="w-full h-[20px] flex-col items-start gap-x-[20px]">
-                            <div className="text-[#91929F] text-[10px] leading-[20px]">
-                            해시태그 2
-                            </div>
-                            <input className="w-[80px] flex-grow text-[#26262C] font-semibold text-[16px] leading-[20px]" name="hashtag 1" value={updatedCircleInfo.hashtags[1]} onChange={(e) => {handleHashtagChange(1, e.target.value)}}/>
-                            </div>
-                            <img src="/check.svg" alt="아이콘" className="w-8 h-8 mt-2" />
-                        </div>
-                        <div className="w-[164px] h-[60px] border border-[#D9D9DE] rounded flex flex-row justify-start items-start px-[12px] pt-[4px] pb-[20px]">
-                            <div className="w-full h-[20px] flex-col items-start gap-x-[20px]">
-                            <div className="text-[#91929F] text-[10px] leading-[20px]">
-                            해시태그 3
-                            </div>
-                            <input className="w-[80px] flex-grow text-[#26262C] font-semibold text-[16px] leading-[20px]" name="hashtag 2" value={updatedCircleInfo.hashtags[2]} onChange={(e) => {handleHashtagChange(2, e.target.value)}}/>
-                            </div>
-                            <img src="/check.svg" alt="아이콘" className="w-8 h-8 mt-2" />
-                        </div>
-                    </div>
-                {!questionToggle &&
-                  ( 
-                    <div className="w-full h-[52px] bg-purple-500  rounded flex justify-center items-center" onClick={() => {setQuestionToggle(true)}}>
-                      <div className="text-white font-semibold text-[14px] leading-[20px]">
-                      가입 양식 수정
+
+                {/* 동아리 소개 */}
+                <div className="w-full h-[60px] border border-[#D9D9DE] rounded flex flex-row justify-start items-center px-[12px] py-[4px]">
+                  <div className="w-full flex flex-col gap-y-1">
+                    <label className="text-[#91929F] text-[10px] leading-[20px]">동아리 소개</label>
+                    <input
+                      className="w-full text-[#26262C] font-semibold text-[16px] leading-[20px] focus:outline-none"
+                      name="description"
+                      value={updatedCircleInfo.description}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <img src="/check.svg" alt="아이콘" className="w-8 h-8 ml-2" />
+                </div>
+
+                {/* 해시태그 입력 */}
+                <div className="w-full h-[60px] flex flex-row justify-start items-start pt-[4px] pb-[20px] gap-x-[11px]">
+                  {[0, 1, 2].map((index) => (
+                    <div
+                      key={index}
+                      className="flex-grow h-[60px] border border-[#D9D9DE] rounded flex flex-row justify-start items-center px-[12px]"
+                    >
+                      <div className="w-full flex flex-col gap-y-1">
+                        <label className="text-[#91929F] text-[10px] leading-[20px]">해시태그 {index + 1}</label>
+                        <input
+                          className="w-full text-[#26262C] font-semibold text-[16px] leading-[20px] focus:outline-none"
+                          name={`hashtag ${index}`}
+                          value={updatedCircleInfo.hashtags[index]}
+                          onChange={(e) => handleHashtagChange(index, e.target.value)}
+                        />
                       </div>
+                      <img src="/check.svg" alt="아이콘" className="w-8 h-8 ml-2" />
                     </div>
-                  )
-                }
-                <div className="w-full h-[52px] bg-[#3578FF] rounded flex justify-center items-center" onClick={handleSubmit}>
-                    <div className="text-white font-semibold text-[14px] leading-[20px]">
-                    Save
-                    </div>
+                  ))}
                 </div>
-            </div>
-            {questionToggle &&
-              (
-                <ModalWrapper isOpen={questionToggle} onClose={() => setQuestionToggle(false)}>
-                  <ApplyFormBuilder questions={questions} handleQuestionChange={handleQuestionChange} onClose={() => setQuestionToggle(false)}/>
+
+                {/* 가입 양식 수정 버튼 */}
+                {!questionToggle && (
+                  <div
+                    className="cursor-pointer shadow-md w-full h-[52px] bg-purple-500 rounded flex justify-center items-center"
+                    onClick={() => setQuestionToggle(true)}
+                  >
+                    <div className="text-white font-semibold text-md leading-[20px]">가입 양식 수정</div>
+                  </div>
+                )}
+
+                {/* 저장 버튼 */}
+                <div
+                  className="cursor-pointer w-full h-[52px] bg-[#3578FF] rounded flex justify-center items-center"
+                  onClick={handleSubmit}
+                >
+                  <div className="text-white font-semibold text-md leading-[20px]">Save</div>
+                </div>
+              </div>
+
+              {/* 질문 모달 */}
+              {questionToggle && (
+                <ModalWrapper
+                  isOpen={questionToggle}
+                  onClose={() => setQuestionToggle(false)}
+                  isTransparent={true}
+                >
+                  <ApplyFormBuilder
+                    questions={questions}
+                    handleQuestionChange={handleQuestionChange}
+                    onClose={() => setQuestionToggle(false)}
+                  />
                 </ModalWrapper>
-              )
-            }
+              )}
             </>
-            )}
+          )}
         </div>
+
 
         <div className="w-full h-[80px] flex justify-center items-center px-[10px] bg-transparent">
             <div className="w-[60px] h-[60px] relative">
