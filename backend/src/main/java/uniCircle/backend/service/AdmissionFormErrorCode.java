@@ -26,7 +26,7 @@ public enum AdmissionFormErrorCode {
         "ERR_A05",
         "입부신청서가 존재하지 않음",
         HttpStatus.NOT_FOUND),
-    BAD_REQUEST_FORM(
+    BAD_REQUEST_ALREADY_TAKEN(
         "ERR_A06",
         "이미 처리되었거나 잘못된 요청",
         HttpStatus.BAD_REQUEST);

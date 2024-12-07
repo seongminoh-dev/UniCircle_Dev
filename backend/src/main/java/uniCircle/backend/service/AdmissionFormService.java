@@ -98,6 +98,24 @@ public class AdmissionFormService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public List<Map<String, Object>> getAdmissionFormsByCircleIdAndStatus(Long circleId, String status) {
+        Optional<Circle> circle = circleRepository.findById(circleId);
+        if(circle.isEmpty()) throw new AdmissionFormCustomException(AdmissionFormErrorCode.NOT_FOUND_CIRCLE);
+
+        return admissionFormRepository.findByCircleAndStatus(circle.get(), Status.valueOf(status)).stream()
+                .map(admissionForm -> {
+                    Map<String, Object> formMap = new HashMap<>();
+
+                    User user = admissionForm.getUser();
+
+                    formMap.put("form", AdmissionFormDTO.fromEntity(admissionForm));
+                    formMap.put("userNickName", user.getNickname());
+
+                    return formMap;
+                })
+                .collect(Collectors.toList());
+    }
     //AdmissionForm 수정
     //Content와 Status만 수정이 의미있으므로 전체 업데이트 작성하지 않음
 
@@ -122,7 +140,6 @@ public class AdmissionFormService {
         try { form.updateStatus(Status.valueOf(status)); }
         catch(Exception e) { throw new AdmissionFormCustomException(AdmissionFormErrorCode.BAD_REQUEST_STATUS); }
 
-        form.updateStatus(Status.valueOf(status));
         return AdmissionFormDTO.fromEntity(form);
     }
 
@@ -136,9 +153,21 @@ public class AdmissionFormService {
                 CircleUserDTO circleUser = circleUserService.addUserToCircle(form.getCircle().getCircleId(), UserDTO.fromEntity(form.getUser()));
         }
         catch (IllegalArgumentException e) {
-                throw new AdmissionFormCustomException(AdmissionFormErrorCode.BAD_REQUEST_FORM);
+                throw new AdmissionFormCustomException(AdmissionFormErrorCode.BAD_REQUEST_ALREADY_TAKEN);
         }
         form.updateStatus(Status.ACCEPTED);
+        return AdmissionFormDTO.fromEntity(form);
+    }
+
+    @Transactional
+    public AdmissionFormDTO rejectAdmissionForm(Long formId) {
+
+        AdmissionForm form = admissionFormRepository.findById(formId)
+                .orElseThrow(() -> new AdmissionFormCustomException(AdmissionFormErrorCode.NOT_FOUND_FORM));
+
+        if(form.getStatus() != Status.PENDING) throw new AdmissionFormCustomException(AdmissionFormErrorCode.BAD_REQUEST_ALREADY_TAKEN);
+
+        form.updateStatus(Status.REJECTED);
         return AdmissionFormDTO.fromEntity(form);
     }
 

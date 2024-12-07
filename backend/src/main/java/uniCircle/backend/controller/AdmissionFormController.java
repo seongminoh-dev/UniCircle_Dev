@@ -158,6 +158,29 @@ public class AdmissionFormController {
         return ResponseEntity.ok(forms);
     }
 
+    @GetMapping("/searchcircle/{circleId}/{status}")
+    @Operation(
+            summary = "Circle ID 및 상태(PENDING, ACCEPTED, REJECTED, CANCELLED)에 따른 입부신청서 검색",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Circle ID가 일치하는 입부신청서 리스트 전송 성공",
+                            content = @Content(schema = @Schema(implementation = AdmissionFormDTO.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "동아리가 존재하지 없음",
+                            content = @Content(schema = @Schema(implementation = ErrorResponse.class)
+                            )
+                    )
+            }
+    )
+    public ResponseEntity<List<Map<String, Object>>> getFormsByCircleIdAndStatus(@PathVariable Long circleId, @PathVariable String status) {
+        List<Map<String, Object>> forms = admissionFormService.getAdmissionFormsByCircleIdAndStatus(circleId, status);
+        return ResponseEntity.ok(forms);
+    }
+
     @GetMapping("/search/{userId}/{circleId}")
     @Operation(
             summary = "User ID와 Circle ID 따른 입부신청서 검색",
@@ -209,7 +232,7 @@ public class AdmissionFormController {
 
     @PutMapping("/updatestatus/{formId}/{status}")
     @Operation(
-            summary = "입부신청서 상태 변경",
+            summary = "입부신청서 상태(PENDING, ACCEPTED, REJECTED, CANCELLED) 변경",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
@@ -262,6 +285,35 @@ public class AdmissionFormController {
     )
     public ResponseEntity<AdmissionFormDTO> AcceptAdmissionForm(@PathVariable Long formId) {
         AdmissionFormDTO form = admissionFormService.acceptAdmissionForm(formId);
+        return ResponseEntity.ok(form);
+    }
+
+    @PutMapping("/reject/{formId}")
+    @Operation(
+            summary = "입부신청서 거절",
+            responses = {
+                @ApiResponse(
+                        responseCode = "200",
+                        description = "입부신청서 상태 거절됨으로 변경됨",
+                        content = @Content(schema = @Schema(implementation = AdmissionFormDTO.class)
+                        )
+                ),
+                @ApiResponse(
+                            responseCode = "400",
+                            description = "승인 대기중인 입부신청서가 아님",
+                            content = @Content(schema = @Schema(implementation = ErrorResponse.class)
+                            )
+                    ),
+                @ApiResponse(
+                        responseCode = "404",
+                        description = "입부신청서가 존재하지 않음",
+                        content = @Content(schema = @Schema(implementation = ErrorResponse.class)
+                        )
+                )
+        }
+    )
+    public ResponseEntity<AdmissionFormDTO> RejectAdmissionForm(@PathVariable Long formId) {
+        AdmissionFormDTO form = admissionFormService.rejectAdmissionForm(formId);
         return ResponseEntity.ok(form);
     }
 
