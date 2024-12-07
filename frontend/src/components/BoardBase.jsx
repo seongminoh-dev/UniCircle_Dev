@@ -14,7 +14,11 @@ const BoardBase = ({ board, isPreview = false }) => {
   comments = 0;
 
   // Content 처리: Preview 모드일 경우 자르기
-  const displayContent = isPreview && content.length > 100 ? content.slice(0, 100) + "..." : content;
+  const displayContent = !content
+  ? "내용을 불러올 수 없습니다."
+  : isPreview && content.length > 100
+  ? content.slice(0, 100) + "..."
+  : content;
 
   // 시간 포맷 함수
   const formatTimestamp = (timestamp) => {
