@@ -78,6 +78,7 @@ public class BoardService {
         List<Board> boards = boardRepository.findAllByCircle(circle);
 
         return boards.stream()
+                .sorted((b1, b2) -> b2.getCreatedAt().compareTo(b1.getCreatedAt())) // createdAt 내림차순 정렬
                 .map(board -> {
                     Map<String, Object> result = new HashMap<>();
 
@@ -98,7 +99,7 @@ public class BoardService {
     // 모든 게시글 조회
     @Transactional
     public List<Map<String, Object>> getAllPosts() {
-        return boardRepository.findAll().stream()
+        return boardRepository.findAllByOrderByCreatedAtDesc().stream()
                 .map(board -> {
                     Map<String, Object> result = new HashMap<>();
 
