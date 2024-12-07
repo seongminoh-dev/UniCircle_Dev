@@ -1,6 +1,8 @@
 package uniCircle.backend.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -18,7 +20,6 @@ import uniCircle.backend.entity.User;
 import uniCircle.backend.repository.AdmissionFormRepository;
 import uniCircle.backend.repository.CircleRepository;
 import uniCircle.backend.repository.UserRepository;
-import uniCircle.backend.service.CircleUserService;
 
 
 @Service
@@ -60,22 +61,40 @@ public class AdmissionFormService {
     }
 
     //user_id로 리스트 전체 조회
-    public List<AdmissionFormDTO> getAdmissionFormsByUserId(Long userId) {
+    @Transactional
+    public List<Map<String, Object>> getAdmissionFormsByUserId(Long userId) {
         Optional<User> user = userRepository.findById(userId);
         if(user.isEmpty()) throw new AdmissionFormCustomException(AdmissionFormErrorCode.NOT_FOUND_USER);
 
         return admissionFormRepository.findByUser(user.get()).stream()
-                .map(AdmissionFormDTO::fromEntity)
+                .map(admissionForm -> {
+                    Map<String, Object> formMap = new HashMap<>();
+
+                    formMap.put("form", admissionForm);
+                    formMap.put("userNickName", user.get().getNickname());
+
+                    return formMap;
+                })
                 .collect(Collectors.toList());
     }
 
     //circle_id로 리스트 전체 조회
-    public List<AdmissionFormDTO> getAdmissionFormsByCircleId(Long circleId) {
+    @Transactional
+    public List<Map<String, Object>> getAdmissionFormsByCircleId(Long circleId) {
         Optional<Circle> circle = circleRepository.findById(circleId);
         if(circle.isEmpty()) throw new AdmissionFormCustomException(AdmissionFormErrorCode.NOT_FOUND_CIRCLE);
 
         return admissionFormRepository.findByCircle(circle.get()).stream()
-                .map(AdmissionFormDTO::fromEntity)
+                .map(admissionForm -> {
+                    Map<String, Object> formMap = new HashMap<>();
+
+                    User user = admissionForm.getUser();
+
+                    formMap.put("form", AdmissionFormDTO.fromEntity(admissionForm));
+                    formMap.put("userNickName", user.getNickname());
+
+                    return formMap;
+                })
                 .collect(Collectors.toList());
     }
 

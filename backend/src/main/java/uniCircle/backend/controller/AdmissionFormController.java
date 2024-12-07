@@ -1,7 +1,9 @@
 package uniCircle.backend.controller;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,7 +22,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import uniCircle.backend.dto.AdmissionFormDTO;
-import uniCircle.backend.dto.CircleUserDTO;
 import uniCircle.backend.dto.UserDTO;
 import uniCircle.backend.dto.request.AdmissionFormRequest;
 import uniCircle.backend.dto.response.ErrorResponse;
@@ -96,9 +97,17 @@ public class AdmissionFormController {
                     )
             }
     )
-    public ResponseEntity<AdmissionFormDTO> getFormById(@PathVariable Long formId) {
+    public ResponseEntity<Map<String, Object>> getFormById(@PathVariable Long formId) {
         AdmissionFormDTO form = admissionFormService.getAdmissionFormById(formId);
-        return ResponseEntity.ok(form); 
+
+        Map<String, Object> formMap = new HashMap<>();
+
+        Long userId = form.getUserId();
+        UserDTO userDTO = userService.findByUserId(userId);
+
+        formMap.put("form", form);
+        formMap.put("userNickName", userDTO.getNickname());
+        return ResponseEntity.ok(formMap);
     }
 
     //user ID로 GET
@@ -120,8 +129,8 @@ public class AdmissionFormController {
                     )
             }
     )
-    public ResponseEntity<List<AdmissionFormDTO>> getFormsByUserId(@PathVariable Long userId) {
-        List<AdmissionFormDTO> forms = admissionFormService.getAdmissionFormsByUserId(userId);
+    public ResponseEntity<List<Map<String, Object>>> getFormsByUserId(@PathVariable Long userId) {
+        List<Map<String, Object>> forms = admissionFormService.getAdmissionFormsByUserId(userId);
         return ResponseEntity.ok(forms);
     }
 
@@ -144,8 +153,8 @@ public class AdmissionFormController {
                     )
             }
     )
-    public ResponseEntity<List<AdmissionFormDTO>> getFormsByCircleId(@PathVariable Long circleId) {
-        List<AdmissionFormDTO> forms = admissionFormService.getAdmissionFormsByCircleId(circleId);
+    public ResponseEntity<List<Map<String, Object>>> getFormsByCircleId(@PathVariable Long circleId) {
+        List<Map<String, Object>> forms = admissionFormService.getAdmissionFormsByCircleId(circleId);
         return ResponseEntity.ok(forms);
     }
 
