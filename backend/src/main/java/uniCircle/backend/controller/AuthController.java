@@ -369,6 +369,28 @@ public class AuthController {
         }
     }
 
+    @GetMapping("/userEmail")
+    @Operation(
+            summary = "get UserEmail by userId",
+            description = "Allows a user to get user email by user id."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Password changed successfully",
+                    content = @Content(schema = @Schema(implementation = String.class))
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid username or email",
+                    content = @Content(schema = @Schema(implementation = String.class))
+            )
+    })
+    public ResponseEntity<String> getUserEmail(@RequestParam String userId) {
+        UserDTO userDTO = userService.findByUserId(Long.valueOf(userId));
+        return ResponseEntity.ok(userDTO.getEmail());
+    }
+
 
     private Cookie createCookie(String key, String value) {
         Cookie cookie = new Cookie(key, value);
