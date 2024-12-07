@@ -126,6 +126,7 @@ export async function sendAdmissionForm({ circleId, userId, formContent }) {
     }
   };
 
+
   // formId의 입부 신청서 내용 수정
   export async function updateAdmissionForm({ formId, circleId, userId, formContent }) {
     const URL = `${process.env.NEXT_PUBLIC_API_URL}forms/updatecontent/${formId}`;
@@ -154,9 +155,37 @@ export async function sendAdmissionForm({ circleId, userId, formContent }) {
       throw error;
     }
   }
+
+  export const rejectForm = async (formId) => {
+    console.log(formId);
+    const URL = `${process.env.NEXT_PUBLIC_API_URL}forms/reject/${formId}`;
+    try {
+      const accessToken = await getAccessToken(); // Access Token 가져오기
+      console.log("API URL:", URL);
+      console.log("Access Token:", accessToken);
   
+      const response = await fetch(URL, {
+        method: "PUT",
+        headers: {
+          "Authorization": accessToken,
+          "Content-Type": "application/json", // 명시적으로 추가
+        },
+        body: null, // 빈 body 제거 또는 null 처리
+      });
+  
+      if (response.status === 200) {
+        return;
+      } else {
+        throw new Error(`Admission Form 거절 실패: ${response.status}`);
+      }
+    } catch (error) {
+      console.error("Unknown Error in rejectForm", error.message);
+      throw error;
+    }
+  }
+
   // formId의 status 변경 REJECTED/PENDING/ACCEPTED
-  export async function updateAdmissionFormStatus({ formId, status }) {
+  export async function updateAdmissionFormStatus(formId, status) {
     const URL = `${process.env.NEXT_PUBLIC_API_URL}forms/updatestatus/${formId}/${status}`;
     try {
       const accessToken = await getAccessToken(); // Access Token 가져오기
@@ -182,11 +211,10 @@ export async function sendAdmissionForm({ circleId, userId, formContent }) {
     const URL = `${process.env.NEXT_PUBLIC_API_URL}forms/accept/${formId}`;
     console.log("ACCEPT:"+formId);
     try {
-      const accessToken = await getAccessToken(); // Access Token 가져오기
+      const accessToken = await getAccessToken();
       const response = await fetch(URL, {
         method: "PUT",
         headers: {
-          accept: "*/*",
           "Authorization": accessToken,
         },
       });

@@ -13,7 +13,7 @@ import { getAllFormByCircleId } from "@/services/AdmissionForm";
 import { getCircleMembers } from "@/services";
 import { updateAdmissionFormStatus } from "@/services/AdmissionForm";
 import { acceptUserByFormId } from "@/services/AdmissionForm";
-import { getAdmissionForm } from "@/services/AdmissionForm";
+import { getAdmissionForm, rejectForm } from "@/services/AdmissionForm";
 import { removeUserFromCircle } from "@/services/Circle";
 
 
@@ -59,12 +59,13 @@ const MemberManagement = () => {
         // 입부신청서 목록 가져오기
         const formsData = await getAllFormByCircleId(circleId);
         const pendingForms = formsData.filter(
-          (form) => form.status === "PENDING"
+          (admission) => admission.form.status === "PENDING"
         );
+        console.log(formsData);
         setApplications(pendingForms);
 
         const acceptedForms = formsData.filter(
-          (form) => form.status === "ACCEPTED"
+          (admission) => admission.form.status === "ACCEPTED"
         );
         setMemberForms(acceptedForms);
 
@@ -86,17 +87,18 @@ const MemberManagement = () => {
   }, [circleId]);
 
   const handleViewForm = (formData) => {
-    let formContent = formData.formContent;
+    let formContent = formData;
   
     // JSON 문자열인지 확인 후 파싱
     if (typeof formContent === "string") {
       try {
-        formContent = JSON.parse(formContent);
+        formContent = JSON.parse(formData);
       } catch (error) {
         console.error("Invalid JSON format in formContent:", formContent);
         return;
       }
     }
+    console.log(formContent);
   
     // 상태 업데이트
     setSelectedFormData({
@@ -112,14 +114,17 @@ const MemberManagement = () => {
     }, 0); // 0ms 지연으로 상태 업데이트 완료 후 모달 열기
   };
   const handleApprove = (formData) => {
-    console.log(formData);
-    acceptUserByFormId(formData.formId);
-    alert(`${formData.userId}의 가입 신청을 수락합니다.`);
+    try{
+      acceptUserByFormId(formData.form.formId);
+      alert(`${formData.form.email}의 가입 신청을 수락합니다.`);
+    }catch{
+      alert("가입 신청 수락에 실패했습니다.");
+    }
   };
 
   const handleReject = (formData) => {
-    updateAdmissionFormStatus(formData.formId,"REJECTED");
-    alert(`${formData.userId}의 요청을 거절합니다.`);
+    rejectForm(formData.form.formId);
+    alert(`${formData.form.email}의 요청을 거절합니다.`);
   };
 
   const handleLeave = (userEmail) => {
@@ -127,7 +132,7 @@ const MemberManagement = () => {
     removeUserFromCircle(circleId ,userEmail);
   };
 
-  const handleAcceptInForm = () => {
+  const handleAcceptInForm = (formId) => {
     acceptUserByFormId(selectedFormData.formId);
     alert(`가입을 수락하였습니다.`);
   };
@@ -200,7 +205,7 @@ const MemberManagement = () => {
 
       {/* Modal for Viewing Forms */}
       <ModalWrapper isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
-      {selectedFormData && selectedFormData.title ? (
+      {selectedFormData? (
         <ApplyFormViewer formData={selectedFormData} />
       ) : (
         <div>로딩 중...</div>

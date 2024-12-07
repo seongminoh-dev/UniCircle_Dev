@@ -1,7 +1,7 @@
 import { setCookie, getCookie, getAllCookies, deleteCookies } from './Cookie';
 import { PostData } from './PostData';
 import { getCircleMembers,getCircleById, getEncounteredCircle, updateCircle, createCircle } from './Circle';
-import { sendAdmissionForm, getAllFormByUserId, getAllFormByCircleId } from "./AdmissionForm";
+import { sendAdmissionForm, getAllFormByUserId, getAllFormByCircleId, rejectForm } from "./AdmissionForm";
 import { getBoardsByCircle, createBoard } from './Board';
 export {
   deleteCookies,
@@ -18,5 +18,6 @@ export {
   sendAdmissionForm,
   createBoard,
   getAllFormByUserId,
-  getAllFormByCircleId
+  getAllFormByCircleId,
+  rejectForm
 };
