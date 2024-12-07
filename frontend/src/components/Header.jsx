@@ -23,6 +23,25 @@ export const Header = () => {
     }
   };
 
+  if(!isAuthenticated)
+    return (
+      <header className="h-15 bg-white py-2 shadow-md">
+      <div className="w-full mx-auto flex items-center">
+        {/* 로고 */}
+        <div
+          className="flex items-center space-x-1 cursor-pointer w-80 flex-shrink-0 px-4"
+        >
+          <div className="w-6 h-6 bg-blue-400 rounded-full flex items-center justify-center">
+            <span className="text-white font-bold">U</span>
+          </div>
+          <span className="text-lg font-bold text-gray-800 tracking-tight">
+            유니서클
+          </span>
+        </div>
+      </div>
+      </header>
+  );
+
   return (
     <header className="h-15 bg-white py-2 shadow-md">
       <div className="w-full mx-auto flex items-center">
