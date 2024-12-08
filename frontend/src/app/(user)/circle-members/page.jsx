@@ -60,8 +60,8 @@ const MemberList = () => {
   }, [circleId]);
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+    <div className="px-4">
+      <h1 className="text-2xl font-bold text-gray-500 mb-6 flex items-center">
         동아리 회원 목록
         <span className="border-l border-gray-300 mx-3 h-6"></span>
         <span className="text-lg text-gray-500">{circleName}</span>
@@ -69,29 +69,29 @@ const MemberList = () => {
 
       {/* 가입 신청 목록 */}
       <section className="mb-10">
-        <h2 className="text-lg font-semibold text-gray-700 mb-4">관리자</h2>
         <div className="bg-gray-100 p-4 rounded-lg">
+        <h2 className="text-lg font-semibold text-gray-700 mb-4">관리자</h2>
         <MemberCard nickname={admin.nickname} date={admin.date} />
         </div>
       </section>
 
-      {/* Divider */}
-      <hr className="my-4 border-gray-300" />
-
       {/* 회원 목록 */}
       <section>
+        
+        <div className="bg-gray-100 p-4 rounded-lg max-h-96 overflow-y-auto">
         <h2 className="text-lg font-semibold text-gray-700 mb-4">회원 목록</h2>
-        <div className="bg-gray-100 p-4 rounded-lg">
           {members.length === 0 ? (
             <p className="text-gray-500">아직 회원 목록이 없습니다.</p>
           ) : (
-            members.map((member, index) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {members.map((member, index) => (
                 <MemberCard
-                key={index}
-                nickname={member.nickname}
-                date={member.date}
-              />
-            ))
+                  key={index}
+                  nickname={member.nickname}
+                  date={member.date}
+                />
+              ))}
+            </div>
           )}
         </div>
       </section>

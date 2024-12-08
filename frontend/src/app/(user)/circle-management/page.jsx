@@ -68,8 +68,8 @@ const CircleManagementPage = () => {
   };
 
   return (
-    <div className="p-2">
-      <h1 className="text-2xl font-bold text-gray-900 mb-2">동아리 관리</h1>
+    <div className="px-2">
+      <h1 className="text-2xl font-bold text-gray-500 mb-2 px-2">동아리 관리</h1>
 
       {/* 내가 가입한 동아리 */}
       <section className="mb-6 flex-1 overflow-y-auto p-2">

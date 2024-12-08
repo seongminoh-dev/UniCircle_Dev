@@ -2,7 +2,7 @@
 
 const MemberCard = ({ nickname, info, children }) => {
   return (
-    <div className="w-60 flex flex-col items-center bg-white p-6 shadow-md rounded-md mb-4">
+    <div className="w-60 flex flex-col items-center bg-white p-6 shadow-md rounded-md">
       {/* Avatar Section */}
       <div className="h-16 w-16 bg-gray-200 rounded-full flex items-center justify-center mb-4">
         <span className="text-gray-500 text-2xl">👤</span>
