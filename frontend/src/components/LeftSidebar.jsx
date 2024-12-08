@@ -10,6 +10,7 @@ export const LeftSidebar = () => {
   const items = [
     { label: '나와 관련된 게시물', path: '/boards/related' },
     { label: '동아리 관리', path: '/circle-management' },
+    { label: '동아리 생성', path: '/circle-update/0' },
     { label: '설정', path: '/no-link' },
   ];
   const { user } = useAuth();
