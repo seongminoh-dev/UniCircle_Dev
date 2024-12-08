@@ -64,7 +64,7 @@ const CircleManagementPage = () => {
   };
 
   const handleCreateCircle = () => {
-    alert("동아리 개설 버튼 클릭됨!");
+    router.push(`/circle-update/0`);
   };
 
   return (
@@ -76,7 +76,7 @@ const CircleManagementPage = () => {
         <h2 className="text-lg font-semibold text-gray-500 mb-4">
           내가 가입한 동아리
         </h2>
-        <div >
+        <div className="space-y-2">
           {!joinedCircles || joinedCircles.length === 0 ? (
             <div className="bg-gray-100 p-4 space-y-4 rounded-lg">
             <p className="text-gray-500">아직 가입한 동아리가 없습니다.</p>
@@ -97,7 +97,7 @@ const CircleManagementPage = () => {
         <h2 className="text-lg font-semibold text-gray-500 mb-4">
           내가 관리중인 동아리
         </h2>
-        <div>
+        <div className="space-y-2">
           {!managedCircles || managedCircles.length === 0 ? (
             <div className="bg-gray-100 p-4 space-y-4 rounded-lg">
             <p className="text-gray-500">관리중인 동아리가 없습니다.</p>
