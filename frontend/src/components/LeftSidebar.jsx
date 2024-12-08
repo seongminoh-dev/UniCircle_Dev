@@ -58,9 +58,9 @@ export const LeftSidebar = () => {
     <aside className="w-80 h-screen py-8 px-4 mx-6">
       {/* 닉네임 및 활동 정보 */}
       <div className="mb-2 space-y-4">
-        <h3 className="text-3xl font-semibold">{nickname}</h3>
+        <h3 className="text-gray-600 text-3xl font-semibold">{nickname}</h3>
         <hr className="border-t-2 border-gray-300 my-2" /> {/* 가로선 추가 */}
-        <p className="text-base text-gray-600 font-semibold">내 활동</p>
+        <p className="text-base text-gray-500 font-semibold">내 활동</p>
       </div>
 
       {/* 가입 정보 */}
@@ -70,13 +70,13 @@ export const LeftSidebar = () => {
         </p>
       </div>
 
-      {/* 관련된 게시물 목록 (탐색 메뉴로 사용) */}
-      <nav className="bg-white space-y-2">
+      {/* 탐색 메뉴 */}
+      <nav className="bg-white space-y-2 ">
         {items.map((item, index) => (
           <button
             key={index}
             onClick={() => handleNavigation(item.path)}
-            className={`block w-full text-center py-2 px-4 rounded-lg shadow cursor-pointer ${
+            className={`font-semibold block w-full text-center py-2 px-4 rounded-lg shadow cursor-pointer ${
               selectedItem === item.path ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-50'
             }`}
           >

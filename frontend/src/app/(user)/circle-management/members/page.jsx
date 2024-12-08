@@ -152,8 +152,8 @@ const MemberManagement = () => {
   };
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+    <div className="px-4">
+      <h1 className="text-2xl font-bold text-gray-500 mb-6 flex items-center">
         동아리 회원 관리
         <span className="border-l border-gray-300 mx-3 h-6"></span>
         <span className="text-lg text-gray-500">{circleName}</span>
@@ -186,24 +186,24 @@ const MemberManagement = () => {
       <div className="mx-10 my-8" />
 
       {/* 회원 목록 */}
-      <section className="bg-gray-100 p-4 rounded-lg ">
+      <section className="bg-gray-100 p-4 rounded-lg">
         <h2 className="text-lg font-semibold text-gray-700 mb-4">회원 목록</h2>
-        <div className="overflow-x-auto">
-          <div className="flex space-x-4">
-            {members.length === 0 ? (
-              <p className="text-gray-500">아직 회원 목록이 없습니다.</p>
-            ) : (
-              members.map((member, index) => (
+        <div className="max-h-96 overflow-y-auto">
+          {members.length === 0 ? (
+            <p className="text-gray-500">아직 회원 목록이 없습니다.</p>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {members.map((member, index) => (
                 <ApprovedMemberCard
                   key={index}
                   nickname={member.nickname}
                   email={member.email}
-                  onViewForm={()=> handleViewMemberForm(member.id)}
+                  onViewForm={() => handleViewMemberForm(member.id)}
                   onLeave={() => handleLeave(member.email)}
                 />
-              ))
-            )}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

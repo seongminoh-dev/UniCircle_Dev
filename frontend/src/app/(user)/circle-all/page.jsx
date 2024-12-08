@@ -40,10 +40,10 @@ const CircleListPage = () => {
   }, [auth,router]);
 
   return (
-    <div className="p-2">
-      <h1 className="text-2xl font-bold text-gray-900 mb-2">동아리 탐색</h1>
+    <div className="space-y-4 px-2">
+      <h2 className="text-2xl font-semibold text-gray-500 px-2 mb-2">동아리 탐색</h2>
 
-      <div className="space-y-2">
+      <div className="space-y-2 px-2">
           {!circles || circles.length === 0 ? (
             <div className="bg-gray-100 p-4 space-y-4 rounded-lg">
             <p className="text-gray-500">아직 동아리가 없습니다.</p>
