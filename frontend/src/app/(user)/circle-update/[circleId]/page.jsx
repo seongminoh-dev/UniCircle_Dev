@@ -57,7 +57,6 @@ const CircleUpdatePage = ({ params }) => {
         const response = await getCircleById(circleId);
         const allowedKeys = ["name", "description", "adminUser", "hashtags", "questions", "image"];
         const filtered = filterKeys(response, allowedKeys);
-        console.log("Filtered data:", filtered);
         if (circleId !== 0 && filtered.adminUser.email !== auth.user.email) {
           alert("본인이 아닌 동아리는 수정할 수 없습니다.");
           router.push("/boards/related");
@@ -69,8 +68,11 @@ const CircleUpdatePage = ({ params }) => {
           email: filtered.adminUser.email || auth.user.email,
           hashtags: filtered.hashtags || [],
           questions: filtered.questions || "",
-          image: null,
+          image: filtered.image || null,
         });
+        if (typeof filtered.image === 'string') {
+          setImagePreviewUrl(`data:image/jpeg;base64,${filtered.image}`);
+        }
         setQuestions(extractQuestions(filtered.questions));
       } catch (error) {
         console.error("Error fetching circle data:", error);
@@ -85,8 +87,6 @@ const CircleUpdatePage = ({ params }) => {
     if (updatedCircleInfo.image instanceof File) {
       objectUrl = URL.createObjectURL(updatedCircleInfo.image);
       setImagePreviewUrl(objectUrl);
-    } else if (updatedCircleInfo.image instanceof String) {
-      setImagePreviewUrl(`data:image/jpeg;base64,${existingImage}`);
     }
     return () => {
       if (objectUrl) {
@@ -128,7 +128,6 @@ const CircleUpdatePage = ({ params }) => {
   // 이미지 선택 핸들러
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    console.log("Selected file:", file);
     if (file) {
       // 이미지 파일인지 확인
       if (!file.type.startsWith('image/')) {
@@ -147,15 +146,28 @@ const CircleUpdatePage = ({ params }) => {
     e.preventDefault();
     try {
       if (circleId === "0") {
-        // 새로운 동아리 생성
-        const newCircleInfo = {
-          ...updatedCircleInfo,
-          email: auth.user.email,
-        };
-        await createCircle(newCircleInfo);
+        const formData = new FormData();
+        formData.append('name', updatedCircleInfo.name);
+        formData.append('description', updatedCircleInfo.description);
+        formData.append('email', auth.user.email);
+        formData.append('hashtags', updatedCircleInfo.hashtags);
+        formData.append('questions', updatedCircleInfo.questions);
+        if (updatedCircleInfo.image instanceof File) {
+          formData.append('file', updatedCircleInfo.image, updatedCircleInfo.image.name);
+        }
+        await createCircle(formData);
         router.push("/boards/related");
       } else {
-        await updateCircle(circleId, updatedCircleInfo);
+        const formData = new FormData();
+        formData.append('name', updatedCircleInfo.name);
+        formData.append('description', updatedCircleInfo.description);
+        formData.append('email', updatedCircleInfo.email);
+        formData.append('hashtags', updatedCircleInfo.hashtags);
+        formData.append('questions', updatedCircleInfo.questions);
+        if (updatedCircleInfo.image instanceof File) {
+          formData.append('file', updatedCircleInfo.image, updatedCircleInfo.image.name);
+        }
+        await updateCircle(circleId, formData);
         router.push(`/circle-detail/${circleId}`);
       }
     } catch (error) {

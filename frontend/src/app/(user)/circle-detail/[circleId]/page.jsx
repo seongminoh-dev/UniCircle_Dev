@@ -18,6 +18,7 @@ const CircleDetailPage = ({ params }) => {
     const [questions, setQuestions] = useState({"title": "", "description": "", "questions":[]});
     const [isCircleMember, setIsCircleMember] = useState(false);
     const [alreadySubmit, setAlreadySubmit] = useState(false);
+    const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
     const [boards, setBoards] = useState([]);
 
     
@@ -26,7 +27,9 @@ const CircleDetailPage = ({ params }) => {
             try {
                 const response_circle = await getCircleById(circleId);
                 setCircleInfo(response_circle);
-
+                if (typeof response_circle.image === 'string') {
+                    setImagePreviewUrl(`data:image/jpeg;base64,${response_circle.image}`);
+                }
                 try {
                     const parsedQuestions = JSON.parse(response_circle.questions);
                     setQuestions(parsedQuestions);
@@ -71,16 +74,27 @@ const CircleDetailPage = ({ params }) => {
         router.push(`/circle-members?circleId=${circleId}`);
     };
 
+    const getImageSrc = () => {
+        if (imagePreviewUrl) {
+          return imagePreviewUrl;
+        }
+        return "https://image-resource.creatie.ai/139025621997997/139025621998006/bdf19faa702d587331b82c039b703068.jpeg";
+      };
+
   return (
     <div className="px-2">
     
             <div className="bg-white rounded-lg shadow">
             {circleInfo && (
-            <div className="mb-8 p-1 h-[371px] flex flex-col items-start">
+            <div className="mb-8 p-1 flex flex-col items-start">
                 <div className="flex-grow w-full bg-gray-400 overflow-hidden relative">
-                <div className="absolute top-[99px] left-[50%] transform -translate-x-1/2 w-[36px] h-[20px] opacity-30 text-[#26262C] font-SourceSansPro text-[14px] leading-[20px]">
-                    image
-                </div>
+                    <div className="w-full h-[347px] flex items-end p-[8px] bg-[#EEEEF0] relative">
+                        <img
+                            src={getImageSrc()}
+                            alt="동아리 이미지"
+                            className="w-full h-full object-cover"
+                            />
+                    </div>
                 </div>
                 <div className="w-full h-[180px] flex flex-col justify-center items-start gap-[8px] px-[16px] py-[32px]">
                 <div className="w-full h-[48px] flex justify-between items-end px-[1px] py-[6px] overflow-hidden">
