@@ -76,7 +76,7 @@ const CircleManagementPage = () => {
         <h2 className="text-lg font-semibold text-gray-500 mb-4">
           내가 가입한 동아리
         </h2>
-        <div className="space-y-2">
+        <div className="space-y-4">
           {!joinedCircles || joinedCircles.length === 0 ? (
             <div className="bg-gray-100 p-4 space-y-4 rounded-lg">
             <p className="text-gray-500">아직 가입한 동아리가 없습니다.</p>
@@ -89,15 +89,12 @@ const CircleManagementPage = () => {
         </div>
       </section>
 
-      {/* Divider */}
-      <hr className="my-4 border-gray-300" />
-
       {/* 내가 관리중인 동아리 */}
       <section className="flex-1 overflow-y-auto p-2">
         <h2 className="text-lg font-semibold text-gray-500 mb-4">
           내가 관리중인 동아리
         </h2>
-        <div className="space-y-2">
+        <div className="space-y-4">
           {!managedCircles || managedCircles.length === 0 ? (
             <div className="bg-gray-100 p-4 space-y-4 rounded-lg">
             <p className="text-gray-500">관리중인 동아리가 없습니다.</p>

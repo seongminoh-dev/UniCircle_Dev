@@ -48,7 +48,7 @@ export const Header = () => {
         {/* 로고 */}
         <div
           onClick={handleClickLogo}
-          className="flex items-center space-x-1 cursor-pointer w-80 flex-shrink-0 px-4"
+          className="flex items-center space-x-1 cursor-pointer w-80 flex-shrink-0 px-4 mx-6"
         >
           <div className="w-6 h-6 bg-blue-400 rounded-full flex items-center justify-center">
             <span className="text-white font-bold">U</span>
@@ -64,7 +64,7 @@ export const Header = () => {
         </div>
 
         {/* 로그아웃 버튼 */}
-        <div className="w-80 flex-shrink-0 flex justify-end px-4">
+        <div className="w-80 flex-shrink-0 flex justify-end px-4 mx-6">
           {isAuthenticated ? (
             <button
               onClick={handleLogout}

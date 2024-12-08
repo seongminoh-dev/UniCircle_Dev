@@ -41,7 +41,7 @@ const SearchPage = () => {
             <>
             {/* 동아리 검색 결과 */}
             <div className="mb-8">
-                <h3 className="text-xl font-bold">동아리</h3>
+                <h3 className="text-gray-500 text-xl font-semibold mb-4">동아리</h3>
                 {filteredCircles.length > 0 ? (
                 <div className="flex flex-col space-y-4">
                 {filteredCircles.map((circle) => (
