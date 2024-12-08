@@ -2,8 +2,8 @@
 
 import ApplicationMemberCard from "@/components/ApplicationMemberCard";
 import ApprovedMemberCard from "@/components/ApprovedMemberCard";
-import ModalWrapper from "@/components/ModalWrapper"; // Import the ModalWrapper component
-import ApplyFormViewer from "@/components/ApplyFormViewer"; // Import the ApplyFormViewer component
+import ModalWrapper from "@/components/ModalWrapper";
+import ApplyFormViewer from "@/components/ApplyFormViewer";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/hooks";
@@ -12,15 +12,12 @@ import { getCircleById } from "@/services";
 import { getAllFormByCircleId } from "@/services/AdmissionForm";
 import { getCircleMembers } from "@/services";
 import { updateAdmissionFormStatus } from "@/services/AdmissionForm";
-import { acceptUserByFormId } from "@/services/AdmissionForm";
-import { getAdmissionForm, rejectForm } from "@/services/AdmissionForm";
+import { acceptUserByFormId, rejectForm } from "@/services/AdmissionForm";
 import { removeUserFromCircle } from "@/services/Circle";
-
 
 const MemberManagement = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-
   const circleId = searchParams.get("circleId");
 
   const [applications, setApplications] = useState([]);
@@ -29,12 +26,45 @@ const MemberManagement = () => {
   const [circleName, setCircleName] = useState("");
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedFormData, setSelectedFormData] = useState({
-    id:-1,
+    id: -1,
     title: "",
     description: "",
     questions: [],
   });
   const auth = useAuth();
+
+  // **데이터 로딩 함수**
+  const fetchData = async () => {
+    try {
+      // 동아리 정보 가져오기
+      const circleInfoData = await getCircleById(circleId);
+      setCircleName(circleInfoData.name);
+
+      // 입부신청서 목록 가져오기
+      const formsData = await getAllFormByCircleId(circleId);
+      const pendingForms = formsData.filter(
+        (admission) => admission.form.status === "PENDING"
+      );
+      setApplications(pendingForms);
+
+      const acceptedForms = formsData.filter(
+        (admission) => admission.form.status === "ACCEPTED"
+      );
+      setMemberForms(acceptedForms);
+
+      // 동아리 회원 목록 가져오기
+      const membersData = await getCircleMembers(circleId);
+      const mappedMembers = membersData.map((user) => ({
+        id: user.userId,
+        nickname: user.nickname,
+        email: user.email,
+      }));
+      setMembers(mappedMembers);
+    } catch (error) {
+      console.error(error);
+      alert("데이터 로딩에 실패했습니다.");
+    }
+  };
 
   useEffect(() => {
     if (!auth.isAuthenticated) {
@@ -43,109 +73,93 @@ const MemberManagement = () => {
       return;
     }
 
-    const token = getAccessToken();
     if (!circleId) {
       alert("잘못된 접근입니다. circleId가 필요합니다.");
       router.push("/");
       return;
     }
 
-    const fetchData = async () => {
-      try {
-        // 동아리 정보 가져오기
-        const circleInfoData = await getCircleById(circleId);
-        setCircleName(circleInfoData.name);
-
-        // 입부신청서 목록 가져오기
-        const formsData = await getAllFormByCircleId(circleId);
-        const pendingForms = formsData.filter(
-          (admission) => admission.form.status === "PENDING"
-        );
-        console.log(formsData);
-        setApplications(pendingForms);
-
-        const acceptedForms = formsData.filter(
-          (admission) => admission.form.status === "ACCEPTED"
-        );
-        setMemberForms(acceptedForms);
-
-        // 동아리 회원 목록 가져오기
-        const membersData = await getCircleMembers(circleId);
-        const mappedMembers = membersData.map((user) => ({
-          id: user.userId,
-          nickname: user.nickname,
-          email: user.email,
-        }));
-        setMembers(mappedMembers);
-      } catch (error) {
-        console.error(error);
-        alert("데이터 로딩에 실패했습니다.");
-      }
-    };
-
     fetchData();
   }, [circleId]);
 
   const handleViewForm = (formData) => {
-    let formContent = formData;
-  
+    let data = formData;
+
     // JSON 문자열인지 확인 후 파싱
-    if (typeof formContent === "string") {
+    if (typeof formData === "string") {
       try {
-        formContent = JSON.parse(formData);
+        data = JSON.parse(formData).form;
       } catch (error) {
-        console.error("Invalid JSON format in formContent:", formContent);
+        console.error("Invalid JSON format in formContent:", data);
         return;
       }
     }
-    console.log(formContent);
-  
+    let content = JSON.parse(data.form.formContent);
     // 상태 업데이트
-    setSelectedFormData({
-      id: formData.formId,
-      title: formContent.title || "No Title",
-      description: formContent.description || "No Description",
-      questions: formContent.questions || [],
-    });
-  
-    // 상태 업데이트 이후 모달 열기
-    setTimeout(() => {
-      setModalOpen(true);
-    }, 0); // 0ms 지연으로 상태 업데이트 완료 후 모달 열기
+    const updatedFormData = {
+      id: data.form.formId,
+      title: content.title || "No Title",
+      description: content.description || "No Description",
+      questions: content.questions || [],
+    };
+
+    setSelectedFormData(updatedFormData);
+    setModalOpen(true);
   };
-  const handleApprove = (formData) => {
-    try{
-      acceptUserByFormId(formData.form.formId);
-      alert(`${formData.form.email}의 가입 신청을 수락합니다.`);
-    }catch{
+
+  // **가입 신청 수락**
+  const handleApprove = async (formData) => {
+    try {
+      await acceptUserByFormId(formData.form.formId);
+      alert(`${formData.form.email}의 가입 신청을 수락했습니다.`);
+      await fetchData(); // 데이터 새로고침
+    } catch (error) {
+      console.error(error);
       alert("가입 신청 수락에 실패했습니다.");
     }
   };
 
-  const handleReject = (formData) => {
-    rejectForm(formData.form.formId);
-    alert(`${formData.form.email}의 요청을 거절합니다.`);
+  // **가입 신청 거절**
+  const handleReject = async (formData) => {
+    try {
+      await rejectForm(formData.form.formId);
+      alert(`${formData.form.email}의 요청을 거절했습니다.`);
+      await fetchData(); // 데이터 새로고침
+    } catch (error) {
+      console.error(error);
+      alert("가입 신청 거절에 실패했습니다.");
+    }
   };
 
-  const handleLeave = (userEmail) => {
-    alert(`${userEmail}의 동아리 탈퇴를 처리합니다.`);
-    removeUserFromCircle(circleId ,userEmail);
+  // **회원 탈퇴 처리**
+  const handleLeave = async (userEmail) => {
+    try {
+      await removeUserFromCircle(circleId, userEmail);
+      alert(`${userEmail}의 동아리 탈퇴를 처리했습니다.`);
+      await fetchData(); // 데이터 새로고침
+    } catch (error) {
+      console.error(error);
+      alert("동아리 탈퇴 처리에 실패했습니다.");
+    }
   };
 
-  const handleAcceptInForm = (formId) => {
-    try{
-      acceptUserByFormId(formId);
-      alert(`가입 신청을 수락합니다.`);
-    }catch{
+  // **가입 신청 폼에서 수락 처리**
+  const handleAcceptInForm = async (formId) => {
+    try {
+      await acceptUserByFormId(formId);
+      alert(`가입 신청을 수락했습니다.`);
+      setModalOpen(false);
+      await fetchData(); // 데이터 새로고침
+    } catch (error) {
+      console.error(error);
       alert("가입 신청 수락에 실패했습니다.");
     }
   };
 
   const handleViewMemberForm = (userId) => {
-    // memberForms에서 userId와 일치하는 formData 찾기
     const matchedForm = memberForms.find((form) => form.userId === userId);
     if (matchedForm) {
-      handleViewForm(matchedForm); // handleViewForm 호출
+      handleViewForm(matchedForm);
     } else {
       alert("해당 회원의 폼 데이터를 찾을 수 없습니다.");
     }
@@ -160,7 +174,7 @@ const MemberManagement = () => {
       </h1>
 
       {/* 가입 신청 목록 */}
-      <section className="bg-gray-100 p-4 rounded-lg ">
+      <section className="bg-gray-100 p-4 rounded-lg mb-6">
         <h2 className="text-lg font-semibold text-gray-700 mb-4">가입 신청 목록</h2>
         <div className="overflow-x-auto">
           <div className="flex space-x-4">
@@ -170,9 +184,9 @@ const MemberManagement = () => {
               applications.map((app, index) => (
                 <ApplicationMemberCard
                   key={index}
-                  nickname={"임시 닉네임"} // 닉네임 처리
+                  nickname={"임시 닉네임"}
                   date={app.createdAt}
-                  onViewForm={() => handleViewForm(app)} // Trigger modal on click
+                  onViewForm={() => handleViewForm(app)}
                   onApprove={() => handleApprove(app)}
                   onReject={() => handleReject(app)}
                 />
@@ -182,9 +196,6 @@ const MemberManagement = () => {
         </div>
       </section>
 
-      {/* Divider */}
-      <div className="mx-10 my-8" />
-
       {/* 회원 목록 */}
       <section className="bg-gray-100 p-4 rounded-lg">
         <h2 className="text-lg font-semibold text-gray-700 mb-4">회원 목록</h2>
@@ -192,7 +203,7 @@ const MemberManagement = () => {
           {members.length === 0 ? (
             <p className="text-gray-500">아직 회원 목록이 없습니다.</p>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-4 gap-x-2">
               {members.map((member, index) => (
                 <ApprovedMemberCard
                   key={index}
@@ -209,14 +220,16 @@ const MemberManagement = () => {
 
       {/* Modal for Viewing Forms */}
       <ModalWrapper isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
-      {selectedFormData? (
-        <ApplyFormViewer formData={selectedFormData} onClickAccept={handleAcceptInForm} />
-      ) : (
-        <div>로딩 중...</div>
-      )}
+        {selectedFormData ? (
+          <ApplyFormViewer
+            formData={selectedFormData}
+            onClickAccept={() => handleAcceptInForm(selectedFormData.id)}
+          />
+        ) : (
+          <div>로딩 중...</div>
+        )}
       </ModalWrapper>
     </div>
-
   );
 };
 

@@ -6,7 +6,6 @@ const ApplyFormViewer = ({ formData, onClickAccept}) => {
   if (!formData || !formData.title) {
     return <div>로딩 중...</div>;
   }
-  console.log(formData);
   return (
     <div className="w-96 mx-auto p-2 bg-white">
       <h1 className="text-2xl font-bold mb-4">{formData.title}</h1>
