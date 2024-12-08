@@ -8,33 +8,39 @@ import { getCircleById, updateCircle, createCircle } from "@/services";
 
 const CircleUpdatePage = ({ params }) => {
   const { circleId } = params;
-  const [updatedCircleInfo, setUpdatedCircleInfo] = useState({"name": "", "description": "", "email": "", "hashtags": [], "questions": ""});
-  const [questions, setQuestions] = useState({"title":"", "description":"", "questions":[]})
+  const [updatedCircleInfo, setUpdatedCircleInfo] = useState({
+    name: "",
+    description: "",
+    email: "",
+    hashtags: [],
+    questions: "",
+    image: null, // File 객체로 관리
+  });
+  const [questions, setQuestions] = useState({
+    title: "",
+    description: "",
+    questions: []
+  });
   const [questionToggle, setQuestionToggle] = useState(false);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
   const router = useRouter();
   const auth = useAuth();
 
+  // 질문 추출 함수
   const extractQuestions = (jsonString) => {
     try {
-      // JSON 문자열을 파싱
       const parsedData = JSON.parse(jsonString);
-  
-      // 필요한 필드 추출
       const title = typeof parsedData.title === "string" ? parsedData.title : "";
-      const description =
-        typeof parsedData.description === "string" ? parsedData.description : "";
-      const questions = Array.isArray(parsedData.questions)
-        ? parsedData.questions
-        : [];
-  
-      return { title: title, description: description, questions: questions };
+      const description = typeof parsedData.description === "string" ? parsedData.description : "";
+      const questions = Array.isArray(parsedData.questions) ? parsedData.questions : [];
+      return { title, description, questions };
     } catch (error) {
-      // JSON 파싱 실패 시 기본값 반환
+      console.error("Error parsing questions JSON:", error);
       return { title: "", description: "", questions: [] };
     }
   };
-  
 
+  // 데이터 필터링 함수
   const filterKeys = (data, keys) => {
     return Object.keys(data)
       .filter((key) => keys.includes(key))
@@ -44,19 +50,52 @@ const CircleUpdatePage = ({ params }) => {
       }, {});
   };
 
+  // 데이터 가져오기
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getCircleById(circleId);
-      const allowedKeys = ["name", "description", "email", "hashtags", "questions"];
-      const filtered = filterKeys(response, allowedKeys);
-      filtered.email = auth.user.email;
-      setUpdatedCircleInfo(filtered);
-      setQuestions(extractQuestions(filtered.questions));
+      try {
+        const response = await getCircleById(circleId);
+        const allowedKeys = ["name", "description", "adminUser", "hashtags", "questions", "image"];
+        const filtered = filterKeys(response, allowedKeys);
+        console.log("Filtered data:", filtered);
+        if (circleId !== 0 && filtered.adminUser.email !== auth.user.email) {
+          alert("본인이 아닌 동아리는 수정할 수 없습니다.");
+          router.push("/boards/related");
+          return;
+        }
+        setUpdatedCircleInfo({
+          name: filtered.name || "",
+          description: filtered.description || "",
+          email: filtered.adminUser.email || auth.user.email,
+          hashtags: filtered.hashtags || [],
+          questions: filtered.questions || "",
+          image: null,
+        });
+        setQuestions(extractQuestions(filtered.questions));
+      } catch (error) {
+        console.error("Error fetching circle data:", error);
+      }
     };
-    if (circleId !== "0")
-      fetchData();
-  }, [circleId]);
+    if (circleId !== "0") fetchData();
+  }, [circleId, auth.user.email]);
 
+  // 이미지 변경 시 미리보기 URL 설정
+  useEffect(() => {
+    let objectUrl = null;
+    if (updatedCircleInfo.image instanceof File) {
+      objectUrl = URL.createObjectURL(updatedCircleInfo.image);
+      setImagePreviewUrl(objectUrl);
+    } else if (updatedCircleInfo.image instanceof String) {
+      setImagePreviewUrl(`data:image/jpeg;base64,${existingImage}`);
+    }
+    return () => {
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl);
+      }
+    };
+  }, [updatedCircleInfo.image]);
+
+  // 입력 변경 핸들러
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUpdatedCircleInfo((prevData) => ({
@@ -65,6 +104,7 @@ const CircleUpdatePage = ({ params }) => {
     }));
   };
 
+  // 해시태그 변경 핸들러
   const handleHashtagChange = (index, value) => {
     setUpdatedCircleInfo((prevData) => {
       const updatedHashtags = [...prevData.hashtags];
@@ -76,50 +116,92 @@ const CircleUpdatePage = ({ params }) => {
     });
   };
 
+  // 질문 변경 핸들러
   const handleQuestionChange = (value) => {
     setQuestions(value);
     setUpdatedCircleInfo((prevData) => ({
       ...prevData,
-      ["questions"]: JSON.stringify(value),
+      questions: JSON.stringify(value),
     }));
-  }
+  };
 
-  // 테스트용 함수
+  // 이미지 선택 핸들러
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    console.log("Selected file:", file);
+    if (file) {
+      // 이미지 파일인지 확인
+      if (!file.type.startsWith('image/')) {
+        alert('유효한 이미지 파일을 선택해주세요.');
+        return;
+      }
+      setUpdatedCircleInfo((prevData) => ({
+        ...prevData,
+        image: file,
+      }));
+    }
+  };
+
+  // 폼 제출 핸들러
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (circleId === "0") {
-      try{
-        updatedCircleInfo.email = auth.user.userId;
-        await createCircle(updatedCircleInfo);
+    try {
+      if (circleId === "0") {
+        // 새로운 동아리 생성
+        const newCircleInfo = {
+          ...updatedCircleInfo,
+          email: auth.user.email,
+        };
+        await createCircle(newCircleInfo);
         router.push("/boards/related");
-      }catch {
-        router.push("/boards/related");
-      }
-    }
-    else
-      try{
+      } else {
         await updateCircle(circleId, updatedCircleInfo);
         router.push(`/circle-detail/${circleId}`);
-      }catch {
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      // 에러 처리 로직 추가 가능
+      if (circleId === "0") {
+        alert("동아리 생성에 실패했습니다.");
+        router.push("/boards/related");
+      } else {
         router.push(`/circle-detail/${circleId}`);
       }
+    }
+  };
+
+  // 이미지 소스 결정 함수
+  const getImageSrc = () => {
+    if (imagePreviewUrl) {
+      return imagePreviewUrl;
+    }
+    return "https://image-resource.creatie.ai/139025621997997/139025621998006/bdf19faa702d587331b82c039b703068.jpeg";
   };
 
   return (
     <div className="p-6 min-h-screen space-y-6">
-        <div className="flex flex-col relative">
+      <div className="flex flex-col relative">
         <div className="w-full flex flex-col items-start overflow-hidden">
           {updatedCircleInfo && (
             <>
               <div className="w-full h-[347px] flex items-end p-[8px] bg-[#EEEEF0] relative">
                 <img
-                  src="https://image-resource.creatie.ai/139025621997997/139025621998006/bdf19faa702d587331b82c039b703068.jpeg"
-                  className="absolute inset-0 w-full h-full object-cover"
+                  src={getImageSrc()}
+                  alt="동아리 이미지"
+                  className="w-full h-full object-cover"
                 />
-                <img src="add.svg" alt="아이콘" className="w-8 h-8" />
+                <label htmlFor="imageUpload" className="absolute bottom-2 right-2 cursor-pointer">
+                  <img src="/add.svg" alt="아이콘" className="w-8 h-8" />
+                </label>
+                <input
+                  type="file"
+                  id="imageUpload"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleImageChange}
+                />
               </div>
               <div className="w-full flex flex-col items-start space-y-[24px] px-[24px] pt-[88px] pb-[24px] bg-white">
-                {/* 동아리 이름 */}
                 <div className="w-full h-[60px] border border-[#D9D9DE] rounded flex flex-row justify-start items-center px-[12px] py-[4px]">
                   <div className="w-full flex flex-col gap-y-1">
                     <label className="text-[#91929F] text-[10px] leading-[20px]">동아리 이름</label>
@@ -133,7 +215,6 @@ const CircleUpdatePage = ({ params }) => {
                   <img src="/check.svg" alt="아이콘" className="w-8 h-8 ml-2" />
                 </div>
 
-                {/* 동아리 소개 */}
                 <div className="w-full h-[60px] border border-[#D9D9DE] rounded flex flex-row justify-start items-center px-[12px] py-[4px]">
                   <div className="w-full flex flex-col gap-y-1">
                     <label className="text-[#91929F] text-[10px] leading-[20px]">동아리 소개</label>
@@ -159,7 +240,7 @@ const CircleUpdatePage = ({ params }) => {
                         <input
                           className="w-full text-[#26262C] font-semibold text-[16px] leading-[20px] focus:outline-none"
                           name={`hashtag ${index}`}
-                          value={updatedCircleInfo.hashtags[index]}
+                          value={updatedCircleInfo.hashtags[index] || ""}
                           onChange={(e) => handleHashtagChange(index, e.target.value)}
                         />
                       </div>
@@ -168,7 +249,6 @@ const CircleUpdatePage = ({ params }) => {
                   ))}
                 </div>
 
-                {/* 가입 양식 수정 버튼 */}
                 {!questionToggle && (
                   <div
                     className="cursor-pointer shadow-md w-full h-[52px] bg-purple-500 rounded flex justify-center items-center"
@@ -178,7 +258,6 @@ const CircleUpdatePage = ({ params }) => {
                   </div>
                 )}
 
-                {/* 저장 버튼 */}
                 <div
                   className="cursor-pointer w-full h-[52px] bg-[#3578FF] rounded flex justify-center items-center"
                   onClick={handleSubmit}
@@ -187,7 +266,6 @@ const CircleUpdatePage = ({ params }) => {
                 </div>
               </div>
 
-              {/* 질문 모달 */}
               {questionToggle && (
                 <ModalWrapper
                   isOpen={questionToggle}
@@ -204,25 +282,7 @@ const CircleUpdatePage = ({ params }) => {
             </>
           )}
         </div>
-
-
-        <div className="w-full h-[80px] flex justify-center items-center px-[10px] bg-transparent">
-            <div className="w-[60px] h-[60px] relative">
-            <div className="absolute inset-0 bg-white"></div>
-            <div className="absolute inset-0">
-                <div className="absolute inset-0">
-                <div className="absolute inset-0">
-                    <div className="absolute inset-0 bg-white"></div>
-                    <svg id="10:5706" className="absolute top-[10%] left-[10%] w-[80%] h-[80%]"></svg>
-                </div>
-                </div>
-                <div className="absolute inset-0">
-                <div className="absolute inset-0 bg-white"></div>
-                </div>
-            </div>
-            </div>
-        </div>
-        </div>
+      </div>
     </div>
   );
 };
