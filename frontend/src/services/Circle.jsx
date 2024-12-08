@@ -116,6 +116,30 @@ export async function getCircleMembers(circleId) {
   }
 }
 
+export const getCircles = async()=> {
+  const url = "http://quant-helper.online:8080/getcircles";
+  try {
+    const accessToken = await getAccessToken();
+    const res = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'accept': '*/*',
+        "Authorization": accessToken,
+      },
+    });
+
+    if (res.status === 200) {
+      const result = await res.json();
+      return result;
+    } else {
+      throw new Error(`Get Circles Error: ${res.status}`);
+    }
+  } catch (error) {
+    console.error("Unknown Error in getCircles:", error.message);
+    throw error;
+  }
+};
+
 export async function removeUserFromCircle(circleId, userEmail) {
   const url = `${process.env.NEXT_PUBLIC_API_URL}${circleId}/remove?userEmail=${encodeURIComponent(userEmail)}`;
   const accessToken = await getAccessToken();
@@ -135,3 +159,4 @@ export async function removeUserFromCircle(circleId, userEmail) {
     throw new Error(`Remove User From Circle Error: ${res.status}`);
   }
 }
+

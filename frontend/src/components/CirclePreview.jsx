@@ -3,7 +3,7 @@
 import CircleTag from "./CircleTag";
 import { useRouter } from "next/navigation";
 const CirclePreview = ({ circle }) => {
-  const {id, name, image, tags } = circle;
+  const {id, name, image, tags, description } = circle;
   const router = useRouter();
   const handleClickCircle = () => {
     router.push(`/circle-detail/${id}`);
@@ -24,6 +24,9 @@ const CirclePreview = ({ circle }) => {
       <div className="ml-4 flex flex-col">
         {/* Club Name */}
         <h3 className="text-lg font-semibold text-gray-900">{name}</h3>
+        <div className="text-md">
+          {description}
+        </div>
 
         {/* Club Tags */}
         <div className="mt-2 flex space-x-2">
