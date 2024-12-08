@@ -37,7 +37,7 @@ public class Circle {
     @OneToMany(mappedBy = "circle")
     private List<CircleUser> circleUsers;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String questions;
 
     @Lob
