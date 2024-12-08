@@ -133,8 +133,12 @@ const MemberManagement = () => {
   };
 
   const handleAcceptInForm = (formId) => {
-    acceptUserByFormId(selectedFormData.formId);
-    alert(`가입을 수락하였습니다.`);
+    try{
+      acceptUserByFormId(formId);
+      alert(`가입 신청을 수락합니다.`);
+    }catch{
+      alert("가입 신청 수락에 실패했습니다.");
+    }
   };
 
   const handleViewMemberForm = (userId) => {
@@ -206,7 +210,7 @@ const MemberManagement = () => {
       {/* Modal for Viewing Forms */}
       <ModalWrapper isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
       {selectedFormData? (
-        <ApplyFormViewer formData={selectedFormData} />
+        <ApplyFormViewer formData={selectedFormData} onClickAccept={handleAcceptInForm} />
       ) : (
         <div>로딩 중...</div>
       )}

@@ -25,7 +25,7 @@ const CircleDetailPage = ({ params }) => {
         const fetchData = async () => {
             const response_circle = await getCircleById(circleId);
             setCircleInfo(response_circle);
-            setQuestions(JSON.parse(response_circle.questions))
+            setQuestions(response_circle.questions)
         };
         fetchData();
     }, [circleId]);
@@ -73,7 +73,7 @@ const CircleDetailPage = ({ params }) => {
                 </div>
                 <div className="w-full h-[180px] flex flex-col justify-center items-start gap-[8px] px-[16px] py-[32px]">
                 <div className="w-full h-[48px] flex justify-between items-end px-[1px] py-[6px] overflow-hidden">
-                    <div className="w-[186px] h-[36px] text-[#26262C] font-OpenSans text-[28px] leading-[36px] font-bold overflow-hidden whitespace-nowrap">
+                    <div className="w-full h-10 text-[#26262C] font-OpenSans text-[28px] leading-[36px] font-bold overflow-hidden whitespace-nowrap">
                     {circleInfo.name}
                     </div>
                     <div className="w-[300px] h-[32px] flex items-center justify-end px-[10px] py-[8px]">
