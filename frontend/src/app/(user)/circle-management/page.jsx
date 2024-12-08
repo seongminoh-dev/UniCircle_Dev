@@ -30,6 +30,7 @@ const CircleManagementPage = () => {
         const userJoined = response_encountered
           .filter(circle => circle.adminUser.email !== auth.user.email)
           .map(circle => ({
+            id: circle.circleId,
             name: circle.name,
             image: circle.imageUrl || "https://via.placeholder.com/150",
             tags: circle.hashtags || []
@@ -83,7 +84,10 @@ const CircleManagementPage = () => {
             </div>
           ) : (
             joinedCircles.map((circle, index) => (
-              <CirclePreview key={index} circle={circle} />
+              <CirclePreview 
+              key={index} 
+              circle={circle} 
+              onClick={() => {router.push(`circle-detail/${circle.id}`)}}/>
             ))
           )}
         </div>
