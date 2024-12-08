@@ -55,7 +55,7 @@ export const LeftSidebar = () => {
   };
 
   return (
-    <aside className="w-80 h-screen py-8 pl-6">
+    <aside className="w-80 h-screen py-8 px-4 mx-6">
       {/* 닉네임 및 활동 정보 */}
       <div className="mb-2 space-y-4">
         <h3 className="text-3xl font-semibold">{nickname}</h3>

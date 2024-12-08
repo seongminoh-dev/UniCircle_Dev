@@ -19,6 +19,7 @@ export const searchContent = async (query) => {
           name: item.name,
           tags: item.hashtags,
           image: "https://via.placeholder.com/64",
+          description: item.description,
         })),
         filteredBoards: {}, // 현재 게시글은 null로 설정
       };
