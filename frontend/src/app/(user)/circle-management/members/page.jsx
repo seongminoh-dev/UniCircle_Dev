@@ -157,7 +157,7 @@ const MemberManagement = () => {
   };
 
   const handleViewMemberForm = (userId) => {
-    const matchedForm = memberForms.find((form) => form.userId === userId);
+    const matchedForm = memberForms.find((data) => data.form.userId === userId);
     if (matchedForm) {
       handleViewForm(matchedForm);
     } else {
