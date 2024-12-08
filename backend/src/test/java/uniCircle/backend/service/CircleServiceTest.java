@@ -89,18 +89,33 @@ public class CircleServiceTest {
 
     @Test
     public void testUpdateCircle_Success() {
-        // Given: 테스트용 동아리 생성
+        // Given: 먼저 adminUser를 생성하고 저장
+        User adminUser = userRepository.saveAndFlush(User.builder()
+                .name("Admin User")
+                .email("admin@uos.ac.kr")
+                .nickname("admin")
+                .password("securepassword")
+                .roles(Role.SYSTEM_ADMIN)
+                .createdAt(LocalDateTime.now())
+                .lastSeen(LocalDateTime.now())
+                .build());
+
+        // 기존 동아리 생성 시 adminUser 할당
         Circle existingCircle = Circle.builder()
                 .name("Circle Name")
                 .description("Description")
                 .createdAt(LocalDateTime.now())
+                .adminUser(adminUser) // 여기서 adminUser 지정
                 .build();
         circleRepository.save(existingCircle);
 
+        // 업데이트 DTO 생성 시에도 adminUser 지정
         CircleDTO updateDTO = CircleDTO.builder()
                 .circleId(existingCircle.getCircleId())
                 .name("Updated Circle Name")
                 .description("Updated Description")
+                .adminUser(UserDTO.fromEntity(adminUser)) // adminUser 반드시 설정
+                .hashtags(Set.of()) // 필요하다면 빈 Set로라도 초기화
                 .build();
 
         // When: 동아리 업데이트
@@ -111,7 +126,6 @@ public class CircleServiceTest {
         assertEquals("Updated Circle Name", updatedCircle.getName());
         assertEquals("Updated Description", updatedCircle.getDescription());
     }
-
     @Test
     public void testUpdateCircle_NotFound() {
         // Given: 존재하지 않는 동아리 데이터
@@ -153,22 +167,37 @@ public class CircleServiceTest {
 
     @Test
     public void testSearchCircles_Success() {
+        User adminUser = userRepository.saveAndFlush(User.builder()
+                .name("Admin User")
+                .email("admin@uos.ac.kr")
+                .nickname("admin")
+                .password("securepassword")
+                .roles(Role.SYSTEM_ADMIN)
+                .createdAt(LocalDateTime.now())
+                .lastSeen(LocalDateTime.now())
+                .build());
+
+
         // Given: 테스트용 동아리 생성
         Circle circle1 = Circle.builder()
-                .name("Searchable Circle 1")
+                .name("Circle Name")
                 .description("Description")
                 .createdAt(LocalDateTime.now())
+                .adminUser(adminUser) // 여기서 adminUser 지정
                 .build();
+
         Circle circle2 = Circle.builder()
-                .name("Searchable Circle 2")
+                .name("Circle Name2")
                 .description("Description")
                 .createdAt(LocalDateTime.now())
+                .adminUser(adminUser) // 여기서 adminUser 지정
                 .build();
+
         circleRepository.save(circle1);
         circleRepository.save(circle2);
 
         // When: 검색 메서드 호출
-        List<CircleDTO> results = circleService.searchCircles("Searchable");
+        List<CircleDTO> results = circleService.searchCircles("Name");
 
         // Then: 결과 검증
         assertEquals(2, results.size());
@@ -177,11 +206,23 @@ public class CircleServiceTest {
     @Test
     public void testGetCircle_Success() {
         // Given: 테스트용 동아리 생성
+        User adminUser = userRepository.saveAndFlush(User.builder()
+                .name("Admin User")
+                .email("admin@uos.ac.kr")
+                .nickname("admin")
+                .password("securepassword")
+                .roles(Role.SYSTEM_ADMIN)
+                .createdAt(LocalDateTime.now())
+                .lastSeen(LocalDateTime.now())
+                .build());
+
         Circle circle = Circle.builder()
                 .name("Circle Name")
                 .description("Description")
                 .createdAt(LocalDateTime.now())
+                .adminUser(adminUser) // 여기서 adminUser 지정
                 .build();
+
         circleRepository.save(circle);
 
         // When: ID로 동아리 조회
@@ -201,17 +242,32 @@ public class CircleServiceTest {
 
     @Test
     public void testGetCircles() {
-        // Given: 여러 동아리 생성
+        User adminUser = userRepository.saveAndFlush(User.builder()
+                .name("Admin User")
+                .email("admin@uos.ac.kr")
+                .nickname("admin")
+                .password("securepassword")
+                .roles(Role.SYSTEM_ADMIN)
+                .createdAt(LocalDateTime.now())
+                .lastSeen(LocalDateTime.now())
+                .build());
+
+
+        // Given: 테스트용 동아리 생성
         Circle circle1 = Circle.builder()
-                .name("Circle 1")
-                .description("Description 1")
+                .name("Circle Name")
+                .description("Description")
                 .createdAt(LocalDateTime.now())
+                .adminUser(adminUser) // 여기서 adminUser 지정
                 .build();
+
         Circle circle2 = Circle.builder()
-                .name("Circle 2")
-                .description("Description 2")
+                .name("Circle Name2")
+                .description("Description")
                 .createdAt(LocalDateTime.now())
+                .adminUser(adminUser) // 여기서 adminUser 지정
                 .build();
+
         circleRepository.save(circle1);
         circleRepository.save(circle2);
 
