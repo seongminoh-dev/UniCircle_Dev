@@ -6,7 +6,7 @@ import ApplyQuestion from './ApplyQuestion';
 import { useAuth } from "@/hooks";
 import { sendAdmissionForm } from "@/services";
 
-const AdmissionCreate = ({ circleId, questions, onclose }) => {
+const AdmissionCreate = ({ circleId, questions, onClose }) => {
   const [formData, setFormData] = useState(null);
   const auth = useAuth();
 
@@ -43,7 +43,7 @@ const AdmissionCreate = ({ circleId, questions, onclose }) => {
 
   const handleSubmit = () => {
     sendAdmissionForm({"circleId":circleId, "userId":auth.user.userId, "formContent":formData});
-    onclose();
+    onClose();
   };
 
   if (!formData) {
@@ -51,10 +51,31 @@ const AdmissionCreate = ({ circleId, questions, onclose }) => {
   }
 
   return (
-    <div className="mx-auto p-6 bg-white border w-[500px] rounded shadow-lg">
+    <div className="mx-auto p-6 bg-white border w-[600px] rounded shadow-lg">
+      {/* 닫기 버튼 */}
+      <button
+        onClick={onClose}
+        className="absolute top-6 right-6 text-gray-400 hover:text-gray-600 focus:outline-none"
+        aria-label="닫기"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
       <h1 className="text-2xl font-bold mb-4">{formData.title}</h1>
       <p className="mb-6">{formData.description}</p>
-
+      <div className="max-h-96 overflow-y-auto">
       {formData.questions.map((question, index) => (
         <div key={index} className="mb-6">
           <ApplyQuestion
@@ -63,7 +84,7 @@ const AdmissionCreate = ({ circleId, questions, onclose }) => {
           />
         </div>
       ))}
-
+      </div>
       <button
         onClick={handleSubmit}
         className="w-full p-2 bg-green-500 text-white rounded hover:bg-green-600"

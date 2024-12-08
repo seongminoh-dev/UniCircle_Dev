@@ -23,9 +23,20 @@ const CircleDetailPage = ({ params }) => {
     
     useEffect(() => {
         const fetchData = async () => {
-            const response_circle = await getCircleById(circleId);
-            setCircleInfo(response_circle);
-            setQuestions(response_circle.questions)
+            try {
+                const response_circle = await getCircleById(circleId);
+                setCircleInfo(response_circle);
+
+                try {
+                    const parsedQuestions = JSON.parse(response_circle.questions);
+                    setQuestions(parsedQuestions);
+                } catch (jsonError) {
+                    console.error("JSON 파싱 오류:", jsonError);
+                    setQuestions([]); // 기본값 설정 (빈 배열)
+                }
+            } catch (error) {
+                console.error("데이터 가져오기 오류:", error);
+            }
         };
         fetchData();
     }, [circleId]);
@@ -177,8 +188,8 @@ const CircleDetailPage = ({ params }) => {
             }
             {
             admissionToggle && (
-                <ModalWrapper isOpen={admissionToggle} onClose={() => setAdmissionToggle(false)}>
-                    <AdmissionCreate circleId={circleId} questions={questions} onclose={() => setAdmissionToggle(false)} />
+                <ModalWrapper isOpen={admissionToggle} onClose={() => setAdmissionToggle(false)} isTransparent={true}>
+                    <AdmissionCreate circleId={circleId} questions={questions} onClose={() => setAdmissionToggle(false)} />
                 </ModalWrapper>
             )
             }
