@@ -1,19 +1,10 @@
 "use server";
 import { getAccessToken } from "./Token";
 
-export async function createCircle(circleData) {
+export async function createCircle(formData) {
   const URL = `${process.env.NEXT_PUBLIC_API_URL}create`;
   const accessToken = getAccessToken();
 
-  const formData = new FormData();
-  formData.append('name', circleData.name);
-  formData.append('description', circleData.description);
-  formData.append('email', circleData.email);
-  formData.append('hashtags', circleData.hashtags);
-  formData.append('questions', circleData.questions);
-  if (circleData.image instanceof File) {
-    formData.append('file', circleData.image, circleData.image.name);
-  }
   const res = await fetch(URL, {
     method: "POST",
     headers: {
@@ -30,20 +21,9 @@ export async function createCircle(circleData) {
   }
 }
 
-export async function updateCircle(circleId, circleData) {
-  console.log("AAAA")
+export const updateCircle = async (circleId, formData) => {
   const url = `${process.env.NEXT_PUBLIC_API_URL}${circleId}/update`;
   const accessToken = getAccessToken();
-  
-  const formData = new FormData();
-  formData.append('name', circleData.name);
-  formData.append('description', circleData.description);
-  formData.append('email', circleData.email);
-  formData.append('hashtags', circleData.hashtags);
-  formData.append('questions', circleData.questions);
-  if (circleData.image instanceof File) {
-    formData.append('file', circleData.image, circleData.image.name);
-  }
 
   const res = await fetch(url, {
     method: "POST",
