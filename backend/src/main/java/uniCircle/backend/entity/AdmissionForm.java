@@ -26,7 +26,7 @@ public class AdmissionForm {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "form_content", nullable = false)    
+    @Column(name = "form_content", nullable = false, length = 65535)    
     private String formContent;
 
     @Column(name = "admission_date")
