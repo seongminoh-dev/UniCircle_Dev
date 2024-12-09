@@ -184,7 +184,7 @@ const MemberManagement = () => {
               applications.map((app, index) => (
                 <ApplicationMemberCard
                   key={index}
-                  nickname={"임시 닉네임"}
+                  nickname={app.userNickName}
                   date={app.createdAt}
                   onViewForm={() => handleViewForm(app)}
                   onApprove={() => handleApprove(app)}
