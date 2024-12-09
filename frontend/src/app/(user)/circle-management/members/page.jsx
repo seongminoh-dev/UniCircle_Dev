@@ -203,7 +203,7 @@ const MemberManagement = () => {
           {members.length === 0 ? (
             <p className="text-gray-500">아직 회원 목록이 없습니다.</p>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-4 gap-x-2">
+            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-y-4 gap-x-4">
               {members.map((member, index) => (
                 <ApprovedMemberCard
                   key={index}

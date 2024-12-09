@@ -38,8 +38,8 @@ const Board = () => {
 
   return (
     <div className="space-y-4 px-2">
-      <h2 className="text-2xl font-semibold text-gray-500 px-2 mb-2">나와 관련된 게시물</h2>
-      <div className="px-2">
+      <h2 className="text-2xl font-semibold text-gray-500 px-2 mb-2 mx-0">나와 관련된 게시물</h2>
+      <div className="px-2 mx-0">
         {loading && <p>게시글을 불러오는 중...</p>}
         {error && <p>{error}</p>}
         {!loading && boards.length===0 && <p>나와 관련된 게시물이 없습니다. 동아리에 가입하고 다양한 게시물을 열람하세요!</p>}
