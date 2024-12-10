@@ -1,0 +1,1977 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <help_text/>
+  <zoom_level>8</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2096</x>
+      <y>1240</y>
+      <w>192</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>User 
+--
+- userId: String
+- name: String
+- nickname: String 
+- email: String
+- roles: Role
+- password: String
+- createdAt: LocalDateTime 
+- lastSeen: LocalDateTime
+- circleUsers: List&lt;CircleUser&gt;[*]
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2088</x>
+      <y>1488</y>
+      <w>192</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;enumeration&gt;&gt;
+Role 
+--
+NON_MEMBER
+WANT_JOIN
+REQUEST_JOIN
+CIRCLE_MEMBER
+CIRCLE_ADMIN
+SYSTEM_ADMIN
+--
+- description: String
+--
++ getDescription(): String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2376</x>
+      <y>1272</y>
+      <w>280</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>CircleUser 
+--
+- circleUserId: Long
+- circle: Circle
+- user: User
+--
++ addCircleUser(circle: Circle, user: User): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2744</x>
+      <y>1248</y>
+      <w>256</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>Circle 
+--
+- circleId: Long
+- name: String
+- description: String
+- createdAt: LocalDateTime
+- adminUser: User
+- circleHashtags: Set&lt;CircleHashtag&gt;
+- circleUsers: List&lt;CircleUser&gt;
+- questions: String
+- image: byte[]
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2280</x>
+      <y>1304</y>
+      <w>112</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+contains
+m2=0..*</panel_attributes>
+    <additional_attributes>10.0;20.0;120.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2648</x>
+      <y>1296</y>
+      <w>112</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+contains
+m2=0..*</panel_attributes>
+    <additional_attributes>120.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2176</x>
+      <y>1384</y>
+      <w>72</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2456</x>
+      <y>984</y>
+      <w>192</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+JpaRepository</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2240</x>
+      <y>1008</y>
+      <w>328</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>390.0;10.0;390.0;40.0;10.0;40.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2128</x>
+      <y>1096</y>
+      <w>248</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+UserRepository
+--
++ findByEmail(email: String): Optional&lt;User&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2408</x>
+      <y>1072</y>
+      <w>280</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+CircleUserRepository
+--
++ findByCircle(circle: Circle): List&lt;CircleUser&gt;
++ findByUser(user: User): List&lt;CircleUser&gt;
++ findByCircleAndUser(circle: Circle, user: User):
+	Optional&lt;CircleUser&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2696</x>
+      <y>1080</y>
+      <w>296</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+CircleRepository
+--
++ findByName(name: String): Optional&lt;Circle&gt;
++ findByCircleId(circleId: Long): Optional&lt;Circle&gt;
++ findByNameContaining(name: String): List&lt;Circle&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2544</x>
+      <y>1008</y>
+      <w>24</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2544</x>
+      <y>1008</y>
+      <w>296</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0;350.0;40.0;350.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2192</x>
+      <y>1136</y>
+      <w>64</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;130.0;10.0;70.0;60.0;70.0;60.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2512</x>
+      <y>1152</y>
+      <w>56</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;150.0;10.0;40.0;50.0;40.0;50.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2856</x>
+      <y>1144</y>
+      <w>24</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;130.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2072</x>
+      <y>576</y>
+      <w>336</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>UserService
+--
+- userRepository: UserRepository {readonly}
+- passwordEncoder: BCryptPasswordEncoder {readonly}
+- jwtUtil: JwtUtil
+--
++ registerUser(userDTO: UserDTO): UserDTO
++ findByEmail(email: String): UserDTO
++ findByUserId(email: String): UserDTO
++ changePassword(email: String, newPassword: String): 
+	boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2336</x>
+      <y>696</y>
+      <w>72</w>
+      <h>416</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;500.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1968</x>
+      <y>824</y>
+      <w>200</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>UserDTO
+--
+- userId: Long
+- name: String
+- nickname: String 
+- email: String
+- roles: Role
+- password: String
+- createdAt: LocalDateTime 
+- lastSeen: LocalDateTime
+--
+__+ fromEntity(user: User): UserDTO__</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2056</x>
+      <y>960</y>
+      <w>120</w>
+      <h>296</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>130.0;350.0;130.0;290.0;10.0;290.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2072</x>
+      <y>696</y>
+      <w>128</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;160.0;10.0;130.0;140.0;130.0;140.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2816</x>
+      <y>544</y>
+      <w>344</w>
+      <h>176</h>
+    </coordinates>
+    <panel_attributes>CircleService
+--
+- circleRepository: CircleRepository {readonly}
+- userRepository: UserRepository {readonly}
+- circleUserService: CircleUserService {readonly}
+- circleHashtagService: CircleHashtagService {readonly}
+- circleHashtagRepository: CircleHashtagRepository {readonly}
+- circleUserRepository: CircleUserRepository {readonly}
+--
++ createCircle(circleDTO: CircleDTO): CircleDTO
++ updateCircle(circleDTO: CircleDTO): CircleDTO
++ deleteCircle(id: Long): void
++ searchCircles(keyword: String): List&lt;CircleDTO&gt;
++ getCircle(id: Long): CircleDTO
++ getCircles(): List&lt;CircleDTO&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2928</x>
+      <y>712</y>
+      <w>32</w>
+      <h>384</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;460.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2976</x>
+      <y>816</y>
+      <w>240</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>CircleDTO
+--
+- circleId: Long
+- name: String
+- description: String 
+- createdAt: LocalDateTime
+- adminUser: UserDTO
+- hashtags: Set&lt;String&gt;
+- questions: Stirng
+- image: byte[]
+--
+__+ fromEntity(circle: Circle): CircleDTO__</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3048</x>
+      <y>712</y>
+      <w>24</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;130.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2904</x>
+      <y>952</y>
+      <w>168</w>
+      <h>312</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;370.0;10.0;290.0;120.0;290.0;120.0;80.0;190.0;80.0;190.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1800</x>
+      <y>1256</y>
+      <w>192</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>Board 
+--
+- boardId: Long
+- title: String
+- content: String
+- createdAt: LocalDateTime
+- updatedAt: LocalDateTime
+- user: User
+- comments: List&lt;Comment&gt;
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1984</x>
+      <y>1312</y>
+      <w>128</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+contains
+m2=0..*</panel_attributes>
+    <additional_attributes>140.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1488</x>
+      <y>1264</y>
+      <w>192</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>Comment 
+--
+- commentId: Long
+- content: String
+- createdAt: LocalDateTime
+- user: User
+- board: Board
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1672</x>
+      <y>1304</y>
+      <w>144</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+contains
+m2=0..*</panel_attributes>
+    <additional_attributes>160.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1776</x>
+      <y>1080</y>
+      <w>248</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+BoardRepository
+--
+findAllByCircle(circle: Circle): List&lt;Board&gt;
+findAllByOrderyCreatedAtDesc(): List&lt;Board&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1464</x>
+      <y>1096</y>
+      <w>256</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+CommentRepoisitory
+--
+- findByPostId(postId: Long): List&lt;Comment&gt; </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1656</x>
+      <y>824</y>
+      <w>200</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>BoardDTO
+--
+- boardId: Long
+- title: String
+- content: String
+- createdAt: LocalDateTime
+- updatedAt: LocalDateTime
+- userId: Long
+- commentDTOs: List&lt;CommentDTO&gt;
+--
+- build()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1392</x>
+      <y>824</y>
+      <w>200</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>CommentDTO
+--
+- commentId: Long
+- content: String
+- createdAt: LocalDateTime
+- userId: Long
+- boardId: Long
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1736</x>
+      <y>944</y>
+      <w>144</w>
+      <h>328</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>160.0;390.0;160.0;320.0;10.0;320.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1416</x>
+      <y>920</y>
+      <w>144</w>
+      <h>360</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>160.0;430.0;160.0;360.0;10.0;360.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1888</x>
+      <y>1136</y>
+      <w>24</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;150.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1576</x>
+      <y>1136</y>
+      <w>24</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;160.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1200</x>
+      <y>576</y>
+      <w>456</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>CommentService
+--
+- commentRepository: CommentRepository {readonly}
+- boardRepository: BoardRepository {readonly}
+- userRepository: UserRepository {readonly}
+--
++ createComment(postId: Long, userId: Long, visibility: Visibility): CommentDTO
++ getCommentById(commentId: Long): CommentDTO
++ getCommentsByPostId(postId: Long): List&lt;CommentDTO&gt;
++ updateComment(commentId: Long, visibility: Visibility): CommentDTO
++ deleteComment(commentId: Long): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1672</x>
+      <y>568</y>
+      <w>360</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>BoardService
+--
+- boardRepository: BoardRepository {readonly}
+- userRepository: UserRepository {readonly}
+- circleRepository: CircleRepository {readonly}
+- hashtagRepository: HashtagRepository {readonly}
+--
++ createBoard(boardDTO: BoardDTO): BoardDTO
++ getBoardById(postId: Long): BoardDTO
++ getAllBoardByCircleId(circleId: Long): List&lt;Map&lt;String,Object&gt;&gt;
++ getAllPosts(): List&lt;BoardDTO&gt;
++ updateBoard(postId: Long, boardDTO: BoardDTO): BoardDTO
++ deleteBoard(postId: Long): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1888</x>
+      <y>1008</y>
+      <w>680</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>830.0;10.0;830.0;40.0;10.0;40.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1576</x>
+      <y>1008</y>
+      <w>992</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>1220.0;10.0;1220.0;40.0;10.0;40.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1568</x>
+      <y>1360</y>
+      <w>608</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+contains
+m2=0..*</panel_attributes>
+    <additional_attributes>730.0;40.0;730.0;90.0;10.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1872</x>
+      <y>712</y>
+      <w>72</w>
+      <h>384</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;460.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1600</x>
+      <y>736</y>
+      <w>72</w>
+      <h>376</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;450.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1592</x>
+      <y>712</y>
+      <w>272</w>
+      <h>400</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+
+m2=1</panel_attributes>
+    <additional_attributes>310.0;10.0;310.0;70.0;10.0;70.0;10.0;480.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1912</x>
+      <y>712</y>
+      <w>1016</w>
+      <h>384</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0;1240.0;70.0;1240.0;460.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1792</x>
+      <y>712</y>
+      <w>24</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;140.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1488</x>
+      <y>736</y>
+      <w>24</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>792</y>
+      <w>4152</w>
+      <h>184</h>
+    </coordinates>
+    <panel_attributes>halign=left
+DTO
+bg=#F5A9A9
+transparency=80
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>984</y>
+      <w>4152</w>
+      <h>184</h>
+    </coordinates>
+    <panel_attributes>halign=left
+Repository
+bg=#BEF781
+transparency=80</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>1216</y>
+      <w>4144</w>
+      <h>408</h>
+    </coordinates>
+    <panel_attributes>halign=left
+Entity
+bg=#A9D0F5
+transparency=80</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1232</x>
+      <y>1264</y>
+      <w>192</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>Hashtag
+--
+- hashtagId: Long
+- content: String
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1088</x>
+      <y>1096</y>
+      <w>320</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+HashtagRepoisitory
+--
+- findByHashtagId(hashtagId: Long): Optional&lt;Hashtag&gt; </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1160</x>
+      <y>824</y>
+      <w>200</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>HashtagDTO
+--
+- HashtagId: Long
+- content: String
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>840</x>
+      <y>600</y>
+      <w>336</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>HashtagService
+--
+- hashtagRepository: HashtagRepository {readonly}
+--
++ createHashtag(hashtagDTO: HashtagDTO): HashtagDTO
++ getHashtagById(hashtagId: Long): HashtagDTO
++ getAllHashtags(): List&lt;HashtagDTO&gt;
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>512</y>
+      <w>4152</w>
+      <h>232</h>
+    </coordinates>
+    <panel_attributes>halign=left
+Service
+bg=#E6E6E6
+transparency=80
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>3352</x>
+      <y>1048</y>
+      <w>456</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+AdmissionFormRepository
+--
++ findByUserId(userId: Long): Optional&lt;AdmissionForm&gt;
++ findByCircleId(CircleId: Long): Optional&lt;AdmissionForm&gt;
+
++ findByUserAndCircle(user: User, circle: Circle): Optional&lt;AdmissionForm&gt;
++ findByCircleAndStatus(circle: Circle, status: String): Optional&lt;AdmissionForm&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>3592</x>
+      <y>536</y>
+      <w>552</w>
+      <h>192</h>
+    </coordinates>
+    <panel_attributes>AdmissionFormService
+--
+- admissionFormRepository: AdmissionFormRepository {readonly}
+- circleRepository: CircleRepository {readonly}
+- userRepository: UserRepository {readonly}
+- circleUserSerivce: CircleUserService {readonly}
+--
++ createAdmissionForm(admissionFormDTO: AdmissionFormDTO): AdmissionFormDTO 
++ getAdmissionFormById(admissionFormDTO: AdmissionFormDTO): AdmissionFormDTO
++ getAdmissionFormsByUserId(userId: Long): List&lt;Map&lt;String, Object&gt;&gt;
++ getAdmissionFormsByCircleId(circleId: Long): List&lt;Map&lt;String, Object&gt;&gt;
++ getAdmissionFormsByCircleIdAnddStatus(circleId: Long, status: String): List&lt;Map&lt;String, Object&gt;&gt;
++ updateAdmissionFormContent(formId: Long, formContent: String): AdmissionFormDTO
++ updateAdmissionFormStatus(formId: Long, status: String): AdmissionFormDTO
++ acceptAdmisionForm(formId: Long): AdmissionFormDTO
++ rejectAdmissionForm(formId: Long): AdmissionFormDTO
++ deleteAdmissionForm(formId: Long): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>3296</x>
+      <y>1248</y>
+      <w>256</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>AdmissionForm
+--
+- formId: Long
+- circle: Circle
+- user: User
+- formContent: String
+- createdAt: LocalDateTime
+- status: Status
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>3328</x>
+      <y>1464</y>
+      <w>192</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;enumeration&gt;&gt;
+Status
+--
+PENDING
+ACCEPTED
+REJECTED
+CANCELLED
+--
+- description: String
+--
++ getDescription(): String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3416</x>
+      <y>1360</y>
+      <w>72</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3400</x>
+      <y>1144</y>
+      <w>24</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;130.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>3608</x>
+      <y>824</y>
+      <w>344</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>AdmissionFormDTO
+--
+- formId: Long
+- circleId: Long
+- userId: Long
+- formContent: String
+- createdAt: LocalDateTime
+- status: Status
+--
++ fromEntity(admissionForm: AdmissionForm): AdmissionFormDTO</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3440</x>
+      <y>936</y>
+      <w>448</w>
+      <h>328</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;390.0;10.0;310.0;540.0;310.0;540.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3544</x>
+      <y>720</y>
+      <w>80</w>
+      <h>344</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>70.0;10.0;70.0;50.0;10.0;50.0;10.0;410.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2912</x>
+      <y>720</y>
+      <w>720</w>
+      <h>376</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+
+m2=1</panel_attributes>
+    <additional_attributes>10.0;450.0;10.0;60.0;870.0;60.0;870.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2320</x>
+      <y>720</y>
+      <w>1320</w>
+      <h>392</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+
+m2=1
+</panel_attributes>
+    <additional_attributes>10.0;470.0;10.0;70.0;1620.0;70.0;1620.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3688</x>
+      <y>720</y>
+      <w>24</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;130.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2304</x>
+      <y>712</y>
+      <w>640</w>
+      <h>400</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+
+m2=1</panel_attributes>
+    <additional_attributes>10.0;480.0;10.0;60.0;770.0;60.0;770.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2424</x>
+      <y>576</y>
+      <w>384</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>CircleUserService
+--
+- circleUserRepository: CircleUserRepository {readonly}
+- circleRepository: CircleRepository {readonly}
+- userRepository: UserRepository {readonly}
+--
++ addUserToCircle(circleId: Long, userDTO: UserDTO): CircleUserDTO
++ getCirclesByUser(userDTO: UserDTO): List&lt;CircleDTO&gt;
++ getUsersByCircle(circleId: Long): List&lt;UserDTO&gt;
++ removeUserFromCircle(circleId: Long, userDTO: UserDTO)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2632</x>
+      <y>688</y>
+      <w>440</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>530.0;160.0;530.0;140.0;10.0;140.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2072</x>
+      <y>688</y>
+      <w>536</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;170.0;10.0;140.0;650.0;140.0;650.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2448</x>
+      <y>848</y>
+      <w>200</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>CircleUserDTO
+--
+- circleUserId: Long
+- circle: circleDTO
+- user: userDTO
+--
+__+ fromEntity(circleUser: CircleUser): CircleUserDTO__</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2608</x>
+      <y>688</y>
+      <w>24</w>
+      <h>176</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;200.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2288</x>
+      <y>688</y>
+      <w>232</w>
+      <h>424</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+
+m2=1</panel_attributes>
+    <additional_attributes>260.0;10.0;260.0;50.0;10.0;50.0;10.0;510.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2648</x>
+      <y>688</y>
+      <w>72</w>
+      <h>400</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;480.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>160</y>
+      <w>4152</w>
+      <h>272</h>
+    </coordinates>
+    <panel_attributes>halign=left
+Controller
+bg=#eeeea9
+transparency=80
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1192</x>
+      <y>288</y>
+      <w>552</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>CommentController
+--
+- commentService: CommentService {readonly}
+- userService: UserService {readonly}
+--
++ createComment(postId: Long, userId: Long, visibility: Visibility): ResponseEntity&lt;CommentDTO&gt;
++ getCommentById(commentId: Long): ResponseEntity&lt;CommentDTO&gt;
++ getCommentsByPostId(postId: Long): ResponseEntity&lt;List&lt;CommentDTO&gt;&gt;
++ updateComment(commentId: Long, visibility: Visibility): ResponseEntity&lt;CommentDTO&gt;
++ deleteComment(commentId: Long): ResponseEntity&lt;String&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1416</x>
+      <y>400</y>
+      <w>72</w>
+      <h>192</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;220.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1504</x>
+      <y>400</y>
+      <w>176</w>
+      <h>440</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;530.0;10.0;480.0;200.0;480.0;200.0;150.0;10.0;150.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>760</x>
+      <y>296</y>
+      <w>424</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>HashtagController
+--
+- hashtagService: HashtagService {readonly}
+--
++ createHashtag(hashtagDTO: HashtagDTO): ResponseEntity&lt;HashtagDTO&gt;
++ getHashtagById(hashtagId: Long): ResponseEntity&lt;HashtagDTO&gt;
++ getAllHashtags(): ResponseEntity&lt;List&lt;HashtagDTO&gt;&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>960</x>
+      <y>376</y>
+      <w>72</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;280.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1016</x>
+      <y>376</y>
+      <w>256</w>
+      <h>464</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>300.0;560.0;300.0;510.0;220.0;510.0;220.0;150.0;10.0;150.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1752</x>
+      <y>264</y>
+      <w>456</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>BoardController
+--
+- boardService: BoardService {readonly}
+- userService: UserService {readonly}
+- circleService: CircleService {readonly}
+--
++ createBoard(boardDTO: BoardDTO): ResponseEntity&lt;BoardDTO&gt;
++ getBoardById(postId: Long): ResponseEntity&lt;?&gt;
++ getAllPosts(): ResponseEntity&lt;List&lt;BoardDTO&gt;&gt;
++ getBoardByCircleId(circleId: Long): ResponseEntity&lt;?&gt;
++ updateBoard(postId: Long, boardDTO: BoardDTO): ResponseEntity&lt;BoardDTO&gt;
++ deleteBoard(postId: Long): ResponseEntity&lt;String&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1848</x>
+      <y>400</y>
+      <w>72</w>
+      <h>184</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;210.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1808</x>
+      <y>400</y>
+      <w>256</w>
+      <h>440</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;530.0;10.0;480.0;300.0;480.0;300.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2216</x>
+      <y>184</y>
+      <w>456</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>AuthController
+--
+- userService: UserService {readonly}
+- authenticationManager: AuthenticationManager {readonly}
+- jwtUtil: JwtUtil {readonly}
+- refreshTokenRepository: RefreshTokenRepository {readonly}
+- mailService: MailService {readonly}
+- passwordResetService: PasswordResetService {readonly}
+--
++ register(userRequest: UserRequest): String
++ login(email: String, password: String): ResponseEntity&lt;String&gt;
++ refresh(request: HttpServletRequest, response: HttpServletResponse): ResponseEntity&lt;String&gt;
++ sendVerificationCode(email: String): ResponseEntity&lt;String&gt;
++ verifyCode(email: String, code: String): ResponseEntity&lt;String&gt;
++ resetPassword(username: String, email: String): ResponseEntity&lt;String&gt;
++ changePassword(email: String, username: String, newPassword: String): ResponseEntity&lt;String&gt;
++ verifyToken(token: String): ResponseEntity&lt;String&gt;
++ getUserEmail(userId: String): ResponseEntity&lt;String&gt;
+- createCookie(key: String, value: String): Cookie
+- addRefreshEntity(email: String, refresh: String, expiredMs: Long): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2296</x>
+      <y>416</y>
+      <w>72</w>
+      <h>176</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;200.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1304</x>
+      <y>1136</y>
+      <w>24</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;160.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1240</x>
+      <y>1008</y>
+      <w>1328</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>1640.0;10.0;1640.0;40.0;10.0;40.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1248</x>
+      <y>880</y>
+      <w>192</w>
+      <h>400</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>120.0;480.0;120.0;410.0;220.0;410.0;220.0;170.0;10.0;170.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>984</x>
+      <y>680</y>
+      <w>208</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>240.0;180.0;240.0;130.0;10.0;130.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2216</x>
+      <y>0</y>
+      <w>456</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>JwtUtil
+--
+- secretKey: SecretKey
+--
++ JwtUtil(secret: String)
++ createJwt(category: String, email: String, role: String, expiredMs: Long): String
++ getEmail(token: String): String
++ getCategory(token: String): String
++ getRole(token: String): String
++ isExpired(token: String): Boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2440</x>
+      <y>120</y>
+      <w>72</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>904</x>
+      <y>1256</y>
+      <w>256</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>RefreshToken 
+--
+- refreshTokenId: Long
+- email: String
+- tokenContent: String
+- expiration: String
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>760</x>
+      <y>1096</y>
+      <w>320</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>RefreshTokenRepository
+&lt;&lt;interface&gt;&gt;
+--
++ existsByTokenContent(tokenContent: String): Boolean
++ deleteByTokenContent(tokenContent: String): void
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>984</x>
+      <y>1136</y>
+      <w>24</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;150.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>920</x>
+      <y>1008</y>
+      <w>1648</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>2040.0;10.0;2040.0;40.0;10.0;40.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>736</x>
+      <y>416</y>
+      <w>1528</w>
+      <h>904</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>1880.0;10.0;1880.0;140.0;120.0;140.0;120.0;800.0;10.0;800.0;10.0;970.0;130.0;970.0;130.0;1100.0;210.0;1100.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2688</x>
+      <y>168</y>
+      <w>496</w>
+      <h>256</h>
+    </coordinates>
+    <panel_attributes>CircleController
+--
+- circleService: circleService {readonly}
+- userService: UserService {readonly}
+- circleUserService: CircleUserService {readonly}
+- circleHashtagService: CircleHashtagService {readonly}
+--
++ createCircle(circleRequest: CircleRequest): ResponseEntity&lt;CircleDTO&gt;
++ searchCircle(keyword: String): ResponseEntity&lt;List&lt;CircleDTO&gt;&gt;
++ getCircleById(circleId: Long): ResponseEntity&lt;CircleDTO&gt;
++ updateCircle(circleId: Long, circleRequest: CircleRequest): ResponseEntity&lt;CircleDTO&gt;
++ deleteCircle(circleId: Long): void
++ getUsersByCircle(circleId: Long): ResponseEntity&lt;List&lt;UserDTO&gt;&gt;
++ getCirclesByUser(userEmail: Stirng): ResponseEntity&lt;List&lt;CircleDTO&gt;&gt;
++ getCirclesByHashtag(hashtagId: Long): ResponseEntity&lt;List&lt;UserDTO&gt;&gt;
++ getCircle(circleId: Long): ResponseEntity&lt;CircleDTO&gt;
++ addUserToCircle(circleId: Long, userEmail: String): ResponseEntity&lt;CircleUserDTO&gt;
++ removeUserFromCircle(circleId: Long, userEmail: String): void
++ getHashtagsByCircle(circleId: Long): ResponseEntity&lt;List&lt;HashtagDTO&gt;&gt;
++ getCirclesByHashtag(content: String): ResponseEntity&lt;List&lt;CircleDTO&gt;&gt;
++ getCircles(): ResponseEntity&lt;List&lt;CircleDTO&gt;&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3000</x>
+      <y>416</y>
+      <w>72</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2768</x>
+      <y>416</y>
+      <w>72</w>
+      <h>176</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;200.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2368</x>
+      <y>416</y>
+      <w>408</w>
+      <h>176</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>480.0;10.0;480.0;170.0;10.0;170.0;10.0;200.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2056</x>
+      <y>416</y>
+      <w>696</w>
+      <h>424</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;510.0;10.0;150.0;850.0;150.0;850.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3064</x>
+      <y>416</y>
+      <w>120</w>
+      <h>416</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>130.0;500.0;130.0;140.0;10.0;140.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1328</x>
+      <y>1320</y>
+      <w>1480</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..*
+contains
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;170.0;1820.0;170.0;1820.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>3320</x>
+      <y>184</y>
+      <w>456</w>
+      <h>224</h>
+    </coordinates>
+    <panel_attributes>AdmissionFormController
+--
+- admissionFormService: AdmissionFormService {readonly}
+- userService: UserService {readonly}
+--
++ createForm(request: AdmissionFormRequest): ResponseEntity&lt;AdmissionFormDTO&gt;
++ getFormById(formId: Long): ResponseEntity&lt;AdmissionFormDTO&gt;
++ getFormsByUserId(userId: Long): ResponseEntity&lt;List&lt;AdmissionFormDTO&gt;&gt;
++ getFormsByCircleId(circleId: Long): ResponseEntity&lt;List&lt;AdmissionFormDTO&gt;&gt;
++ getFormsByCircleIdAndStatus(circleId: Long, status: String): ResponseEntity&lt;List&lt;Map&lt;String, Object&gt;&gt;&gt;
++ getFormsByUserIdAndCircleId(userId: Long, circleId: Long): ResponseEntity&lt;Stirng, Object&gt;
++ updateAdmissionFormContent(formId: Long, request: AdmissionFormRequest): ResponseEntity&lt;AdmissionFormDTO&gt;
++ getFormsByUserIdAndCircleId(userId: Long, circleId: Long): ResponseEneity&lt;AdmissionFormDTO&gt;
++ updateAdmissionFormContent(formId: Long, status: String): ResponseEneity&lt;AdmissionFormDTO&gt;
++ updateAdmissionFormStatus(formId: Long): ResponseEneity&lt;AdmissionFormDTO&gt;
++ AcceptAdmissionForm(formId: Long): ResponseEneity&lt;AdmissionFormDTO&gt;
++ RejectAdmissionForm(formId: Long): ResponseEneity&lt;AdmissionFormDTO&gt;
++ deleteAdmissionForm(formId: Long): String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3624</x>
+      <y>400</y>
+      <w>72</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3168</x>
+      <y>400</y>
+      <w>520</w>
+      <h>440</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>630.0;530.0;630.0;480.0;10.0;480.0;10.0;150.0;360.0;150.0;360.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1800</x>
+      <y>1480</y>
+      <w>192</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;enumeration&gt;&gt;
+Visibility 
+--
+PUBLIC
+PRIVATE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1888</x>
+      <y>1376</y>
+      <w>72</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>3008</x>
+      <y>1056</y>
+      <w>328</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+CircleHashtagRepository
+--
++ findByCircle(circle: Circle): List&lt;CircleHashtag&gt;
++ findByHashtag(hashtag: Hashtag): List&lt;CircleHashtag&gt;
++ findByCircleAndHashtag(circle: Circle, hashtag: Hashtag):
+	Optional&lt;CircleHashtag&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2944</x>
+      <y>712</y>
+      <w>208</w>
+      <h>360</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;370.0;230.0;370.0;230.0;430.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>3184</x>
+      <y>536</y>
+      <w>400</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>CircleHashtagService
+--
+- circleHashtagRepository: CircleHashtagRepository {readonly}
+- circleRepository: CircleRepository {readonly}
+- hashtagRepository: HashtagRepository {readonly}
+- hashtagService: HashtagService {readonly}
+--
++ addHashtagToCircle(content: String, circleId: Long): 
+	CircleHashtagDTO
++ addHashtagsToCircle(contents: List&lt;String&gt;, circleId: Long):
+	Set&lt;CircleHashtagDTO&gt;
++ getCirclesFromHashtag(content: String): List&lt;CircleDTO&gt;
++ getHashtagsFromCircle(circleId: Long): List&lt;HashtagDTO&gt;
++ deleteHashtagOfCircle(content: String, circleId: Long): void
++ updateHashtagsOfCircle(contents: Set&lt;String&gt;, circleId: Long): 
+	Set&lt;CircleHashtagDTO&gt;
+# uniqueHashtagFilter(contents: Set&lt;Stirng&gt;): Set&lt;Hashtag&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>448</x>
+      <y>544</y>
+      <w>376</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>MailService
+--
+- mailSender: JavaMailSender {readonly}
+- verificationCodes: ConcurrentHashMap&lt;String, String&gt; {readonly}
+- userRepository: UserRepository {readonly}
+--
++ generateAndStoreVerificationCode(email: String): String
++ verifyCode(email: String, code: String): boolean
++ sendVerificationEmail(to: String, code: String): void
+- generateVerificationCode(): String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>72</x>
+      <y>544</y>
+      <w>360</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>PasswordResetService
+--
+- mailSender: JavaMailSender {readonly}
+- userService: UserService {readonly}
+- passwordEncoder: PasswordEncoder {readonly}
+--
++ resetPassword(username: String, email: String): boolean
+- sendPasswordResetEmail(to: String, newPassword: String): void
+- generateRandomPassword(): String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>72</x>
+      <y>672</y>
+      <w>288</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>PrincipalDetailService
+--
+- userRepository: UserRepository {readonly}
+--
++ loadUserByUsername(email: String): userDetails
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>800</x>
+      <y>672</y>
+      <w>1016</w>
+      <h>424</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;440.0;1240.0;440.0;1240.0;510.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>352</x>
+      <y>688</y>
+      <w>1464</w>
+      <h>408</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;570.0;10.0;570.0;420.0;1800.0;420.0;1800.0;490.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>400</x>
+      <y>512</y>
+      <w>1744</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>10.0;40.0;10.0;10.0;580.0;10.0;580.0;60.0;2150.0;50.0;2150.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3224</x>
+      <y>728</y>
+      <w>72</w>
+      <h>344</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>50.0;10.0;50.0;100.0;10.0;100.0;10.0;410.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2960</x>
+      <y>728</y>
+      <w>320</w>
+      <h>368</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>370.0;10.0;370.0;40.0;10.0;40.0;10.0;440.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1360</x>
+      <y>728</y>
+      <w>1912</w>
+      <h>384</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>2360.0;10.0;2360.0;30.0;10.0;30.0;10.0;460.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1072</x>
+      <y>488</y>
+      <w>2256</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>2790.0;60.0;2790.0;20.0;10.0;20.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2784</x>
+      <y>464</y>
+      <w>896</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+contains
+m2=1</panel_attributes>
+    <additional_attributes>1090.0;90.0;1090.0;20.0;10.0;20.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3296</x>
+      <y>728</y>
+      <w>24</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;130.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>3280</x>
+      <y>832</y>
+      <w>264</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>CircleHashtagDTO
+--
+- circleHashtagId: Long
+- circle: CircleDTO
+- hashtag: HashtagDTO
+--
+__+ fromEntity(circleHashtag: CircleHashtagDTO): __
+__	CircleHashtagDTO__</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>3128</x>
+      <y>728</y>
+      <w>208</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;90.0;240.0;90.0;240.0;10.0</additional_attributes>
+  </element>
+</diagram>
