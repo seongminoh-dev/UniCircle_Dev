@@ -2,6 +2,20 @@
 
 <br>
 
+## 목차 (Table of Contents)
+- [Project Title - UniCircle](#project-title---unicircle)
+- [Project Scope](#-project-scope)
+- [Project Duration](#-project-duration)
+- [Highlight Features](#-highlight-features)
+- [Project Constraints](#️-project-constraints)
+- [High Level Architecture](#️-high-level-architecture)
+- [Technology Stack](#-technology-stack)
+- [Installation Guideline](#️-installation-guideline)
+- [Project Deliverables](#-project-deliverables)
+- [Repository Structure (Directory Roles)](#-repository-structure-directory-roles)
+- [Project Team Members](#-project-team-members)
+
+  
 ---
 
 ## Project Title - UniCircle 
@@ -179,28 +193,42 @@ UniCircle는 3-Tier 아키텍처를 적용하여 Presentation Layer(프론트엔
 ## 📂 Repository Structure (Directory Roles)
 
 ### Frontend
-app/: Next.js 라우팅 구조를 담고 있으며, 각 페이지(사용자 관련 페이지, 동아리 상세/검색 페이지 등)를 관리
-components/: 재사용 가능한 UI 컴포넌트(헤더, 사이드바, 게시글 편집기 등) 모음
-contexts/: 전역 상태 관리를 위한 Context API 정의
-define/: 공통 타입 정의나 상수 관리
-guards/: 인증 및 권한 확인 로직(가드) 관리
-hooks/: 커스텀 훅(Hook) 정의
-services/: API 통신 로직(입부 신청, 게시글, 댓글, 해시태그 등)
-stores/: 전역 상태 관리를 위한 Recoil, 혹은 전역 스토어 설정 관리
-styles/: 전역 또는 모듈 단위 스타일 파일 관리 (SCSS/CSS)
+- app/: Next.js 라우팅 구조를 담고 있으며, 각 페이지(사용자 관련 페이지, 동아리 상세/검색 페이지 등)를 관리
+- components/: 재사용 가능한 UI 컴포넌트(헤더, 사이드바, 게시글 편집기 등) 모음
+- contexts/: 전역 상태 관리를 위한 Context API 정의
+- define/: 공통 타입 정의나 상수 관리
+- guards/: 인증 및 권한 확인 로직(가드) 관리
+- hooks/: 커스텀 훅(Hook) 정의
+- services/: API 통신 로직(입부 신청, 게시글, 댓글, 해시태그 등)
+- stores/: 전역 상태 관리를 위한 Recoil, 혹은 전역 스토어 설정 관리
+- styles/: 전역 또는 모듈 단위 스타일 파일 관리 (SCSS/CSS)
 
 <br>
 
 ### Backend
-config/: 보안 설정, JWT 필터, 오픈 API 설정 등 환경 및 보안 관련 설정 파일
-controller/: REST API 엔드포인트 담당, 클라이언트 요청을 받고 응답 처리
-dto/: 데이터 전송 객체(요청/응답용) 정의
-entity/: DB 테이블과 매핑되는 JPA 엔티티 클래스 정의
-repository/: JPA Repository 인터페이스, 데이터베이스 접근 로직
-service/: 비즈니스 로직 구현 (동아리 관리, 게시판 기능, 해시태그 처리, 인증 등)
-util/: 유틸리티 클래스(JWT 생성/파싱, 공용 기능) 관리
-resources/: 애플리케이션 설정 파일(yml), 정적 파일(static), 템플릿 등
+- config/: 보안 설정, JWT 필터, 오픈 API 설정 등 환경 및 보안 관련 설정 파일
+- controller/: REST API 엔드포인트 담당, 클라이언트 요청을 받고 응답 처리
+- dto/: 데이터 전송 객체(요청/응답용) 정의
+- entity/: DB 테이블과 매핑되는 JPA 엔티티 클래스 정의
+- repository/: JPA Repository 인터페이스, 데이터베이스 접근 로직
+- service/: 비즈니스 로직 구현 (동아리 관리, 게시판 기능, 해시태그 처리, 인증 등)
+- util/: 유틸리티 클래스(JWT 생성/파싱, 공용 기능) 관리
+- resources/: 애플리케이션 설정 파일(yml), 정적 파일(static), 템플릿 등
 
 <br>
+
+---
+
+## 🙋‍♂️ Project Team Members
+
+| Name           | Role                | Github                 |
+|----------------|---------------------|-----------------------|
+| 박세환(프론트엔드 팀장) | Frontend Developer  | [박세환 깃허브 Profile](https://github.com/sehwan505) |
+| 배유찬 | Frontend Developer  | [배유찬 깃허브 Profile](https://github.com/baeyc0510) |
+| 오승민 | Frontend Developer  | [오승민 깃허브 Profile](https://github.com/seongminoh-dev) |
+| 주재원(백엔드 팀장)  | Backend Developer   | [주재원 깃허브 Profile](https://github.com/jaewon-ju) |
+| 김동하  | Backend Developer   | [김동하 깃허브 Profile](https://github.com/H4N9ER) |
+| 김민회  | Backend Developer   | [김민회 깃허브 Profile](https://github.com/LNemo) |
+
 
 
