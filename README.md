@@ -11,9 +11,9 @@
 - [High Level Architecture](#️-high-level-architecture)
 - [Technology Stack](#-technology-stack)
 - [Installation Guideline](#️-installation-guideline)
-- [Project Deliverables](#-project-deliverables)
+- [Project Deliverables](#%EF%B8%8F-project-deliverables)
 - [Repository Structure (Directory Roles)](#-repository-structure-directory-roles)
-- [Project Team Members](#-project-team-members)
+- [Project Team Members](#project-team-members)
 
   
 ---
@@ -219,7 +219,7 @@ UniCircle는 3-Tier 아키텍처를 적용하여 Presentation Layer(프론트엔
 
 ---
 
-## 🙋‍♂️ Project Team Members
+## Project Team Members
 
 | Name           | Role                | Github                 |
 |----------------|---------------------|-----------------------|
