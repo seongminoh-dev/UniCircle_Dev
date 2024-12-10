@@ -174,16 +174,58 @@ UniCircle는 3-Tier 아키텍처를 적용하여 Presentation Layer(프론트엔
 
 ---
 
-##  🖥️ Project Deliverables
+## 🖥️ Project Deliverables  
 
-- 요구사항 분석 명세서 final version: <<링크>>
-- Architecture 및 Design Documents
-  - Software architecture: <<관련 문서 링크>>
-  - Software Design: <<관련 문서 링크>>
-  - UI Design: <<<<관련 문서 링크>>
+- 요구사항 분석 명세서 final version: <<링크>>  
+- Architecture 및 Design Documents  
+  - Software architecture: <<관련 문서 링크>>  
+  - Software Design: <<관련 문서 링크>>  
+  - UI Design: <<관련 문서 링크>>  
 - Coding Standard: <<관련 문서 링크>>
-- Code: branch description 과 코드에 관한 documentation 설명
-- 테스트 케이스 및 결과
+
+- **Code**  
+  ### Branch 구조 및 역할
+  - **`master`**  
+    - 사용자에게 배포 가능한 상태를 관리  
+    - 제품으로 출시 가능한 안정적인 브랜치  
+  - **`develop`**  
+    - 다음 출시 버전을 개발하는 브랜치  
+    - 새로운 기능이 추가되고 버그가 수정되면 `develop`에서 `main`으로 병합  
+    - 모든 개발은 `develop` 브랜치를 기반으로 진행  
+  - **`feature/{scope}/{issue}`**  
+    - 새로운 기능 개발 또는 버그 수정을 위해 `develop`에서 분기  
+    - 개발 완료 후 `develop` 브랜치로 병합  
+    - 예: `feature/front/auth`, `feature/back/board`
+
+  ### 현재 프로젝트 브랜치  
+  - `master`  
+    - 사용자 배포용 상태를 관리하는 브랜치  
+  - `Design`  
+    - UI 및 디자인 관련 작업 관리  
+  - `feature/back/auth`  
+    - 백엔드 인증 관련 기능 개발 브랜치  
+  - `feature/back/board`  
+    - 백엔드 게시판 기능 개발 브랜치  
+  - `feature/back/circle`  
+    - 백엔드 동아리 관리 기능 개발 브랜치  
+  - `feature/front/auth`  
+    - 프론트엔드 인증 관련 기능 개발 브랜치  
+  - `feature/front/board`  
+    - 프론트엔드 게시판 기능 개발 브랜치  
+  - `feature/front/circle-management`  
+    - 프론트엔드 동아리 관리 기능 개발 브랜치  
+  - `feature/front/service`  
+    - 프론트엔드 서비스 및 기타 기능 개발 브랜치  
+
+- 테스트 케이스 및 결과  
+  JUnit을 활용하여 약 50개의 기능 테스트 작성  
+  - 모든 테스트 성공 (100% 성공률)  
+  - 주요 테스트 항목:  
+    - 회원가입 및 로그인 로직 검증  
+    - 게시판 CRUD 기능 테스트  
+    - 동아리 생성 및 관리 기능 검증  
+    - JWT 인증 및 권한 확인 테스트  
+  - 테스트 보고서: <<테스트 로그 링크>>  
 
 
 <br>
